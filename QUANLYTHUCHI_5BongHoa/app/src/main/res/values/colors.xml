@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="mau_chu_dao">#0EA5E9</color>
+    <color name="mau_do">#FF0000</color>
+    <color name="mau_xanh_lam">#0000FF</color>
+    <color name="mau_xanh_luc">#008000</color>
 </resources>
