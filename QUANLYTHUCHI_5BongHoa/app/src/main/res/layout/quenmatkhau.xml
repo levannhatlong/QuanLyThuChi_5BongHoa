@@ -12,60 +12,64 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp"
+            android:layout_height="400dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginRight="20dp"
             android:background="@android:color/white"
-            android:elevation="6dp"
-            android:layout_marginTop="80dp"
-            android:gravity="center_horizontal"
-            android:layout_margin="20dp"
             android:clipToPadding="false"
+            android:elevation="6dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="28dp"
             android:transformPivotY="0dp">
+
 
             <TextView
                 android:id="@+id/tvForgotTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Quên Mật Khẩu"
-                android:textSize="24sp"
-                android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvForgotDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
                 android:text="Nhập email hoặc tên đăng nhập của bạn"
-                android:textColor="#666666"
-                android:layout_marginBottom="20dp" />
+                android:textColor="#666666" />
 
             <EditText
                 android:id="@+id/edtEmailForgot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email hoặc Username"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
                 android:layout_marginBottom="16dp"
-                android:inputType="textEmailAddress" />
+                android:background="@android:drawable/edit_text"
+                android:hint="Email hoặc Username"
+                android:inputType="textEmailAddress"
+                android:padding="12dp" />
 
             <Button
                 android:id="@+id/btnResetPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gửi yêu cầu"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#00AEEF"
                 android:padding="12dp"
-                android:backgroundTint="#00AEEF" />
+                android:text="Tiếp tục" />
 
             <TextView
                 android:id="@+id/tvBackToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="Quay lại đăng nhập"
-                android:textColor="#0000FF"
-                android:layout_marginTop="20dp" />
+                android:textColor="#00BCD4" />
 
         </LinearLayout>
 
