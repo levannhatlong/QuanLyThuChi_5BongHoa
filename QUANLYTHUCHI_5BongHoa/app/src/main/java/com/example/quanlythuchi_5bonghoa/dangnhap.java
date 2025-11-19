@@ -78,7 +78,8 @@ public class dangnhap extends AppCompatActivity {
         if (!isValid) return;
 
         Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(dangnhap.this, ThemGiaoDichActivity.class);
+        Intent intent = new Intent(dangnhap.this, TrangChuActivity.class);
         startActivity(intent);
+        finish(); // Finish the login activity
     }
 }

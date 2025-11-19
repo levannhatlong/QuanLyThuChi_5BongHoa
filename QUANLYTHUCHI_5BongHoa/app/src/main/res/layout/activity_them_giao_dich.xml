@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/mau_nen_sang"
     tools:context=".ThemGiaoDichActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -73,6 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tiền ra"
+                    android:textColor="@color/mau_chu_toi"
                     android:checked="true"/>
 
                 <RadioButton
@@ -80,6 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tiền vào"
+                    android:textColor="@color/mau_chu_toi"
                     android:layout_marginStart="16dp"/>
             </RadioGroup>
 
@@ -94,6 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tên giao dịch *"
+                android:textColor="@color/mau_chu_toi"
+                android:textColorHint="@color/mau_chu_phu"
                 android:layout_marginBottom="16dp"/>
 
             <EditText
@@ -102,6 +107,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Số tiền giao dịch *"
                 android:inputType="numberDecimal"
+                android:textColor="@color/mau_chu_toi"
+                android:textColorHint="@color/mau_chu_phu"
                 android:layout_marginBottom="16dp"/>
 
             <EditText
@@ -110,6 +117,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Ngày giao dịch *"
                 android:focusable="false"
+                android:textColor="@color/mau_chu_toi"
+                android:textColorHint="@color/mau_chu_phu"
                 android:layout_marginBottom="16dp"/>
 
             <EditText
@@ -119,6 +128,8 @@
                 android:hint="Ghi chú"
                 android:gravity="top"
                 android:lines="3"
+                android:textColor="@color/mau_chu_toi"
+                android:textColorHint="@color/mau_chu_phu"
                 android:layout_marginBottom="16dp"/>
 
             <TextView
@@ -126,6 +137,7 @@
                 android:layout_height="100dp"
                 android:text="Đính kèm hình ảnh/hóa đơn"
                 android:gravity="center"
+                android:textColor="@color/mau_chu_phu"
                 android:background="@drawable/vien_net_dut"
                 android:layout_marginBottom="16dp"/>
         </LinearLayout>

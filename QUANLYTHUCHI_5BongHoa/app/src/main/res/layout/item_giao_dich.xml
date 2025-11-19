@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/iv_loai_giao_dich"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/bieu_tuong_mui_ten_xuong" />
+
+    <TextView
+        android:id="@+id/tv_ten_giao_dich"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/iv_loai_giao_dich"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
+        android:text="Ăn uống"
+        android:textColor="@color/mau_chu_toi"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_so_tien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text="- 200,000 VND"
+        android:textColor="@color/mau_do"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

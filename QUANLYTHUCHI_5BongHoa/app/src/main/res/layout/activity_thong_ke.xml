@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mau_nen_sang"
     tools:context=".ThongKeActivity">
 
     <LinearLayout
@@ -50,6 +51,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/mau_chu_toi"
                     android:textSize="10sp"
                     android:text="Ngày"/>
 
@@ -59,6 +61,8 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/mau_chu_dao"
+                    android:textColor="@color/white"
                     android:textSize="10sp"
                     android:text="Tháng"/>
 
@@ -67,6 +71,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/mau_chu_toi"
                     android:textSize="10sp"
                     android:text="Năm"/>
 
@@ -89,14 +94,17 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/mau_chu_toi"
                     android:text="TỔNG THU: 30,000,000 VND"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/mau_chu_toi"
                     android:text="TỔNG CHI: 5,000,000 VND"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/mau_chu_toi"
                     android:text="CÒN LẠI: 25,000,000 VND"/>
             </LinearLayout>
 
@@ -105,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="Giao dịch trong thời gian này"
                 android:textStyle="bold"
+                android:textColor="@color/mau_chu_toi"
                 android:layout_marginTop="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView

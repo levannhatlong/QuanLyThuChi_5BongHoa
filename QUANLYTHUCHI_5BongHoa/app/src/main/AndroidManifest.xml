@@ -29,6 +29,9 @@
         <activity android:name="com.example.quanlythuchi_5bonghoa.dangky" />
         <activity android:name="com.example.quanlythuchi_5bonghoa.ThemGiaoDichActivity" />
         <activity android:name="com.example.quanlythuchi_5bonghoa.ThongKeActivity" />
+        <activity android:name="com.example.quanlythuchi_5bonghoa.ViTienActivity" />
+        <activity android:name="com.example.quanlythuchi_5bonghoa.TrangChuActivity" />
+        <activity android:name="com.example.quanlythuchi_5bonghoa.CaiDatActivity" />
 
     </application>
 
