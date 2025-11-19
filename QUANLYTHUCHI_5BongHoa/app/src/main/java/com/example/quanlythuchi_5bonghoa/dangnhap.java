@@ -43,9 +43,11 @@ public class dangnhap extends AppCompatActivity {
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(dangnhap.this, "Chức năng này sẽ được bổ sung sau.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(dangnhap.this, QuenMatKhauActivity.class);
+                startActivity(intent);
             }
         });
+
 
         tvCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override

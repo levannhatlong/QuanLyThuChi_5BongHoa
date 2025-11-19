@@ -32,6 +32,7 @@
         <activity android:name="com.example.quanlythuchi_5bonghoa.ViTienActivity" />
         <activity android:name="com.example.quanlythuchi_5bonghoa.TrangChuActivity" />
         <activity android:name="com.example.quanlythuchi_5bonghoa.CaiDatActivity" />
+        <activity android:name=".QuenMatKhauActivity" />
 
     </application>
 
