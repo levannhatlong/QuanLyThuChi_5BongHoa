@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Tất cả"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:gravity="center"
             android:padding="12dp"
@@ -73,7 +73,7 @@
             android:padding="12dp" />
     </LinearLayout>
 
-    <!-- Notification List -->
+    <!-- Danh sach thong bao -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Notification Item 1 -->
+            <!-- Thong bao 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
-            <!-- Notification Item 2 -->
+            <!-- Thong bao 2 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
-            <!-- Notification Item 3 -->
+            <!-- Thong bao 3 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
-            <!-- Notification Item 4 -->
+            <!-- Thong bao 4 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,8 +213,8 @@
                     android:textColor="#999999"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
-
-            <!-- Notification Item 5 -->
+s
+            <!-- Thong bao 5 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
