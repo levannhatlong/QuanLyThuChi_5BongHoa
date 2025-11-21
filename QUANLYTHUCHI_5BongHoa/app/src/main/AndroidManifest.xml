@@ -32,6 +32,8 @@
         <activity android:name="com.example.quanlythuchi_5bonghoa.ViTienActivity" />
         <activity android:name="com.example.quanlythuchi_5bonghoa.TrangChuActivity" />
         <activity android:name="com.example.quanlythuchi_5bonghoa.CaiDatActivity" />
+        <activity android:name="com.example.quanlythuchi_5bonghoa.NgonNguActivity" />
+        <activity android:name="com.example.quanlythuchi_5bonghoa.QuanLyDanhMucActivity" />
         <activity android:name=".QuenMatKhauActivity" />
         <activity android:name=".NhapOTPActivity" />
         <activity android:name=".DatLaiMatKhauActivity" />
