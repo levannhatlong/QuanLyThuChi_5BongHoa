@@ -31,6 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_gravity="center"
                 android:text="CÀI ĐẶT"
                 android:textColor="@color/white"
@@ -39,6 +40,32 @@
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+=======
+                android:background="@drawable/bg_button_rounded"
+                android:backgroundTint="#B0B0B0"
+                android:padding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="60dp"
+                android:text="Discard"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button_rounded"
+                android:backgroundTint="#4CAF50"
+                android:padding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="60dp"
+                android:text="Save"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </RelativeLayout>
+>>>>>>> b09e3a9c836ea1bbbe14b3c7d83d8afa136c946a
 
     <!-- Menu Items -->
     <ScrollView
@@ -79,8 +106,16 @@
                     android:src="@drawable/ic_category" />
 
                 <TextView
+<<<<<<< HEAD
                     style="@style/MenuItemText"
                     android:text="Quản lý thể loại" />
+=======
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quản lý danh mục"
+                    android:textSize="16sp"
+                    android:textColor="#333333" />
+>>>>>>> b09e3a9c836ea1bbbe14b3c7d83d8afa136c946a
             </LinearLayout>
 
             <!-- Liên kết ngân hàng -->
