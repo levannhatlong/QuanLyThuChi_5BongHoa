@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1976D2"
+        android:background="@color/mau_chu_dao" 
         android:padding="16dp">
 
         <ImageView
@@ -129,9 +129,9 @@
         android:layout_margin="16dp"
         android:text="Thêm mới"
         android:textColor="@android:color/white"
-        app:icon="@drawable/ic_add"
+        app:icon="@drawable/ic_plus"
         app:iconTint="@android:color/white"
-        app:backgroundTint="#1976D2"
+        app:backgroundTint="@color/mau_chu_dao"
         app:elevation="6dp" />
 
 </LinearLayout>

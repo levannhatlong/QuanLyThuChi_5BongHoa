@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mau_nen_sang"
+    android:background="#E8F4F8"
+    android:orientation="vertical"
+    android:textAlignment="center"
     tools:context=".TrangChuActivity">
 
     <!-- TOOLBAR -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/mau_chu_dao"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:background="@color/mau_chu_dao">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,63 +22,70 @@
 
             <ImageView
                 android:id="@+id/iv_notification"
-                android:layout_width="@dimen/icon_size_small"
-                android:layout_height="@dimen/icon_size_small"
-                android:src="@drawable/ic_notification"
-                app:tint="@color/white"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_notification"
+                app:tint="@color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="Hello, 5BongHoa"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_large"
-                android:layout_centerInParent="true"/>
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv_ghichu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@id/iv_settings"
+                android:src="@drawable/ic_ghichu"
+                app:tint="@color/white" />
 
             <ImageView
                 android:id="@+id/iv_settings"
-                android:layout_width="@dimen/icon_size_small"
-                android:layout_height="@dimen/icon_size_small"
-                android:src="@drawable/ic_settings"
-                app:tint="@color/white"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/spacing_large"/>
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/white" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_large">
+            android:padding="16dp">
 
             <!-- CARD SỐ DƯ -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="@dimen/spacing_large"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/spacing_xlarge">
+                    android:padding="20dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -90,19 +96,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số tiền đã chi trong này"
-                            android:textSize="@dimen/font_size_small"
-                            android:textColor="@color/mau_chu_phu"/>
+                            android:text="Số tiền chi"
+                            android:textColor="#666"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/tv_tien_chi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:text="5,300,000 VND"
-                            android:textSize="@dimen/font_size_xlarge"
-                            android:textStyle="bold"
-                            android:textColor="@color/mau_do"
-                            android:layout_marginTop="@dimen/spacing_medium"/>
+                            android:textColor="#E53935"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -115,19 +121,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số tiền đã thu trong này"
-                            android:textSize="@dimen/font_size_small"
-                            android:textColor="@color/mau_chu_phu"/>
+                            android:text="Số tiền thu"
+                            android:textColor="#666"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/tv_tien_thu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:text="30,000,000 VND"
-                            android:textSize="@dimen/font_size_xlarge"
-                            android:textStyle="bold"
-                            android:textColor="@color/mau_xanh_luc"
-                            android:layout_marginTop="@dimen/spacing_medium"/>
+                            android:textColor="#43A047"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -139,21 +145,21 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="@dimen/spacing_large"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/spacing_large">
+                    android:padding="16dp">
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/line_chart"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"/>
+                        android:layout_height="200dp" />
 
                 </LinearLayout>
 
@@ -163,33 +169,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
                 android:gravity="center"
-                android:layout_marginBottom="@dimen/spacing_large">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/btn_vi_tien"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="@dimen/spacing_large">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="@dimen/icon_size_large"
-                        android:layout_height="@dimen/icon_size_large"
-                        android:src="@drawable/ic_wallet"
-                        android:background="@drawable/bg_circle_button"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
                         android:padding="12dp"
-                        app:tint="@color/mau_chu_dao"/>
+                        android:src="@drawable/ic_wallet" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="Ví tiền"
-                        android:textSize="@dimen/font_size_medium"
-                        android:layout_marginTop="@dimen/spacing_medium"/>
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -198,24 +202,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="@dimen/spacing_large">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="@dimen/icon_size_large"
-                        android:layout_height="@dimen/icon_size_large"
-                        android:src="@drawable/ic_add"
-                        android:background="@drawable/bg_circle_button"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
                         android:padding="12dp"
-                        app:tint="@color/mau_chu_dao"/>
+                        android:src="@drawable/ic_add" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="Thêm giao dịch"
-                        android:textSize="@dimen/font_size_medium"
-                        android:layout_marginTop="@dimen/spacing_medium"/>
+                        android:textSize="14sp"
+                        android:verticalScrollbarPosition="right" />
 
                 </LinearLayout>
 
@@ -224,24 +227,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="@dimen/spacing_large">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="@dimen/icon_size_large"
-                        android:layout_height="@dimen/icon_size_large"
-                        android:src="@drawable/ic_chart"
-                        android:background="@drawable/bg_circle_button"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
                         android:padding="12dp"
-                        app:tint="@color/mau_chu_dao"/>
+                        android:src="@drawable/ic_chart" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="Thống kê"
-                        android:textSize="@dimen/font_size_medium"
-                        android:layout_marginTop="@dimen/spacing_medium"/>
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -251,34 +253,34 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Giao dịch gần đây"
-                    android:textSize="@dimen/font_size_large"
-                    android:textStyle="bold"
-                    android:textColor="@color/mau_chu_toi"/>
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_chi_tiet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chi tiết"
-                    android:textSize="@dimen/font_size_medium"
-                    android:textColor="@color/mau_chu_dao"/>
+                    android:textColor="@color/mau_chu_dao"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_theo_nhap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:text="Thu nhập"
-                    android:textSize="@dimen/font_size_medium"
-                    android:textColor="@color/mau_chu_phu"
-                    android:layout_marginStart="@dimen/spacing_large"/>
+                    android:textColor="#666"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -287,10 +289,10 @@
                 android:id="@+id/recycler_view_giao_dich"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
 
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

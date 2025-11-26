@@ -95,7 +95,7 @@
                         android:layout_marginBottom="20dp"
                         android:text="4,900,000 đ"
                         android:textColor="#263238"
-                        android:textSize="34sp"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
 
                     <!-- THANH TIẾN ĐỘ THU/CHI -->

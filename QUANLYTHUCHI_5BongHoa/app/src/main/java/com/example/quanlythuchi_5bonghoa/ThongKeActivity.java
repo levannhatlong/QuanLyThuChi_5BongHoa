@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,9 @@ public class ThongKeActivity extends AppCompatActivity {
 
     private PieChart pieChart;
     private RecyclerView recyclerView;
-    private FloatingActionButton fabHome;
     private GiaoDichAdapter giaoDichAdapter;
     private List<GiaoDich> danhSachGiaoDich;
+    private ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +33,15 @@ public class ThongKeActivity extends AppCompatActivity {
 
         pieChart = findViewById(R.id.piechart);
         recyclerView = findViewById(R.id.recycler_view_giao_dich);
-        fabHome = findViewById(R.id.fab_home);
+        ivBack = findViewById(R.id.iv_back);
 
         setupPieChart();
         setupRecyclerView();
 
-        fabHome.setOnClickListener(new View.OnClickListener() {
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ThongKeActivity.this, TrangChuActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish(); 
+                finish();
             }
         });
     }

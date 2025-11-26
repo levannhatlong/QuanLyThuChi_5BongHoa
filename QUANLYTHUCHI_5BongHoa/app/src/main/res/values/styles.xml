@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Style cho các mục menu trong trang Cài đặt -->
     <style name="MenuItemContainer">
         <item name="android:layout_width">match_parent</item>
@@ -15,7 +15,7 @@
         <item name="android:layout_width">@dimen/icon_size_medium</item>
         <item name="android:layout_height">@dimen/icon_size_medium</item>
         <item name="android:layout_marginEnd">@dimen/spacing_large</item>
-        <item name="app:tint">@color/mau_chu_dao</item>
+        <item name="android:tint">@color/mau_chu_dao</item>
     </style>
 
     <style name="MenuItemText">

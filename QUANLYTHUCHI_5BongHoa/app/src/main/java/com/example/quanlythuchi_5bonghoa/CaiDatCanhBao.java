@@ -2,73 +2,146 @@ package com.example.quanlythuchi_5bonghoa;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.widget.CheckBox;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class CaiDatCanhBao extends AppCompatActivity {
 
     private SeekBar seekBarPrice;
-    private TextView tvPrice, tvResetDate;
+    private EditText edtPrice;
+    private ImageView ivConfirmPrice;
+    private TextView tvResetDate;
     private LinearLayout layoutResetDate;
     private TextView btnConfirm, btnCancel;
-    private CheckBox cbDay, cbMonth, cbYear;
+    private RadioGroup radioGroupCanhBao;
+    private ImageView btnBack;
 
-    // Giá trị hiện tại (13 triệu = 13_000_000)
-    private long currentPrice = 13_000_000L;
-    private final long MAX_PRICE = 500_000_000L; // 500 triệu
-    private final DecimalFormat formatter = new DecimalFormat("###,###,###");
+    private boolean isUpdatingFromCode = false; // Flag to prevent infinite loops
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cai_dat_canh_bao); // tên file XML của bạn
+        setContentView(R.layout.activity_cai_dat_canh_bao);
 
         initViews();
-        setupSeekBar();
+        setupInteraction();
         setupDatePicker();
         setupButtons();
-        updatePriceText();
     }
 
     private void initViews() {
         seekBarPrice = findViewById(R.id.seekBarPrice);
-        tvPrice = findViewById(R.id.tvPrice);
+        edtPrice = findViewById(R.id.edtPrice);
+        ivConfirmPrice = findViewById(R.id.ivConfirmPrice);
         tvResetDate = findViewById(R.id.tvResetDate);
         layoutResetDate = findViewById(R.id.layoutResetDate);
         btnConfirm = findViewById(R.id.btnConfirm);
         btnCancel = findViewById(R.id.btnCancel);
-        cbDay = findViewById(R.id.cbDay);
-        cbMonth = findViewById(R.id.cbMonth);
-        cbYear = findViewById(R.id.cbYear);
+        radioGroupCanhBao = findViewById(R.id.radioGroupCanhBao);
+        btnBack = findViewById(R.id.btnBack);
+
+        long initialPrice = 13_000_000L;
+        seekBarPrice.setMax(500);
+        seekBarPrice.setProgress((int) (initialPrice / 1_000_000L));
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        edtPrice.setText(formatter.format(initialPrice));
     }
 
-    private void setupSeekBar() {
-        seekBarPrice.setMax(500); // 0 -> 500 (tương ứng 0 -> 500 triệu)
-        seekBarPrice.setProgress(13); // 13 triệu
-
+    private void setupInteraction() {
+        // 1. When user drags SeekBar
         seekBarPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentPrice = progress * 1_000_000L; // mỗi bước = 1 triệu
-                updatePriceText();
+                if (fromUser) {
+                    isUpdatingFromCode = true; // Set flag
+                    long price = (long) progress * 1_000_000L;
+                    NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+                    edtPrice.setText(formatter.format(price));
+                    ivConfirmPrice.setVisibility(View.GONE); // Hide confirm button
+                    isUpdatingFromCode = false; // Reset flag
+                }
             }
-
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+
+        // 2. When user types in EditText
+        edtPrice.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!isUpdatingFromCode) {
+                    ivConfirmPrice.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isUpdatingFromCode) return;
+
+                edtPrice.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+                    if (!originalString.isEmpty()) {
+                        String cleanString = originalString.replaceAll("[.,]", "");
+                        long longval = Long.parseLong(cleanString);
+
+                        if (longval > 500_000_000L) {
+                            longval = 500_000_000L;
+                        }
+
+                        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+                        String formattedString = formatter.format(longval);
+                        edtPrice.setText(formattedString);
+                        edtPrice.setSelection(edtPrice.getText().length());
+                    }
+                } catch (NumberFormatException nfe) {
+                    // Ignore - can happen while typing
+                }
+                edtPrice.addTextChangedListener(this);
+            }
+        });
+
+        // 3. When user clicks the confirm checkmark
+        ivConfirmPrice.setOnClickListener(v -> {
+            confirmPriceFromEditText();
+        });
     }
 
-    private void updatePriceText() {
-        tvPrice.setText(formatter.format(currentPrice) + " VND");
+    private void confirmPriceFromEditText() {
+        String cleanString = edtPrice.getText().toString().replaceAll("[.,]", "");
+        long price = 0L;
+        if (!cleanString.isEmpty()) {
+            try {
+                price = Long.parseLong(cleanString);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        if (price > 500_000_000L) {
+            price = 500_000_000L;
+        }
+
+        int progress = (int) (price / 1_000_000L);
+        seekBarPrice.setProgress(progress);
+        ivConfirmPrice.setVisibility(View.GONE);
     }
 
     private void setupDatePicker() {
@@ -77,36 +150,42 @@ public class CaiDatCanhBao extends AppCompatActivity {
 
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
         DatePickerDialog datePicker = new DatePickerDialog(
                 CaiDatCanhBao.this,
-                (view, year1, month1, dayOfMonth) -> {
-                    String date = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
+                (view, year, month, dayOfMonth) -> {
+                    String date = dayOfMonth + "/" + (month + 1) + "/" + year;
                     tvResetDate.setText("Đặt lại ngày: " + date);
                     tvResetDate.setTextColor(getResources().getColor(android.R.color.black));
                 },
-                year, month, day
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePicker.show();
     }
 
     private void setupButtons() {
+        btnBack.setOnClickListener(v -> finish());
+
         btnConfirm.setOnClickListener(v -> {
-            // TODO: Lưu cài đặt cảnh báo ở đây
-            String loai = "";
-            if (cbDay.isChecked()) loai += "Ngày ";
-            if (cbMonth.isChecked()) loai += "Tháng ";
-            if (cbYear.isChecked()) loai += "Năm ";
+            if (ivConfirmPrice.getVisibility() == View.VISIBLE) {
+                confirmPriceFromEditText();
+            }
+
+            int selectedId = radioGroupCanhBao.getCheckedRadioButtonId();
+            RadioButton selectedRadioButton = findViewById(selectedId);
+            String selectedOption = selectedRadioButton.getText().toString();
+
+            String priceString = edtPrice.getText().toString().replaceAll("[.,]", "");
+            long finalPrice = 0L;
+            if (!priceString.isEmpty()) {
+                finalPrice = Long.parseLong(priceString);
+            }
 
             Toast.makeText(this,
-                    "Đã đặt cảnh báo: " + formatter.format(currentPrice) + " VND\n"
-                            + "Theo: " + (loai.isEmpty() ? "Không chọn" : loai.trim()),
+                    "Đã đặt cảnh báo: " + NumberFormat.getInstance(new Locale("vi", "VN")).format(finalPrice) + " VND\n"
+                            + "Theo: " + selectedOption,
                     Toast.LENGTH_LONG).show();
 
-            finish(); // Quay lại màn trước
+            finish();
         });
 
         btnCancel.setOnClickListener(v -> {
@@ -115,7 +194,6 @@ public class CaiDatCanhBao extends AppCompatActivity {
         });
     }
 
-    // Xử lý nút Back trên header
     @Override
     public boolean onSupportNavigateUp() {
         finish();
