@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backround"
+    android:background="@color/mau_chu_dao"
     tools:context="com.example.quanlythuchi_5bonghoa.dangnhap">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginHorizontal="24dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardBackgroundColor="@android:color/white"
@@ -25,14 +25,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_xlarge">
+            android:padding="24dp">
 
             <TextView
                 android:id="@+id/tvHello"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quản Lý Thu Chi"
-                android:textSize="@dimen/font_size_xxlarge"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="@color/mau_chu_toi"
                 android:layout_gravity="center" />
@@ -42,9 +42,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đăng nhập vào tài khoản của bạn"
-                android:textSize="@dimen/font_size_medium"
+                android:textSize="16sp"
                 android:textColor="@color/mau_chu_phu"
-                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginTop="8dp"
                 android:layout_gravity="center" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -52,11 +52,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp">
+                android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtUsername"
@@ -71,11 +67,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp">
+                android:layout_marginTop="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtPassword"
@@ -91,18 +83,18 @@
                 android:layout_height="wrap_content"
                 android:text="Quên mật khẩu?"
                 android:textColor="@color/mau_chu_dao"
-                android:textSize="@dimen/font_size_medium"
-                android:layout_marginTop="@dimen/spacing_medium"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"
                 android:layout_gravity="end" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
                 android:text="Đăng nhập"
                 android:textAllCaps="false"
-                android:textSize="@dimen/font_size_large"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@color/mau_chu_dao"
                 app:cornerRadius="40dp" />
@@ -113,10 +105,9 @@
                 android:layout_height="wrap_content"
                 android:text="Chưa có tài khoản? Đăng ký"
                 android:textColor="@color/mau_chu_dao"
-                android:textSize="@dimen/font_size_medium"
-                android:layout_marginTop="@dimen/spacing_large"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
                 android:layout_gravity="center" />
-
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

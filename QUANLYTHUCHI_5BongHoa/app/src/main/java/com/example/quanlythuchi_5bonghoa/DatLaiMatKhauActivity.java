@@ -39,8 +39,6 @@ public class DatLaiMatKhauActivity extends Activity {
                     return;
                 }
 
-                // TODO: Lưu mật khẩu mới vào database (SQLite)
-
                 Toast.makeText(DatLaiMatKhauActivity.this, "Đặt lại mật khẩu thành công!", Toast.LENGTH_SHORT).show();
 
                 // Quay lại màn hình đăng nhập
