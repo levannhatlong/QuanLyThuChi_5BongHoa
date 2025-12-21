@@ -113,15 +113,6 @@ public class TrangChuActivity extends AppCompatActivity {
         danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
         danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
         danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
-        danhSachGiaoDich.add(new GiaoDich("Đi lại", 150000, false));
-        danhSachGiaoDich.add(new GiaoDich("Bán đồ cũ", 500000, true));
-        danhSachGiaoDich.add(new GiaoDich("Hóa đơn điện", 700000, false));
-        danhSachGiaoDich.add(new GiaoDich("Internet", 250000, false));
-        danhSachGiaoDich.add(new GiaoDich("Cà phê", 50000, false));
-        danhSachGiaoDich.add(new GiaoDich("Làm thêm", 1000000, true));
-        danhSachGiaoDich.add(new GiaoDich("Xem phim", 200000, false));
-
-
         giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
         recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
     }
@@ -165,7 +156,18 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        tvTienChi.setText("5,300,000 VND");
-        tvTienThu.setText("30,000,000 VND");
+        // Dữ liệu sẽ được tải từ database ở đây
+        // Tạm thời tính toán từ dữ liệu mẫu
+        double tongThu = 0;
+        double tongChi = 0;
+        for (GiaoDich gd : danhSachGiaoDich) {
+            if (gd.isTienVao()) {
+                tongThu += gd.getSoTien();
+            } else {
+                tongChi += gd.getSoTien();
+            }
+        }
+        tvTienThu.setText(String.format("%,.0f VND", tongThu));
+        tvTienChi.setText(String.format("%,.0f VND", tongChi));
     }
 }

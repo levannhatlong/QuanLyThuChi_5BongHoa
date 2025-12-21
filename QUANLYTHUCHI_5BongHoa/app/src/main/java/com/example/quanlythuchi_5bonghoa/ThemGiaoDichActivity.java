@@ -65,10 +65,10 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
         };
 
         ivCalendarPicker.setOnClickListener(v ->
-            new DatePickerDialog(ThemGiaoDichActivity.this, date,
-                    myCalendar.get(Calendar.YEAR),
-                    myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show()
+                new DatePickerDialog(ThemGiaoDichActivity.this, date,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show()
         );
 
         // Button click listeners
