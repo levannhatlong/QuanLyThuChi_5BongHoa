@@ -4,7 +4,7 @@
     <!-- Khi nhấn (hiệu ứng đậm hơn một chút) -->
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="#00A844"/>   <!-- Xanh đậm khi nhấn -->
+            <solid android:color="#0D8DC4"/>   <!-- Xanh đậm khi nhấn -->
             <corners android:radius="30dp"/>
         </shape>
     </item>
@@ -12,7 +12,7 @@
     <!-- Mặc định -->
     <item>
         <shape>
-            <solid android:color="#00C853"/>   <!-- Xanh mặc định -->
+            <solid android:color="@color/mau_chu_dao"/>   <!-- Xanh mặc định -->
             <corners android:radius="30dp"/>
         </shape>
     </item>

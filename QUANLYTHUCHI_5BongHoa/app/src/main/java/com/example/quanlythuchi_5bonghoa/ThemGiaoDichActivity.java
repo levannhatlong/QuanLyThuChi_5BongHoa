@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,17 +17,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class ThemGiaoDichActivity extends AppCompatActivity {
 
-    private EditText editTenGiaoDich, editSoTien, editNgayGiaoDich, editGhiChu;
-    private Spinner spinnerTheLoai;
+    private EditText editTenGiaoDich, editSoTien, editNgayGiaoDich, editGhiChu, editTenTheLoaiKhac;
+    private AutoCompleteTextView autoCompleteTheLoai;
+    private TextInputLayout layoutTenTheLoaiKhac;
     private FloatingActionButton fabSave;
-    private ImageView ivCancel, ivReset;
+    private ImageView ivCancel, ivReset, ivCalendarPicker;
     private Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -37,10 +45,16 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
         editSoTien = findViewById(R.id.edit_so_tien);
         editNgayGiaoDich = findViewById(R.id.edit_ngay_giao_dich);
         editGhiChu = findViewById(R.id.edit_ghi_chu);
-        spinnerTheLoai = findViewById(R.id.spinner_the_loai);
+        autoCompleteTheLoai = findViewById(R.id.auto_complete_the_loai);
+        layoutTenTheLoaiKhac = findViewById(R.id.layout_ten_the_loai_khac);
+        editTenTheLoaiKhac = findViewById(R.id.edit_ten_the_loai_khac);
         fabSave = findViewById(R.id.fab_save);
         ivCancel = findViewById(R.id.iv_cancel);
         ivReset = findViewById(R.id.iv_reset);
+        ivCalendarPicker = findViewById(R.id.iv_calendar_picker);
+
+        // Spinner setup
+        setupCategoryMenu();
 
         // Date picker setup
         DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
@@ -50,7 +64,7 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
             updateLabel();
         };
 
-        editNgayGiaoDich.setOnClickListener(v -> 
+        ivCalendarPicker.setOnClickListener(v ->
             new DatePickerDialog(ThemGiaoDichActivity.this, date,
                     myCalendar.get(Calendar.YEAR),
                     myCalendar.get(Calendar.MONTH),
@@ -71,7 +85,27 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
 
         ivReset.setOnClickListener(v -> resetForm());
     }
-    
+
+    private void setupCategoryMenu() {
+        // Create a list of categories
+        String[] categories = new String[]{"Ăn uống", "Di chuyển", "Hóa đơn", "Mua sắm", "Giải trí", "Khác"};
+
+        // Create an adapter for the menu
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
+
+        // Set the adapter to the AutoCompleteTextView
+        autoCompleteTheLoai.setAdapter(adapter);
+
+        autoCompleteTheLoai.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedCategory = (String) parent.getItemAtPosition(position);
+            if (selectedCategory.equals("Khác")) {
+                layoutTenTheLoaiKhac.setVisibility(View.VISIBLE);
+            } else {
+                layoutTenTheLoaiKhac.setVisibility(View.GONE);
+            }
+        });
+    }
+
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -83,14 +117,21 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
         editSoTien.setText("");
         editNgayGiaoDich.setText("");
         editGhiChu.setText("");
-        spinnerTheLoai.setSelection(0);
+        autoCompleteTheLoai.setText("", false);
+        editTenTheLoaiKhac.setText("");
+        layoutTenTheLoaiKhac.setVisibility(View.GONE);
         // You might want to reset the RadioGroup as well, e.g., ((RadioButton)findViewById(R.id.radio_tien_ra)).setChecked(true);
         Toast.makeText(this, "Đã đặt lại biểu mẫu", Toast.LENGTH_SHORT).show();
     }
 
     private boolean validateInput() {
-        if (spinnerTheLoai.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, "Vui lòng chọn thể loại", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(autoCompleteTheLoai.getText().toString())) {
+            autoCompleteTheLoai.setError("Vui lòng chọn thể loại");
+            return false;
+        }
+
+        if (autoCompleteTheLoai.getText().toString().equals("Khác") && TextUtils.isEmpty(editTenTheLoaiKhac.getText().toString().trim())) {
+            editTenTheLoaiKhac.setError("Vui lòng nhập tên thể loại");
             return false;
         }
 
@@ -106,8 +147,6 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(editNgayGiaoDich.getText().toString().trim())) {
             editNgayGiaoDich.setError("Ngày giao dịch là bắt buộc");
-            // Since we use a DatePickerDialog, this check might be redundant
-            // but it's good for robustness.
             return false;
         }
 

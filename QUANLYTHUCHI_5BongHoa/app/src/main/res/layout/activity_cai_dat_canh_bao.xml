@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5DBED6"
+        android:background="@color/mau_chu_dao"
         android:padding="16dp">
 
         <ImageView
@@ -40,38 +40,57 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- 3 checkbox -->
-            <LinearLayout
+            <!-- RadioGroup thay cho Spinner -->
+            <RadioGroup
+                android:id="@+id/radioGroupCanhBao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="40dp">
 
-                <CheckBox
-                    android:id="@+id/cbDay"
+                <RadioButton
+                    android:id="@+id/radioNgay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/radio_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textSize="12sp"
                     android:text="Theo ngày"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="32dp" />
+                    android:textColor="@color/radio_text_color_selector"
+                    android:textStyle="bold"
+                    android:checked="true"/>
 
-                <CheckBox
-                    android:id="@+id/cbMonth"
+                <RadioButton
+                    android:id="@+id/radioThang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    android:checked="true"
+                    android:background="@drawable/radio_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="8dp"
+                    android:textSize="12sp"
                     android:text="Theo tháng"
-                    android:textColor="#000000" />
+                    android:textColor="@color/radio_text_color_selector"
+                    android:textStyle="bold" />
 
-                <CheckBox
-                    android:id="@+id/cbYear"
+                <RadioButton
+                    android:id="@+id/radioNam"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/radio_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textSize="12sp"
                     android:text="Theo năm"
-                    android:textColor="#000000" />
-            </LinearLayout>
+                    android:textColor="@color/radio_text_color_selector"
+                    android:textStyle="bold" />
+            </RadioGroup>
 
             <!-- Thanh trượt giá -->
             <SeekBar
@@ -80,27 +99,49 @@
                 android:layout_height="wrap_content"
                 android:max="500"
                 android:progress="13"
-                android:progressTint="#5DBED6"
-                android:thumbTint="#5DBED6"
+                android:progressTint="@color/mau_chu_dao"
+                android:thumbTint="@color/mau_chu_dao"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Hiển thị số tiền -->
+            <!-- Khung nhập và hiển thị số tiền -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/o_nhap_gia_tri"
                 android:padding="16dp"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="50dp"
+                android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/ivConfirmPrice"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_save"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="gone" 
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <EditText
+                    android:id="@+id/edtPrice"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="13,000,000 VND"
+                    android:inputType="numberDecimal"
+                    android:background="@null"
                     android:textColor="#000000"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VND"
+                    android:textColor="#888888"
+                    android:textSize="18sp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Ô chọn ngày đặt lại -->

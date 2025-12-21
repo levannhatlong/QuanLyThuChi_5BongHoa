@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">QUANLYTHUCHI_5BongHoa</string>
+    <string name="app_name">5BongHoa Money</string>
+
+    <string-array name="canh_bao_options">
+        <item>Theo ngày</item>
+        <item>Theo tháng</item>
+        <item>Theo năm</item>
+    </string-array>
 </resources>

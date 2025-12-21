@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_marginTop="-20dp"
-        app:cardBackgroundColor="#5DBED6"
+        app:cardBackgroundColor="@color/mau_chu_dao"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.MediumComponent">
@@ -81,10 +81,11 @@
                             android:textStyle="bold"/>
 
                         <ImageView
+                            android:id="@+id/iv_toggle_balance"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_view"
-                            app:tint="#1976D2"/>
+                            app:tint="@color/mau_chu_dao"/>
                     </LinearLayout>
 
                     <TextView
@@ -95,7 +96,7 @@
                         android:layout_marginBottom="20dp"
                         android:text="4,900,000 đ"
                         android:textColor="#263238"
-                        android:textSize="34sp"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
 
                     <!-- THANH TIẾN ĐỘ THU/CHI -->
@@ -189,8 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Xem thêm"
-                    android:textColor="#1976D2"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/mau_chu_dao"/>
             </LinearLayout>
 
             <!-- DANH SÁCH (Sử dụng Background trắng cho sạch) -->
@@ -407,7 +407,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
         android:src="@drawable/bieu_tuong_nha"
-        app:backgroundTint="#1976D2"
+        app:backgroundTint="@color/mau_chu_dao"
         app:tint="@android:color/white"
         app:fabSize="normal"
         app:elevation="6dp"

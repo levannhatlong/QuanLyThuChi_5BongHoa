@@ -3,6 +3,7 @@ package com.example.quanlythuchi_5bonghoa;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,10 +23,12 @@ public class ViTienActivity extends AppCompatActivity {
     private ProgressBar progressBalance;
     private RecyclerView recyclerViewDanhMuc;
     private FloatingActionButton fabHome;
+    private ImageView ivToggleBalance;
 
     private long tongThuNhap = 30000000;
     private long tongChiTieu = 5100000;
     private long soDu;
+    private boolean isBalanceVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class ViTienActivity extends AppCompatActivity {
         tvThuNhap = findViewById(R.id.tv_thu_nhap);
         tvChiTieu = findViewById(R.id.tv_chi_tieu);
         progressBalance = findViewById(R.id.progress_balance);
+        ivToggleBalance = findViewById(R.id.iv_toggle_balance);
         // recyclerViewDanhMuc = findViewById(R.id.recycler_view_danh_muc); // Tạm thời comment
         fabHome = findViewById(R.id.fab_home);
     }
@@ -71,7 +75,12 @@ public class ViTienActivity extends AppCompatActivity {
     private void displayData() {
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
 
-        tvSoDu.setText(formatter.format(soDu) + " VND");
+        if (isBalanceVisible) {
+            tvSoDu.setText(formatter.format(soDu) + " VND");
+        } else {
+            tvSoDu.setText("*** *** *** VND");
+        }
+
         tvThuNhap.setText("+" + formatter.format(tongThuNhap) + " VND");
         tvChiTieu.setText("-" + formatter.format(tongChiTieu) + " VND");
     }
@@ -107,6 +116,11 @@ public class ViTienActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+
+        ivToggleBalance.setOnClickListener(v -> {
+            isBalanceVisible = !isBalanceVisible;
+            displayData();
         });
     }
 

@@ -17,6 +17,7 @@ public class CaiDatActivity extends AppCompatActivity {
     private LinearLayout layoutLienKetNganHang;
     private LinearLayout layoutTaiKhoan;
     private LinearLayout layoutXuatDuLieu;
+    private LinearLayout layoutDatCanhBao;
     private SwitchCompat switchCanhBao;
 
     @Override
@@ -35,6 +36,7 @@ public class CaiDatActivity extends AppCompatActivity {
         layoutLienKetNganHang = findViewById(R.id.layoutLienKetNganHang);
         layoutTaiKhoan = findViewById(R.id.layoutTaiKhoan);
         layoutXuatDuLieu = findViewById(R.id.layoutXuatDuLieu);
+        layoutDatCanhBao = findViewById(R.id.layoutDatCanhBao);
         switchCanhBao = findViewById(R.id.switchCanhBao);
     }
 
@@ -46,36 +48,42 @@ public class CaiDatActivity extends AppCompatActivity {
             Intent intent = new Intent(CaiDatActivity.this, NgonNguActivity.class);
             startActivity(intent);
         });
-//
+
         // Mở trang Quản lý danh mục
         layoutQuanLyTheLoai.setOnClickListener(v -> {
             Intent intent = new Intent(CaiDatActivity.this, QuanLyDanhMucActivity.class);
             startActivity(intent);
         });
-//
-//        // Liên kết ngân hàng
-//        layoutLienKetNganHang.setOnClickListener(v -> {
-//            // TODO: Implement bank linking feature
-//        });
-//
-//        // Tài khoản của tôi
-//        layoutTaiKhoan.setOnClickListener(v -> {
-//            Intent intent = new Intent(CaiDatActivity.this, TaiKhoanActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        // Xuất dữ liệu
-//        layoutXuatDuLieu.setOnClickListener(v -> {
-//            // TODO: Implement data export feature
-//        });
-//
-//        // Switch cảnh báo chi tiêu
-//        switchCanhBao.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//            // TODO: Save setting to SharedPreferences
-//            getSharedPreferences("AppSettings", MODE_PRIVATE)
-//                    .edit()
-//                    .putBoolean("canh_bao_chi_tieu", isChecked)
-//                    .apply();
-//        });
+
+        // Liên kết ngân hàng
+        layoutLienKetNganHang.setOnClickListener(v -> {
+            // TODO: Implement bank linking feature
+        });
+
+        // Tài khoản của tôi
+        layoutTaiKhoan.setOnClickListener(v -> {
+            Intent intent = new Intent(CaiDatActivity.this, TaiKhoanActivity.class);
+            startActivity(intent);
+        });
+
+        // Đặt cảnh báo chi tiêu
+        layoutDatCanhBao.setOnClickListener(v -> {
+            Intent intent = new Intent(CaiDatActivity.this, CaiDatCanhBao.class);
+            startActivity(intent);
+        });
+
+        // Xuất dữ liệu
+        layoutXuatDuLieu.setOnClickListener(v -> {
+            // TODO: Implement data export feature
+        });
+
+        // Switch cảnh báo chi tiêu
+        switchCanhBao.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // TODO: Save setting to SharedPreferences
+            getSharedPreferences("AppSettings", MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("canh_bao_chi_tieu", isChecked)
+                    .apply();
+        });
     }
 }

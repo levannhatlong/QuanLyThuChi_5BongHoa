@@ -3,7 +3,6 @@ package com.example.quanlythuchi_5bonghoa;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +16,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +27,18 @@ public class TrangChuActivity extends AppCompatActivity {
     private LineChart lineChart;
     private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
-    private ImageView ivNotification, ivSettings;
+    private ImageView ivNotification, ivSettings, ivGhichu;
+    private GiaoDichAdapter giaoDichAdapter;
+    private List<GiaoDich> danhSachGiaoDich;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trang_chu);
 
-        // Khởi tạo views
         initViews();
-
-        // Setup biểu đồ
         setupLineChart();
-
-        // Setup RecyclerView
         setupRecyclerView();
-
-        // Setup click listeners
         setupClickListeners();
     }
 
@@ -57,42 +52,106 @@ public class TrangChuActivity extends AppCompatActivity {
         recyclerViewGiaoDich = findViewById(R.id.recycler_view_giao_dich);
         ivNotification = findViewById(R.id.iv_notification);
         ivSettings = findViewById(R.id.iv_settings);
+        ivGhichu = findViewById(R.id.iv_ghichu);
     }
 
     private void setupLineChart() {
-        // (Giữ nguyên code setup biểu đồ của bạn)
+        // Dữ liệu mẫu cho Thu
+        ArrayList<Entry> incomeEntries = new ArrayList<>();
+        incomeEntries.add(new Entry(0, 10));
+        incomeEntries.add(new Entry(1, 12));
+        incomeEntries.add(new Entry(2, 8));
+        incomeEntries.add(new Entry(3, 15));
+        incomeEntries.add(new Entry(4, 11));
+
+        LineDataSet incomeDataSet = new LineDataSet(incomeEntries, "Thu");
+        incomeDataSet.setColor(Color.parseColor("#43A047")); // Màu xanh lá
+        incomeDataSet.setLineWidth(2f);
+        incomeDataSet.setCircleColor(Color.parseColor("#43A047"));
+        incomeDataSet.setDrawValues(false);
+
+        // Dữ liệu mẫu cho Chi
+        ArrayList<Entry> expenseEntries = new ArrayList<>();
+        expenseEntries.add(new Entry(0, 5));
+        expenseEntries.add(new Entry(1, 7));
+        expenseEntries.add(new Entry(2, 6));
+        expenseEntries.add(new Entry(3, 9));
+        expenseEntries.add(new Entry(4, 4));
+
+        LineDataSet expenseDataSet = new LineDataSet(expenseEntries, "Chi");
+        expenseDataSet.setColor(Color.parseColor("#E53935")); // Màu đỏ
+        expenseDataSet.setLineWidth(2f);
+        expenseDataSet.setCircleColor(Color.parseColor("#E53935"));
+        expenseDataSet.setDrawValues(false);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(incomeDataSet);
+        dataSets.add(expenseDataSet);
+
+        LineData lineData = new LineData(dataSets);
+
+        lineChart.setData(lineData);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(true);
+
+        // Tùy chỉnh trục X
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        // Tùy chỉnh trục Y
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getAxisRight().setEnabled(false);
+
+        lineChart.invalidate(); // refresh
     }
 
     private void setupRecyclerView() {
         recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
-        // (Giữ nguyên code setup RecyclerView của bạn)
+        danhSachGiaoDich = new ArrayList<>();
+        // Thêm dữ liệu mẫu
+        danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
+        danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
+        danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
+        danhSachGiaoDich.add(new GiaoDich("Đi lại", 150000, false));
+        danhSachGiaoDich.add(new GiaoDich("Bán đồ cũ", 500000, true));
+        danhSachGiaoDich.add(new GiaoDich("Hóa đơn điện", 700000, false));
+        danhSachGiaoDich.add(new GiaoDich("Internet", 250000, false));
+        danhSachGiaoDich.add(new GiaoDich("Cà phê", 50000, false));
+        danhSachGiaoDich.add(new GiaoDich("Làm thêm", 1000000, true));
+        danhSachGiaoDich.add(new GiaoDich("Xem phim", 200000, false));
+
+
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
     }
 
     private void setupClickListeners() {
-        // Nút Ví tiền
         btnViTien.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, ViTienActivity.class);
             startActivity(intent);
         });
 
-        // Nút Thêm giao dịch
         btnThemGiaoDich.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, ThemGiaoDichActivity.class);
             startActivity(intent);
         });
 
-        // Nút Thống kê
         btnThongKe.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, ThongKeActivity.class);
             startActivity(intent);
         });
 
-        // Nút thông báo
         ivNotification.setOnClickListener(v -> {
-            // TODO: Xử lý thông báo
+            Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
+            startActivity(intent);
         });
 
-        // Nút cài đặt
+        ivGhichu.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, GhiChuActivity.class);
+            startActivity(intent);
+        });
+
         ivSettings.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CaiDatActivity.class);
             startActivity(intent);
@@ -102,12 +161,10 @@ public class TrangChuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Cập nhật dữ liệu khi quay lại màn hình
         loadData();
     }
 
     private void loadData() {
-        // TODO: Load dữ liệu từ database
         tvTienChi.setText("5,300,000 VND");
         tvTienThu.setText("30,000,000 VND");
     }

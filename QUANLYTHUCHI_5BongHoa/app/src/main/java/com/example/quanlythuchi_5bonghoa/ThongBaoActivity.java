@@ -1,17 +1,22 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ThongBaoActivity extends AppCompatActivity {
 
-    private TextView btnBack;
+    private ImageView btnBack;
     private TextView tabTatCa, tabDaDoc, tabChuaDoc;
+    private RecyclerView recyclerViewThongBao;
+    private ThongBaoAdapter adapter;
 
     private List<ThongBao> allNotifications;
     private String currentTab = "tatca";
@@ -22,8 +27,10 @@ public class ThongBaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thong_bao);
 
         initViews();
+        setupRecyclerView();
         setupListeners();
         loadNotifications();
+        selectTab("tatca");
     }
 
     private void initViews() {
@@ -31,6 +38,13 @@ public class ThongBaoActivity extends AppCompatActivity {
         tabTatCa = findViewById(R.id.tabTatCa);
         tabDaDoc = findViewById(R.id.tabDaDoc);
         tabChuaDoc = findViewById(R.id.tabChuaDoc);
+        recyclerViewThongBao = findViewById(R.id.recyclerViewThongBao);
+    }
+
+    private void setupRecyclerView() {
+        recyclerViewThongBao.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new ThongBaoAdapter(new ArrayList<>());
+        recyclerViewThongBao.setAdapter(adapter);
     }
 
     private void setupListeners() {
@@ -55,21 +69,19 @@ public class ThongBaoActivity extends AppCompatActivity {
     private void selectTab(String tab) {
         currentTab = tab;
 
-        // Reset all tabs
-        tabTatCa.setBackgroundResource(0);
-        tabDaDoc.setBackgroundResource(0);
-        tabChuaDoc.setBackgroundResource(0);
+        tabTatCa.setSelected(false);
+        tabDaDoc.setSelected(false);
+        tabChuaDoc.setSelected(false);
 
-        // Highlight selected tab
         switch (tab) {
             case "tatca":
-                tabTatCa.setBackgroundResource(R.drawable.bg_tab_selected);
+                tabTatCa.setSelected(true);
                 break;
             case "dadoc":
-                tabDaDoc.setBackgroundResource(R.drawable.bg_tab_selected);
+                tabDaDoc.setSelected(true);
                 break;
             case "chuadoc":
-                tabChuaDoc.setBackgroundResource(R.drawable.bg_tab_selected);
+                tabChuaDoc.setSelected(true);
                 break;
         }
     }
@@ -106,12 +118,11 @@ public class ThongBaoActivity extends AppCompatActivity {
                 "2 ngày trước",
                 true
         ));
+
+        filterNotifications(currentTab);
     }
 
     private void filterNotifications(String filter) {
-        // TODO: Implement filtering logic based on read/unread status
-        // This would typically update a RecyclerView with filtered data
-
         List<ThongBao> filteredList = new ArrayList<>();
 
         switch (filter) {
@@ -134,8 +145,7 @@ public class ThongBaoActivity extends AppCompatActivity {
                 break;
         }
 
-        // Update RecyclerView here
-        // adapter.updateData(filteredList);
+        adapter.updateData(filteredList);
     }
 
     // Inner class for Notification data

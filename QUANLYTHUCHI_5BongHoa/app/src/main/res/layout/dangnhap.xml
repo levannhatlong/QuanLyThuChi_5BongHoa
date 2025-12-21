@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backround"
+    android:background="@color/mau_chu_dao"
     tools:context="com.example.quanlythuchi_5bonghoa.dangnhap">
 
-    <!-- THẺ CARD GỌN, CĂN GIỮA CHUẨN -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginVertical="40dp"
+        android:layout_marginHorizontal="24dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardBackgroundColor="@android:color/white"
@@ -27,147 +26,89 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="26dp">
+            android:padding="24dp">
 
-            <!-- TIÊU ĐỀ -->
             <TextView
                 android:id="@+id/tvHello"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quản Lý Thu Chi"
-                android:textSize="32sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
-                android:textColor="#000"
+                android:textColor="@color/mau_chu_toi"
                 android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/tvSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign in to your account"
-                android:textSize="14sp"
-                android:textColor="#666"
-                android:layout_marginTop="4dp"
+                android:text="Đăng nhập vào tài khoản của bạn"
+                android:textSize="16sp"
+                android:textColor="@color/mau_chu_phu"
+                android:layout_marginTop="8dp"
                 android:layout_gravity="center" />
 
-            <!-- USERNAME -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilUsername"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp">
+                android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username"
+                    android:hint="Tên đăng nhập"
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- PASSWORD -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp">
+                android:layout_marginTop="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="Mật khẩu"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- FORGOT -->
             <TextView
                 android:id="@+id/tvForgot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quên mật khẩu"
-                android:textColor="#0EA5E9"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp"
+                android:text="Quên mật khẩu?"
+                android:textColor="@color/mau_chu_dao"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"
                 android:layout_gravity="end" />
 
-            <!-- SIGN IN BUTTON -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="22dp"
-                android:text="Sign In"
+                android:layout_marginTop="24dp"
+                android:text="Đăng nhập"
                 android:textAllCaps="false"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/white"
-                android:backgroundTint="#0EA5E9"
-                app:cornerRadius="40dp"
-                app:iconGravity="textEnd"
-                app:iconPadding="6dp" />
+                android:backgroundTint="@color/mau_chu_dao"
+                app:cornerRadius="40dp" />
 
-            <!-- CREATE ACCOUNT -->
             <TextView
                 android:id="@+id/tvCreateAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chưa có tài khoản? Đăng ký"
-                android:textColor="#0EA5E9"
-                android:textSize="14sp"
-                android:layout_marginTop="18dp"
+                android:textColor="@color/mau_chu_dao"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
                 android:layout_gravity="center" />
-
-            <!-- LOGIN WITH -->
-            <TextView
-                android:id="@+id/tvLoginWith"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đăng nhập bằng"
-                android:textSize="15sp"
-                android:textColor="#444"
-                android:layout_marginTop="26dp"
-                android:layout_gravity="center" />
-
-            <!-- ICON SOCIAL -->
-            <LinearLayout
-                android:id="@+id/llSocial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="12dp"
-                android:layout_gravity="center">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:src="@drawable/ic_facebook" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:src="@drawable/ic_twitter" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:src="@drawable/ic_google" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

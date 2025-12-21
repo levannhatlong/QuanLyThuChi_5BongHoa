@@ -6,38 +6,41 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/iconapp_quanlythuchi"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/iconapp_quanlythuchi"
         android:supportsRtl="true"
         android:theme="@style/Theme.QUANLYTHUCHI_5BongHoa">
 
         <!-- Activity chính khi app mở -->
         <activity
-            android:name="com.example.quanlythuchi_5bonghoa.dangnhap"
+            android:name=".SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
-        <!-- Activity khác -->
-        <activity android:name="com.example.quanlythuchi_5bonghoa.MainActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.dangky" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.ThemGiaoDichActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.ThongKeActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.ViTienActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.TrangChuActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.CaiDatActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.NgonNguActivity" />
-        <activity android:name="com.example.quanlythuchi_5bonghoa.QuanLyDanhMucActivity" />
+        <!-- Các Activity khác -->
+        <activity android:name=".MainActivity" />
+        <activity android:name=".dangky" />
+        <activity android:name=".dangnhap" />
+        <activity android:name=".ThemGiaoDichActivity" />
+        <activity android:name=".ThongKeActivity" />
+        <activity android:name=".ViTienActivity" />
+        <activity android:name=".TrangChuActivity" />
+        <activity android:name=".CaiDatActivity" />
+        <activity android:name=".NgonNguActivity" />
+        <activity android:name=".QuanLyDanhMucActivity" />
         <activity android:name=".QuenMatKhauActivity" />
         <activity android:name=".NhapOTPActivity" />
         <activity android:name=".DatLaiMatKhauActivity" />
-
+        <activity android:name=".GhiChuActivity" />
+        <activity android:name=".TaiKhoanActivity" />
+        <activity android:name=".ThemGhiChuActivity" />
+        <activity android:name=".ThongBaoActivity" />
+        <activity android:name=".CaiDatCanhBao" />
 
     </application>
 

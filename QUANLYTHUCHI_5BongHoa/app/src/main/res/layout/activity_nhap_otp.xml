@@ -8,104 +8,85 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:gravity="center">
 
-        <!-- MaterialCardView tạo khung bo tròn và đổ bóng -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginHorizontal="20dp"
             app:cardCornerRadius="24dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@android:color/white">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="32dp">
+                android:padding="32dp"
+                android:gravity="center_horizontal">
 
-                <!-- Icon Email (Dùng tài nguyên có sẵn của hệ thống) -->
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:src="@android:drawable/ic_dialog_email"
                     app:tint="#00AEEF" />
 
-                <!-- Tiêu đề -->
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
                     android:text="Xác thực OTP"
                     android:textColor="#333333"
                     android:textSize="26sp"
-                    android:textStyle="bold" />
-
-                <!-- Mô tả -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
+                    android:textStyle="bold"
                     android:gravity="center"
-                    android:text="Mã xác thực đã được gửi đến email\ncua_ban@example.com"
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
+                    android:layout_marginBottom="8dp" />
 
-                <!-- Ô nhập OTP: Chữ to, căn giữa -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã xác thực đã được gửi đến email\ncua_ban@example.com"
+                    android:textColor="#00AEEF"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="30dp" />
+
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeColor="#00AEEF"
-                    app:boxStrokeWidth="2dp"
-                    app:hintEnabled="false">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:hintEnabled="false"
+                    app:boxStrokeColor="#00AEEF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtOTP"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:hint="- - - - - -"
-                        android:inputType="number"
-                        android:letterSpacing="0.3"
-                        android:maxLength="6"
-                        android:padding="16dp"
-                        android:textColor="#333333"
-                        android:textSize="24sp"
+                        android:gravity="center"
                         android:textStyle="bold" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Nút xác nhận -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnXacNhanOTP"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginBottom="20dp"
-                    android:backgroundTint="#00AEEF"
                     android:text="XÁC NHẬN"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:backgroundTint="#00AEEF"
                     app:cornerRadius="12dp"
-                    app:elevation="4dp" />
+                    android:layout_marginBottom="20dp" />
 
-                <!-- Gửi lại mã -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:orientation="horizontal">
 
                     <TextView

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/mau_nen_sang"
     tools:context=".ThemGiaoDichActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/mau_chu_dao">
+        android:background="@color/mau_chu_dao"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,10 +23,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
                 android:text="GIAO DỊCH MỚI"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="@dimen/font_size_xxlarge"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -31,32 +34,36 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginEnd="16dp">
 
                 <ImageView
                     android:id="@+id/iv_cancel"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/bieu_tuong_huy"
-                    app:tint="@color/white"
-                    android:layout_marginEnd="16dp" />
+                    app:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/iv_reset"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
                     android:src="@drawable/bieu_tuong_dat_lai"
-                    app:tint="@color/white"/>
+                    app:tint="@color/white" />
             </LinearLayout>
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp">
+        android:padding="@dimen/spacing_large"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/fab_save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="@dimen/spacing_large">
 
                 <RadioButton
                     android:id="@+id/radio_tien_ra"
@@ -75,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tiền ra"
                     android:textColor="@color/mau_chu_toi"
+                    android:textSize="@dimen/font_size_large"
                     android:checked="true"/>
 
                 <RadioButton
@@ -83,14 +91,41 @@
                     android:layout_height="wrap_content"
                     android:text="Tiền vào"
                     android:textColor="@color/mau_chu_toi"
-                    android:layout_marginStart="16dp"/>
+                    android:textSize="@dimen/font_size_large"
+                    android:layout_marginStart="@dimen/spacing_large"/>
             </RadioGroup>
 
-            <Spinner
-                android:id="@+id/spinner_the_loai"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_the_loai"
+                style="@style/CustomExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:hint="Thể loại">
+
+                <AutoCompleteTextView
+                    android:id="@+id/auto_complete_the_loai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_ten_the_loai_khac"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:visibility="gone"
+                android:hint="Nhập tên thể loại khác">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ten_the_loai_khac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <EditText
                 android:id="@+id/edit_ten_giao_dich"
@@ -99,7 +134,8 @@
                 android:hint="Tên giao dịch *"
                 android:textColor="@color/mau_chu_toi"
                 android:textColorHint="@color/mau_chu_phu"
-                android:layout_marginBottom="16dp"/>
+                android:textSize="@dimen/font_size_large"
+                android:layout_marginBottom="@dimen/spacing_large"/>
 
             <EditText
                 android:id="@+id/edit_so_tien"
@@ -109,17 +145,34 @@
                 android:inputType="numberDecimal"
                 android:textColor="@color/mau_chu_toi"
                 android:textColorHint="@color/mau_chu_phu"
-                android:layout_marginBottom="16dp"/>
+                android:textSize="@dimen/font_size_large"
+                android:layout_marginBottom="@dimen/spacing_large"/>
 
-            <EditText
-                android:id="@+id/edit_ngay_giao_dich"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ngày giao dịch *"
-                android:focusable="false"
-                android:textColor="@color/mau_chu_toi"
-                android:textColorHint="@color/mau_chu_phu"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="@dimen/spacing_large">
+
+                <EditText
+                    android:id="@+id/edit_ngay_giao_dich"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày giao dịch *"
+                    android:paddingEnd="40dp"
+                    android:textColor="@color/mau_chu_toi"
+                    android:textColorHint="@color/mau_chu_phu"
+                    android:textSize="@dimen/font_size_large" />
+
+                <ImageView
+                    android:id="@+id/iv_calendar_picker"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:alpha="0.7"
+                    android:src="@drawable/ic_calendar" />
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/edit_ghi_chu"
@@ -130,7 +183,8 @@
                 android:lines="3"
                 android:textColor="@color/mau_chu_toi"
                 android:textColorHint="@color/mau_chu_phu"
-                android:layout_marginBottom="16dp"/>
+                android:textSize="@dimen/font_size_large"
+                android:layout_marginBottom="@dimen/spacing_large"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -139,7 +193,7 @@
                 android:gravity="center"
                 android:textColor="@color/mau_chu_phu"
                 android:background="@drawable/vien_net_dut"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="@dimen/spacing_large"/>
         </LinearLayout>
 
     </ScrollView>
@@ -148,11 +202,12 @@
         android:id="@+id/fab_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/spacing_large"
         android:src="@drawable/bieu_tuong_luu"
         app:backgroundTint="@color/mau_chu_dao"
         app:tint="@color/white"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

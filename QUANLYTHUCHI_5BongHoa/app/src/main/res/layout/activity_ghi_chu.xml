@@ -9,7 +9,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5DBED6"
+        android:background="@color/mau_chu_dao"
         android:padding="16dp">
 
         <ImageView
@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="24dp"
         android:src="@drawable/ic_plus"
-        android:backgroundTint="#00C853"
+        android:backgroundTint="@color/mau_chu_dao"
         android:contentDescription="Thêm ghi chú" />
 
 </RelativeLayout>

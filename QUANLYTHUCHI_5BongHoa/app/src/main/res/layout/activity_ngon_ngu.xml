@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5DBED6"
+        android:background="@color/mau_chu_dao"
         android:padding="16dp">
 
         <ImageView
@@ -161,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_button_rounded"
-                    android:backgroundTint="#4CAF50"
+                    android:backgroundTint="@color/mau_chu_dao"
                     android:padding="12dp"
                     android:paddingStart="24dp"
                     android:paddingEnd="24dp"
