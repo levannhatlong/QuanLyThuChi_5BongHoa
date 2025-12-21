@@ -1,9 +1,9 @@
 package com.example.quanlythuchi_5bonghoa;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -17,6 +17,9 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,6 @@ public class ThongKeActivity extends AppCompatActivity {
     private PieChart pieChart;
     private RecyclerView recyclerView;
     private GiaoDichAdapter giaoDichAdapter;
-    private List<GiaoDich> danhSachGiaoDich;
     private ImageView ivBack;
     private MaterialButtonToggleGroup toggleButtonGroup;
 
@@ -39,10 +41,11 @@ public class ThongKeActivity extends AppCompatActivity {
         ivBack = findViewById(R.id.iv_back);
         toggleButtonGroup = findViewById(R.id.toggle_button_group);
 
-        setupPieChart();
         setupRecyclerView();
-
         ivBack.setOnClickListener(v -> finish());
+
+        // Bắt đầu quá trình lấy dữ liệu từ SQL Server
+        new FetchGiaoDichTask().execute();
 
         toggleButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
@@ -56,14 +59,29 @@ public class ThongKeActivity extends AppCompatActivity {
             }
         });
 
-        // Set default selection
         toggleButtonGroup.check(R.id.btn_thang);
     }
 
-    private void setupPieChart() {
+    private void setupPieChart(List<GiaoDich> giaoDichs) {
+        float tongThu = 0;
+        float tongChi = 0;
+
+        for (GiaoDich gd : giaoDichs) {
+            // Cần logic để xác định giao dịch là thu hay chi, tạm thời giả định
+            if (gd.getTenGiaoDich().toLowerCase().contains("lương")) { // Ví dụ: nếu tên có chữ "lương" thì là thu
+                gd.TienVao = true;
+            }
+
+            if (gd.isTienVao()) {
+                tongThu += gd.getSoTien();
+            } else {
+                tongChi += gd.getSoTien();
+            }
+        }
+
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(5000000, "Tổng chi"));
-        entries.add(new PieEntry(30000000, "Tổng thu"));
+        entries.add(new PieEntry(tongChi, "Tổng chi"));
+        entries.add(new PieEntry(tongThu, "Tổng thu"));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(new int[]{Color.RED, Color.GREEN});
@@ -80,21 +98,56 @@ public class ThongKeActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        danhSachGiaoDich = new ArrayList<>();
-        // Thêm dữ liệu mẫu
-        danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
-        danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
-        danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
-        danhSachGiaoDich.add(new GiaoDich("Đi lại", 150000, false));
-        danhSachGiaoDich.add(new GiaoDich("Bán đồ cũ", 500000, true));
-
-        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        giaoDichAdapter = new GiaoDichAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(giaoDichAdapter);
     }
 
     private void updateDataFor(String filter) {
-        // In a real app, you would filter the data based on the selected period.
-        // For now, we'll just show a toast.
         Toast.makeText(this, "Lọc theo: " + filter, Toast.LENGTH_SHORT).show();
+    }
+
+    // Lớp nội để thực hiện tác vụ mạng trên luồng nền
+    private class FetchGiaoDichTask extends AsyncTask<Void, Void, List<GiaoDich>> {
+        @Override
+        protected List<GiaoDich> doInBackground(Void... voids) {
+            List<GiaoDich> giaoDichs = new ArrayList<>();
+            Connection connection = DatabaseConnector.getConnection();
+
+            if (connection == null) {
+                return null; // Trả về null nếu kết nối thất bại
+            }
+
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery("SELECT TenGiaoDich, SoTien FROM GiaoDich")) {
+
+                while (resultSet.next()) {
+                    String tenGiaoDich = resultSet.getString("TenGiaoDich");
+                    double soTien = resultSet.getDouble("SoTien");
+                    giaoDichs.add(new GiaoDich(tenGiaoDich, soTien, false)); // Tạm thời mặc định là tiền chi (false)
+                }
+                return giaoDichs;
+            } catch (Exception e) {
+                Log.e("FetchGiaoDichTask", "Lỗi khi lấy dữ liệu", e);
+                return null;
+            } finally {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    Log.e("FetchGiaoDichTask", "Lỗi khi đóng kết nối", e);
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<GiaoDich> result) {
+            if (result != null) {
+                Log.d("FetchGiaoDichTask", "Lấy thành công " + result.size() + " giao dịch.");
+                giaoDichAdapter.setGiaoDichs(result);
+                setupPieChart(result);
+            } else {
+                Log.e("FetchGiaoDichTask", "Lấy dữ liệu thất bại hoặc không có dữ liệu.");
+                Toast.makeText(ThongKeActivity.this, "Lỗi kết nối cơ sở dữ liệu", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

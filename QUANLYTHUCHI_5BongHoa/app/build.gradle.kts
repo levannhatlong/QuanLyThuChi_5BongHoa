@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
+    // Plugin KSP đã được xóa vì không còn sử dụng Room
 }
 
 android {
@@ -37,11 +37,7 @@ android {
 }
 
 dependencies {
-    val room_version = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
+    // Các thư viện Room đã được xóa bỏ
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -51,4 +47,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Thêm thư viện JTDS để kết nối SQL Server
+    implementation("net.sourceforge.jtds:jtds:1.3.1")
 }

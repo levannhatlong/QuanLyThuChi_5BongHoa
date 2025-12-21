@@ -57,6 +57,11 @@ public class GiaoDichAdapter extends RecyclerView.Adapter<GiaoDichAdapter.GiaoDi
         return danhSachGiaoDich.size();
     }
 
+    void setGiaoDichs(List<GiaoDich> newGiaoDichs) {
+        danhSachGiaoDich = newGiaoDichs;
+        notifyDataSetChanged();
+    }
+
     public static class GiaoDichViewHolder extends RecyclerView.ViewHolder {
         ImageView ivLoaiGiaoDich;
         TextView tvTenGiaoDich, tvSoTien;
