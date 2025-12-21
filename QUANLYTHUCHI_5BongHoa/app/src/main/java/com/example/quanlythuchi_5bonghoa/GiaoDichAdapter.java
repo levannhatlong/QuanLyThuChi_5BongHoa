@@ -18,11 +18,11 @@ import java.util.Locale;
 public class GiaoDichAdapter extends RecyclerView.Adapter<GiaoDichAdapter.GiaoDichViewHolder> {
 
     private Context context;
-    private List<GiaoDich> danhSachGiaoDich;
+    private List<GiaoDich> giaoDichList;
 
-    public GiaoDichAdapter(Context context, List<GiaoDich> danhSachGiaoDich) {
+    public GiaoDichAdapter(Context context, List<GiaoDich> giaoDichList) {
         this.context = context;
-        this.danhSachGiaoDich = danhSachGiaoDich;
+        this.giaoDichList = giaoDichList;
     }
 
     @NonNull
@@ -34,37 +34,41 @@ public class GiaoDichAdapter extends RecyclerView.Adapter<GiaoDichAdapter.GiaoDi
 
     @Override
     public void onBindViewHolder(@NonNull GiaoDichViewHolder holder, int position) {
-        GiaoDich giaoDich = danhSachGiaoDich.get(position);
+        GiaoDich giaoDich = giaoDichList.get(position);
 
         holder.tvTenGiaoDich.setText(giaoDich.getTenGiaoDich());
+        holder.tvDanhMuc.setText(giaoDich.getTenDanhMuc());
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-        String soTienFormatted = formatter.format(giaoDich.getSoTien());
+        String formattedAmount = formatter.format(giaoDich.getSoTien());
 
-        if (giaoDich.isTienVao()) {
-            holder.ivLoaiGiaoDich.setImageResource(R.drawable.bieu_tuong_mui_ten_len);
-            holder.tvSoTien.setText("+ " + soTienFormatted);
-            holder.tvSoTien.setTextColor(ContextCompat.getColor(context, R.color.mau_xanh_luc));
+        if ("Thu nhập".equals(giaoDich.getLoaiDanhMuc())) {
+            holder.tvSoTien.setText("+ " + formattedAmount);
+            holder.tvSoTien.setTextColor(ContextCompat.getColor(context, R.color.green)); // Assuming you have a green color
         } else {
-            holder.ivLoaiGiaoDich.setImageResource(R.drawable.bieu_tuong_mui_ten_xuong);
-            holder.tvSoTien.setText("- " + soTienFormatted);
-            holder.tvSoTien.setTextColor(ContextCompat.getColor(context, R.color.mau_do));
+            holder.tvSoTien.setText("- " + formattedAmount);
+            holder.tvSoTien.setTextColor(ContextCompat.getColor(context, R.color.red)); // Assuming you have a red color
         }
+
+        // You can set the icon based on giaoDich.getBieuTuong() here
+        // Example: int resId = context.getResources().getIdentifier(giaoDich.getBieuTuong(), "drawable", context.getPackageName());
+        // holder.ivIcon.setImageResource(resId);
     }
 
     @Override
     public int getItemCount() {
-        return danhSachGiaoDich.size();
+        return giaoDichList.size();
     }
 
     public static class GiaoDichViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivLoaiGiaoDich;
-        TextView tvTenGiaoDich, tvSoTien;
+        ImageView ivIcon;
+        TextView tvTenGiaoDich, tvDanhMuc, tvSoTien;
 
         public GiaoDichViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivLoaiGiaoDich = itemView.findViewById(R.id.iv_loai_giao_dich);
+            ivIcon = itemView.findViewById(R.id.iv_icon);
             tvTenGiaoDich = itemView.findViewById(R.id.tv_ten_giao_dich);
+            tvDanhMuc = itemView.findViewById(R.id.tv_danh_muc);
             tvSoTien = itemView.findViewById(R.id.tv_so_tien);
         }
     }
