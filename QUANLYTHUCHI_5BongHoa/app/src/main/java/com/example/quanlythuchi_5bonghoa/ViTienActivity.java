@@ -72,28 +72,7 @@ public class ViTienActivity extends AppCompatActivity {
         }
     }
 
-    private void displayData() {
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-
-        if (isBalanceVisible) {
-            tvSoDu.setText(formatter.format(soDu) + " VND");
-        } else {
-            tvSoDu.setText("*** *** *** VND");
-        }
-
-        tvThuNhap.setText("+" + formatter.format(tongThuNhap) + " VND");
-        tvChiTieu.setText("-" + formatter.format(tongChiTieu) + " VND");
-    }
-
-    private void setupRecyclerView() {
-        // TODO: Sẽ setup RecyclerView sau
-        /*
-        recyclerViewDanhMuc.setLayoutManager(new LinearLayoutManager(this));
-        List<DanhMuc> danhSachDanhMuc = createSampleData();
-        DanhMucAdapter adapter = new DanhMucAdapter(this, danhSachDanhMuc);
-        recyclerViewDanhMuc.setAdapter(adapter);
-        */
-    }
+    
 
     private List<DanhMuc> createSampleData() {
         List<DanhMuc> danhSach = new ArrayList<>();
