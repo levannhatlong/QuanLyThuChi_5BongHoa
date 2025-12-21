@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/iconapp_quanlythuchi"
         android:supportsRtl="true"
-        android:theme="@style/Theme.QUANLYTHUCHI_5BongHoa"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/Theme.QUANLYTHUCHI_5BongHoa">
 
         <!-- Activity chính khi app mở -->
         <activity

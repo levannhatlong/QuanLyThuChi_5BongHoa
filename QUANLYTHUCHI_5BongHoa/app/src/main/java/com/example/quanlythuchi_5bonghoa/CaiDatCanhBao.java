@@ -1,7 +1,6 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.app.DatePickerDialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,9 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -166,7 +162,7 @@ public class CaiDatCanhBao extends AppCompatActivity {
         datePicker.show();
     }
 
-   private void setupButtons() {
+    private void setupButtons() {
         btnBack.setOnClickListener(v -> finish());
 
         btnConfirm.setOnClickListener(v -> {
@@ -175,10 +171,6 @@ public class CaiDatCanhBao extends AppCompatActivity {
             }
 
             int selectedId = radioGroupCanhBao.getCheckedRadioButtonId();
-            if (selectedId == -1) {
-                Toast.makeText(this, "Vui lòng chọn một tùy chọn cảnh báo", Toast.LENGTH_SHORT).show();
-                return;
-            }
             RadioButton selectedRadioButton = findViewById(selectedId);
             String selectedOption = selectedRadioButton.getText().toString();
 
@@ -188,64 +180,12 @@ public class CaiDatCanhBao extends AppCompatActivity {
                 finalPrice = Long.parseLong(priceString);
             }
 
-            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-            int userId = sharedPreferences.getInt("user_id", -1);
+            Toast.makeText(this,
+                    "Đã đặt cảnh báo: " + NumberFormat.getInstance(new Locale("vi", "VN")).format(finalPrice) + " VND\n"
+                            + "Theo: " + selectedOption,
+                    Toast.LENGTH_LONG).show();
 
-            if (userId == -1) {
-                Toast.makeText(this, "Lỗi: Không tìm thấy người dùng. Vui lòng đăng nhập lại.", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            long finalPriceForThread = finalPrice;
-            String finalSelectedOption = selectedOption;
-
-            new Thread(() -> {
-                Connection connection = null;
-                PreparedStatement stmt = null;
-                try {
-                    connection = DBConnect.getConnection();
-                    if (connection == null) {
-                        runOnUiThread(() -> Toast.makeText(CaiDatCanhBao.this, "Không thể kết nối đến database", Toast.LENGTH_SHORT).show());
-                        return;
-                    }
-
-                    // First try to UPDATE
-                    String updateQuery = "UPDATE canh_bao_settings SET price = ?, type = ? WHERE user_id = ?";
-                    stmt = connection.prepareStatement(updateQuery);
-                    stmt.setLong(1, finalPriceForThread);
-                    stmt.setString(2, finalSelectedOption);
-                    stmt.setInt(3, userId);
-
-                    int rowsAffected = stmt.executeUpdate();
-                    stmt.close(); // Close the update statement
-
-                    if (rowsAffected == 0) {
-                        // If update failed, INSERT
-                        String insertQuery = "INSERT INTO canh_bao_settings (user_id, price, type) VALUES (?, ?, ?)";
-                        stmt = connection.prepareStatement(insertQuery);
-                        stmt.setInt(1, userId);
-                        stmt.setLong(2, finalPriceForThread);
-                        stmt.setString(3, finalSelectedOption);
-                        stmt.executeUpdate();
-                    }
-
-                    runOnUiThread(() -> {
-                        Toast.makeText(CaiDatCanhBao.this, "Đã lưu cài đặt cảnh báo", Toast.LENGTH_SHORT).show();
-                        finish();
-                    });
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> Toast.makeText(CaiDatCanhBao.this, "Lỗi khi lưu cài đặt", Toast.LENGTH_SHORT).show());
-                } finally {
-                    try {
-                        if (stmt != null) stmt.close();
-                    } catch (SQLException e) { e.printStackTrace(); }
-                    try {
-                        if (connection != null) connection.close();
-                    } catch (SQLException e) { e.printStackTrace(); }
-                }
-            }).start();
+            finish();
         });
 
         btnCancel.setOnClickListener(v -> {

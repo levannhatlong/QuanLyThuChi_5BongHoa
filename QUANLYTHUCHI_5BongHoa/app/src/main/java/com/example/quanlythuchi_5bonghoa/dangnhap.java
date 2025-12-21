@@ -1,7 +1,6 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,11 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class dangnhap extends AppCompatActivity {
 
@@ -85,41 +79,9 @@ public class dangnhap extends AppCompatActivity {
 
         if (!isValid) return;
 
-        Connection connection = DBConnect.getConnection();
-        if (connection == null) {
-            Toast.makeText(this, "Không thể kết nối đến database", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            String query = "SELECT id FROM users WHERE username = ? AND password = ?";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                int userId = rs.getInt("id");
-
-                SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("user_id", userId);
-                editor.apply();
-
-                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(dangnhap.this, TrangChuActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "Sai username hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-            }
-
-            rs.close();
-            stmt.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Lỗi khi đăng nhập", Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(dangnhap.this, TrangChuActivity.class);
+        startActivity(intent);
+        finish(); // Finish the login activity
     }
 }

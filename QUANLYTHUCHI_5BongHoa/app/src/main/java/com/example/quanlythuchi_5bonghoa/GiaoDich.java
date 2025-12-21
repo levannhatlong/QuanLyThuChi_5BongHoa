@@ -1,29 +1,38 @@
 package com.example.quanlythuchi_5bonghoa;
 
-import java.util.Date;
-
+// Lớp GiaoDich đã được chuyển thành một lớp Java thông thường (POJO)
 public class GiaoDich {
-    private String tenGiaoDich;
-    private double soTien;
-    private Date ngayGiaoDich;
-    private String tenDanhMuc;
-    private String loaiDanhMuc; // 'Thu nhập' or 'Chi tiêu'
-    private String bieuTuong;
 
-    public GiaoDich(String tenGiaoDich, double soTien, Date ngayGiaoDich, String tenDanhMuc, String loaiDanhMuc, String bieuTuong) {
-        this.tenGiaoDich = tenGiaoDich;
-        this.soTien = soTien;
-        this.ngayGiaoDich = ngayGiaoDich;
-        this.tenDanhMuc = tenDanhMuc;
-        this.loaiDanhMuc = loaiDanhMuc;
-        this.bieuTuong = bieuTuong;
+    public int MaGiaoDich;
+    public int MaNguoiDung;
+    public int MaDanhMuc;
+    public String TenGiaoDich;
+    public double SoTien;
+    public String NgayGiaoDich;
+    public String GhiChu;
+    public String AnhHoaDon;
+    public boolean TienVao;
+
+    // Hàm khởi tạo cho dữ liệu mẫu trong TrangChuActivity
+    public GiaoDich(String tenGiaoDich, double soTien, boolean tienVao) {
+        this.TenGiaoDich = tenGiaoDich;
+        this.SoTien = soTien;
+        this.TienVao = tienVao;
     }
 
-    // Getters for all fields
-    public String getTenGiaoDich() { return tenGiaoDich; }
-    public double getSoTien() { return soTien; }
-    public Date getNgayGiaoDich() { return ngayGiaoDich; }
-    public String getTenDanhMuc() { return tenDanhMuc; }
-    public String getLoaiDanhMuc() { return loaiDanhMuc; }
-    public String getBieuTuong() { return bieuTuong; }
+    // Hàm khởi tạo mặc định
+    public GiaoDich() {}
+
+    // Getters
+    public String getTenGiaoDich() {
+        return TenGiaoDich;
+    }
+
+    public double getSoTien() {
+        return SoTien;
+    }
+
+    public boolean isTienVao() {
+        return TienVao;
+    }
 }

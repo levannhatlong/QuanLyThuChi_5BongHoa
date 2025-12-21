@@ -99,7 +99,7 @@ public class ThongKeActivity extends AppCompatActivity {
 
     private void loadTransactionData(String filter) {
         new Thread(() -> {
-            Connection connection = DBConnect.getConnection();
+            Connection connection = DatabaseConnector.getConnection();
             if (connection == null) {
                 runOnUiThread(() -> Toast.makeText(ThongKeActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
                 return;
