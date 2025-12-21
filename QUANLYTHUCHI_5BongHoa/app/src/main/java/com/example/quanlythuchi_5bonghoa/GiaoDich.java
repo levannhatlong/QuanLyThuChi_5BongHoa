@@ -1,25 +1,17 @@
 package com.example.quanlythuchi_5bonghoa;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "GiaoDich")
 public class GiaoDich {
-    private String tenGiaoDich;
-    private double soTien;
-    private boolean isTienVao;
-
-    public GiaoDich(String tenGiaoDich, double soTien, boolean isTienVao) {
-        this.tenGiaoDich = tenGiaoDich;
-        this.soTien = soTien;
-        this.isTienVao = isTienVao;
-    }
-
-    public String getTenGiaoDich() {
-        return tenGiaoDich;
-    }
-
-    public double getSoTien() {
-        return soTien;
-    }
-
-    public boolean isTienVao() {
-        return isTienVao;
-    }
+    @PrimaryKey(autoGenerate = true)
+    public int MaGiaoDich;
+    public int MaNguoiDung;
+    public int MaDanhMuc;
+    public String TenGiaoDich;
+    public double SoTien;
+    public String NgayGiaoDich;
+    public String GhiChu;
+    public String AnhHoaDon;
 }
