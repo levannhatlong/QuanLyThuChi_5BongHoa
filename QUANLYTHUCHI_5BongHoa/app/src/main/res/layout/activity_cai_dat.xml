@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:background="#E8F5F5">
 
-    <!-- Header -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,11 +29,8 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-
-
     </RelativeLayout>
 
-    <!-- Menu Items -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,7 +41,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Ngôn ngữ -->
             <LinearLayout
                 android:id="@+id/layoutNgonNgu"
                 android:layout_width="match_parent"
@@ -70,7 +65,6 @@
                     android:textColor="#333333" />
             </LinearLayout>
 
-            <!-- Quản lý thể loại -->
             <LinearLayout
                 android:id="@+id/layoutQuanLyTheLoai"
                 android:layout_width="match_parent"
@@ -95,7 +89,6 @@
                     android:textColor="#333333" />
             </LinearLayout>
 
-            <!-- Liên kết ngân hàng -->
             <LinearLayout
                 android:id="@+id/layoutLienKetNganHang"
                 android:layout_width="match_parent"
@@ -120,7 +113,6 @@
                     android:textColor="#333333" />
             </LinearLayout>
 
-            <!-- Tài khoản của tôi -->
             <LinearLayout
                 android:id="@+id/layoutTaiKhoan"
                 android:layout_width="match_parent"
@@ -145,7 +137,6 @@
                     android:textColor="#333333" />
             </LinearLayout>
 
-            <!-- Xuất dữ liệu -->
             <LinearLayout
                 android:id="@+id/layoutXuatDuLieu"
                 android:layout_width="match_parent"
@@ -170,7 +161,6 @@
                     android:textColor="#333333" />
             </LinearLayout>
 
-            <!-- Đặt cảnh báo chi tiêu -->
             <LinearLayout
                 android:id="@+id/layoutDatCanhBao"
                 android:layout_width="match_parent"
@@ -201,7 +191,6 @@
                     android:checked="true" />
             </LinearLayout>
 
-            <!-- Hotline -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
