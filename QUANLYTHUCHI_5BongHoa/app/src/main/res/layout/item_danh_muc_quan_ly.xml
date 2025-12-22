@@ -5,36 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="@android:color/white">
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="20dp"
         android:gravity="center_vertical">
 
-        <!-- Icon danh mục với background tròn -->
+        <!-- Modern Icon Container with Gradient -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:cardCornerRadius="25dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:cardCornerRadius="32dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#E3F2FD">
+            app:cardBackgroundColor="@color/mau_nen_sang">
 
             <ImageView
                 android:id="@+id/ivIconDanhMuc"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_food"
-                app:tint="#1976D2" />
+                android:src="@drawable/ic_food_modern"
+                app:tint="@color/mau_chu_dao" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Thông tin danh mục -->
+        <!-- Category Information -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -42,14 +42,45 @@
             android:layout_marginStart="16dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTenDanhMuc"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ăn uống"
-                android:textColor="#263238"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvTenDanhMuc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ăn uống"
+                    android:textColor="@color/mau_chu_toi"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
+
+                <!-- Category Type Badge -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTypeBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#FFEBEE">
+
+                    <TextView
+                        android:id="@+id/tvTypeBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chi tiêu"
+                        android:textColor="@color/mau_do"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvMoTa"
@@ -57,35 +88,104 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Chi phí ăn uống hàng ngày"
-                android:textColor="#90A4AE"
+                android:textColor="@color/mau_chu_phu"
                 android:textSize="13sp"
-                android:maxLines="1"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
                 android:ellipsize="end" />
+
+            <!-- Usage Stats -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_chart"
+                    app:tint="#9CA3AF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Đã sử dụng 15 lần"
+                    android:textColor="#9CA3AF"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tháng này"
+                    android:textColor="#9CA3AF"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Nút chỉnh sửa -->
-        <ImageView
-            android:id="@+id/btnEdit"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:padding="8dp"
-            android:src="@android:drawable/ic_menu_edit"
-            app:tint="#1976D2"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Sửa" />
+        <!-- Action Buttons Container -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
 
-        <!-- Nút xóa -->
-        <ImageView
-            android:id="@+id/btnDelete"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:padding="8dp"
-            android:layout_marginStart="4dp"
-            android:src="@android:drawable/ic_menu_delete"
-            app:tint="#E53935"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Xóa" />
+            <!-- Edit Button -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/mau_nen_sang">
 
+                <ImageView
+                    android:id="@+id/btnEdit"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="@color/mau_chu_dao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Sửa" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Delete Button -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFEBEE">
+
+                <ImageView
+                    android:id="@+id/btnDelete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_menu_delete"
+                    app:tint="@color/mau_do"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Xóa" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
     </LinearLayout>
+
+    <!-- Subtle Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="#F1F5F9"
+        android:layout_marginHorizontal="20dp" />
 
 </com.google.android.material.card.MaterialCardView>
