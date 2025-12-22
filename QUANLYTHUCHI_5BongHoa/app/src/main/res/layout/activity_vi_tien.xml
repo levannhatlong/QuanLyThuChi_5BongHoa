@@ -7,7 +7,7 @@
     android:background="#F5F7FA"
     tools:context=".ViTienActivity">
 
-    <!-- HEADER BACKGROUND (Tạo nền xanh cong) -->
+    <!-- HEADER BACKGROUND -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="260dp"
@@ -50,7 +50,7 @@
             android:paddingHorizontal="16dp"
             android:paddingTop="100dp">
 
-            <!-- CARD TÀI KHOẢN CHÍNH -->
+            <!-- MAIN ACCOUNT CARD -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,12 +94,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="20dp"
-                        android:text="4,900,000 đ"
+                        android:text="0 VND"
                         android:textColor="#263238"
                         android:textSize="26sp"
                         android:textStyle="bold" />
 
-                    <!-- THANH TIẾN ĐỘ THU/CHI -->
+                    <!-- INCOME/EXPENSE PROGRESS BAR -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -128,13 +128,12 @@
                             android:textStyle="bold"/>
                     </LinearLayout>
 
-                    <!-- Dùng LinearProgressIndicator thay cho ProgressBar để đẹp hơn -->
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progress_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:max="100"
-                        android:progress="85"
+                        android:progress="0"
                         app:trackColor="#FFCDD2"
                         app:indicatorColor="#43A047"
                         app:trackCornerRadius="4dp"
@@ -151,7 +150,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="+10.0M"
+                            android:text="+0 VND"
                             android:textSize="14sp"
                             android:textColor="#43A047"
                             android:textStyle="bold"/>
@@ -160,7 +159,7 @@
                             android:id="@+id/tv_chi_tieu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-5.1M"
+                            android:text="-0 VND"
                             android:textSize="14sp"
                             android:textColor="#E53935"
                             android:textStyle="bold"/>
@@ -169,7 +168,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- TIÊU ĐỀ DANH SÁCH -->
+            <!-- RECENT TRANSACTIONS TITLE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -187,212 +186,21 @@
                     android:textColor="#263238"/>
 
                 <TextView
+                    android:id="@+id/tv_xem_them"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Xem thêm"
                     android:textColor="@color/mau_chu_dao"/>
             </LinearLayout>
 
-            <!-- DANH SÁCH (Sử dụng Background trắng cho sạch) -->
-            <LinearLayout
+            <!-- RECENT TRANSACTIONS LIST -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_recent_transactions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/transparent">
-
-                <!-- ITEM 1: ĂN UỐNG -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <!-- Icon Container: Tạo hình tròn màu đỏ nhạt -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            app:cardBackgroundColor="#FFEBEE"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_food"
-                                android:layout_gravity="center"
-                                app:tint="#E53935"/>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="16dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ăn uống"
-                                android:textColor="#263238"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Hôm nay, 12:30"
-                                android:textColor="#90A4AE"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-100,000"
-                            android:textColor="#E53935"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- ITEM 2: DU LỊCH -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <!-- Icon Container: Đỏ nhạt -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            app:cardBackgroundColor="#FFEBEE"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_travel"
-                                android:layout_gravity="center"
-                                app:tint="#E53935"/>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="16dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Du lịch"
-                                android:textColor="#263238"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Hôm qua"
-                                android:textColor="#90A4AE"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-5,000,000"
-                            android:textColor="#E53935"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- ITEM 3: TIỀN LƯƠNG (Thu nhập) -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <!-- Icon Container: Xanh nhạt -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            app:cardBackgroundColor="#E8F5E9"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_salary"
-                                android:layout_gravity="center"
-                                app:tint="#43A047"/>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="16dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Tiền lương"
-                                android:textColor="#263238"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="01/10/2025"
-                                android:textColor="#90A4AE"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+10,000,000"
-                            android:textColor="#43A047"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_giao_dich"
+                tools:itemCount="3"/>
 
         </LinearLayout>
 

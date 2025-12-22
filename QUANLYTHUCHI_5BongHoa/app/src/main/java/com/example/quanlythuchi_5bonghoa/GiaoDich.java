@@ -1,5 +1,7 @@
 package com.example.quanlythuchi_5bonghoa;
 
+import java.util.Date;
+
 // Lớp GiaoDich đã được chuyển thành một lớp Java thông thường (POJO)
 public class GiaoDich {
 
@@ -12,12 +14,29 @@ public class GiaoDich {
     public String GhiChu;
     public String AnhHoaDon;
     public boolean TienVao;
+    
+    // Thêm các trường mới cho hiển thị
+    public String TenDanhMuc;
+    public String LoaiDanhMuc;
+    public String BieuTuong;
+    public Date NgayGiaoDichDate;
 
     // Hàm khởi tạo cho dữ liệu mẫu trong TrangChuActivity
     public GiaoDich(String tenGiaoDich, double soTien, boolean tienVao) {
         this.TenGiaoDich = tenGiaoDich;
         this.SoTien = soTien;
         this.TienVao = tienVao;
+    }
+
+    // Hàm khởi tạo đầy đủ từ database
+    public GiaoDich(String tenGiaoDich, double soTien, Date ngayGiaoDich, String tenDanhMuc, String loaiDanhMuc, String bieuTuong) {
+        this.TenGiaoDich = tenGiaoDich;
+        this.SoTien = soTien;
+        this.NgayGiaoDichDate = ngayGiaoDich;
+        this.TenDanhMuc = tenDanhMuc;
+        this.LoaiDanhMuc = loaiDanhMuc;
+        this.BieuTuong = bieuTuong;
+        this.TienVao = "Thu nhập".equals(loaiDanhMuc);
     }
 
     // Hàm khởi tạo mặc định
@@ -34,5 +53,21 @@ public class GiaoDich {
 
     public boolean isTienVao() {
         return TienVao;
+    }
+    
+    public String getTenDanhMuc() {
+        return TenDanhMuc;
+    }
+    
+    public String getLoaiDanhMuc() {
+        return LoaiDanhMuc;
+    }
+    
+    public String getBieuTuong() {
+        return BieuTuong;
+    }
+    
+    public Date getNgayGiaoDichDate() {
+        return NgayGiaoDichDate;
     }
 }

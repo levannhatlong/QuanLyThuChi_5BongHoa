@@ -1,37 +1,67 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.text.DecimalFormat;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ViTienActivity extends AppCompatActivity {
 
-    private TextView tvSoDu, tvThuNhap, tvChiTieu;
-    private ProgressBar progressBalance;
-    private ImageView ivToggleBalance;
+    private TextView tvSoDu, tvThuNhap, tvChiTieu, tvXemThem;
+    private LinearProgressIndicator progressBalance;
+    private RecyclerView recyclerViewRecentTransactions;
     private FloatingActionButton fabHome;
+    private ImageView ivToggleBalance;
 
-    private double tongThu = 0, tongChi = 0, soDu = 0;
-    private boolean isBalanceVisible = true;
+    private GiaoDichAdapter giaoDichAdapter;
+    private List<GiaoDich> recentTransactionList;
+
     private int currentUserId;
-    private GiaoDichRepository repository;
+    private boolean isBalanceVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vi_tien);
 
-        currentUserId = getIntent().getIntExtra("USER_ID", 1);
-        repository = new GiaoDichRepository();
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        currentUserId = sharedPreferences.getInt("user_id", -1);
+
+        if (currentUserId == -1) {
+            Toast.makeText(this, "Lỗi: không tìm thấy người dùng.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         initViews();
+        setupRecyclerView();
         setupClickListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDataFromDatabase();
     }
 
     private void initViews() {
@@ -40,58 +70,136 @@ public class ViTienActivity extends AppCompatActivity {
         tvChiTieu = findViewById(R.id.tv_chi_tieu);
         progressBalance = findViewById(R.id.progress_balance);
         ivToggleBalance = findViewById(R.id.iv_toggle_balance);
+        recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
         fabHome = findViewById(R.id.fab_home);
+        tvXemThem = findViewById(R.id.tv_xem_them);
+    }
+
+    private void setupRecyclerView() {
+        recyclerViewRecentTransactions.setLayoutManager(new LinearLayoutManager(this));
+        recentTransactionList = new ArrayList<>();
+        giaoDichAdapter = new GiaoDichAdapter(this, recentTransactionList);
+        recyclerViewRecentTransactions.setAdapter(giaoDichAdapter);
+    }
+
+    private void setupClickListeners() {
+        fabHome.setOnClickListener(v -> {
+            Intent intent = new Intent(ViTienActivity.this, TrangChuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        });
+
+        ivToggleBalance.setOnClickListener(v -> {
+            isBalanceVisible = !isBalanceVisible;
+            loadDataFromDatabase(); // Reload to apply visibility change
+        });
+
+        tvXemThem.setOnClickListener(v -> {
+            // Navigate to the full statistics screen
+            Intent intent = new Intent(ViTienActivity.this, ThongKeActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadDataFromDatabase() {
         new Thread(() -> {
-            double[] data = repository.layTongThuChi(currentUserId);
-            tongThu = data[0];
-            tongChi = data[1];
-            soDu = tongThu - tongChi;
+            Connection connection = DatabaseConnector.getConnection();
+            if (connection == null) {
+                runOnUiThread(() -> Toast.makeText(ViTienActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
+                return;
+            }
+
+            double totalIncome = 0;
+            double totalExpense = 0;
+            List<GiaoDich> transactions = new ArrayList<>();
+
+            try {
+                // 1. Calculate total income and expense
+                String summaryQuery = "SELECT d.LoaiDanhMuc, SUM(g.SoTien) as TongSoTien " +
+                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                    "WHERE g.MaNguoiDung = ? " +
+                                    "GROUP BY d.LoaiDanhMuc";
+                PreparedStatement summaryStmt = connection.prepareStatement(summaryQuery);
+                summaryStmt.setInt(1, currentUserId);
+                ResultSet summaryRs = summaryStmt.executeQuery();
+
+                while (summaryRs.next()) {
+                    String loai = summaryRs.getString("LoaiDanhMuc");
+                    double total = summaryRs.getDouble("TongSoTien");
+                    if ("Thu nhập".equals(loai)) {
+                        totalIncome = total;
+                    } else if ("Chi tiêu".equals(loai)) {
+                        totalExpense = total;
+                    }
+                }
+                summaryRs.close();
+                summaryStmt.close();
+
+                // 2. Fetch recent transactions (top 3)
+                String recentQuery = "SELECT TOP 3 g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
+                                   "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                   "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
+                PreparedStatement recentStmt = connection.prepareStatement(recentQuery);
+                recentStmt.setInt(1, currentUserId);
+                ResultSet recentRs = recentStmt.executeQuery();
+
+                while (recentRs.next()) {
+                    String tenGiaoDich = recentRs.getString("TenGiaoDich");
+                    double soTien = recentRs.getDouble("SoTien");
+                    Date ngayGiaoDich = recentRs.getTimestamp("NgayGiaoDich");
+                    String tenDanhMuc = recentRs.getString("TenDanhMuc");
+                    String loaiDanhMuc = recentRs.getString("LoaiDanhMuc");
+                    String bieuTuong = recentRs.getString("BieuTuong");
+                    transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
+                }
+                recentRs.close();
+                recentStmt.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(ViTienActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
+            } finally {
+                try {
+                    if (connection != null) connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            double finalTotalIncome = totalIncome;
+            double finalTotalExpense = totalExpense;
 
             runOnUiThread(() -> {
-                displayData();
-                updateProgressBar();
+                updateUI(finalTotalIncome, finalTotalExpense, transactions);
             });
         }).start();
     }
 
-    private void displayData() {
-        DecimalFormat df = new DecimalFormat("#,### VND");
+    private void updateUI(double income, double expense, List<GiaoDich> transactions) {
+        double balance = income - expense;
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
         if (isBalanceVisible) {
-            tvSoDu.setText(df.format(soDu));
+            tvSoDu.setText(formatter.format(balance));
         } else {
-            tvSoDu.setText("*** *** VND");
+            tvSoDu.setText("*** *** *** VND");
         }
 
-        tvThuNhap.setText("+" + df.format(tongThu));
-        tvChiTieu.setText("-" + df.format(tongChi));
-    }
+        tvThuNhap.setText("+" + formatter.format(income));
+        tvChiTieu.setText("-" + formatter.format(expense));
 
-    private void updateProgressBar() {
-        double tongGiaoDich = tongThu + tongChi;
-        if (tongGiaoDich > 0) {
-            int percentThu = (int) ((tongThu * 100) / tongGiaoDich);
-            progressBalance.setProgress(percentThu);
+        double totalTransactions = income + expense;
+        if (totalTransactions > 0) {
+            int incomePercentage = (int) ((income * 100) / totalTransactions);
+            progressBalance.setProgress(incomePercentage);
         } else {
-            progressBalance.setProgress(50);
+            progressBalance.setProgress(0);
         }
-    }
 
-    private void setupClickListeners() {
-        fabHome.setOnClickListener(v -> finish()); // Quay về Trang chủ
-
-        ivToggleBalance.setOnClickListener(v -> {
-            isBalanceVisible = !isBalanceVisible;
-            displayData();
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadDataFromDatabase();
+        // Update RecyclerView
+        recentTransactionList.clear();
+        recentTransactionList.addAll(transactions);
+        giaoDichAdapter.notifyDataSetChanged();
     }
 }

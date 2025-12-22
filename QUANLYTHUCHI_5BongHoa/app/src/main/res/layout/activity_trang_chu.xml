@@ -29,10 +29,11 @@
                 app:tint="@color/white" />
 
             <TextView
+                android:id="@+id/tv_greeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Hello, 5BongHoa"
+                android:text="Xin chào, 5BongHoa"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -82,56 +83,91 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="20dp">
 
+                    <!-- Số dư -->
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số tiền chi"
+                            android:text="Số dư hiện tại"
                             android:textColor="#666"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tv_tien_chi"
+                            android:id="@+id/tv_so_du"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="5,300,000 VND"
-                            android:textColor="#E53935"
-                            android:textSize="14sp"
+                            android:text="0 VND"
+                            android:textColor="@color/mau_chu_dao"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
 
+                    <!-- Thu chi -->
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Số tiền thu"
-                            android:textColor="#666"
-                            android:textSize="12sp" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_tien_thu"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Số tiền chi"
+                                android:textColor="#666"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_tien_chi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="0 VND"
+                                android:textColor="#E53935"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="30,000,000 VND"
-                            android:textColor="#43A047"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Số tiền thu"
+                                android:textColor="#666"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_tien_thu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="0 VND"
+                                android:textColor="#43A047"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 

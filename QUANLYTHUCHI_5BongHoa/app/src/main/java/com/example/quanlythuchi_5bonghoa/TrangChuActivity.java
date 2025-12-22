@@ -1,26 +1,45 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.mikephil.charting.charts.LineChart;
-import java.text.DecimalFormat;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TrangChuActivity extends AppCompatActivity {
 
-    private TextView tvTienChi, tvTienThu;
+    private TextView tvGreeting, tvTienChi, tvTienThu, tvSoDu;
+    private LineChart lineChart;
+    private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
+    private ImageView ivNotification, ivSettings, ivGhichu;
+
     private GiaoDichAdapter giaoDichAdapter;
     private List<GiaoDich> danhSachGiaoDich;
-    private GiaoDichRepository repository;
     private int currentUserId;
 
     @Override
@@ -28,19 +47,39 @@ public class TrangChuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trang_chu);
 
-        // Giả sử nhận ID từ màn hình đăng nhập, mặc định là 1 để test
-        currentUserId = getIntent().getIntExtra("USER_ID", 1);
-        repository = new GiaoDichRepository();
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        currentUserId = sharedPreferences.getInt("user_id", -1);
+
+        if (currentUserId == -1) {
+            Toast.makeText(this, "Lỗi: không tìm thấy người dùng.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         initViews();
         setupRecyclerView();
         setupClickListeners();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDataFromDatabase();
+    }
+
     private void initViews() {
+        tvGreeting = findViewById(R.id.tv_greeting);
         tvTienChi = findViewById(R.id.tv_tien_chi);
         tvTienThu = findViewById(R.id.tv_tien_thu);
+        tvSoDu = findViewById(R.id.tv_so_du);
+        lineChart = findViewById(R.id.line_chart);
+        btnViTien = findViewById(R.id.btn_vi_tien);
+        btnThemGiaoDich = findViewById(R.id.btn_them_giao_dich);
+        btnThongKe = findViewById(R.id.btn_thong_ke);
         recyclerViewGiaoDich = findViewById(R.id.recycler_view_giao_dich);
+        ivNotification = findViewById(R.id.iv_notification);
+        ivSettings = findViewById(R.id.iv_settings);
+        ivGhichu = findViewById(R.id.iv_ghichu);
     }
 
     private void setupRecyclerView() {
@@ -50,37 +89,139 @@ public class TrangChuActivity extends AppCompatActivity {
         recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
     }
 
-    private void loadDataFromSQL() {
+    private void setupClickListeners() {
+        btnViTien.setOnClickListener(v -> startActivity(new Intent(this, ViTienActivity.class)));
+        btnThemGiaoDich.setOnClickListener(v -> startActivity(new Intent(this, ThemGiaoDichActivity.class)));
+        btnThongKe.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
+        ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
+        ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
+        ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
+    }
+
+    private void loadDataFromDatabase() {
         new Thread(() -> {
-            // Lấy tổng thu chi
-            double[] totals = repository.layTongThuChi(currentUserId);
-            // Lấy list giao dịch
-            List<GiaoDich> list = repository.layGiaoDichGanDay(currentUserId);
+            Connection connection = DatabaseConnector.getConnection();
+            if (connection == null) {
+                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
+                return;
+            }
+
+            String userName = "";
+            double totalIncome = 0;
+            double totalExpense = 0;
+            List<GiaoDich> transactions = new ArrayList<>();
+            ArrayList<Entry> incomeEntries = new ArrayList<>();
+            ArrayList<Entry> expenseEntries = new ArrayList<>();
+
+            try {
+                // 1. Get user's name
+                PreparedStatement userStmt = connection.prepareStatement("SELECT HoTen FROM NguoiDung WHERE MaNguoiDung = ?");
+                userStmt.setInt(1, currentUserId);
+                ResultSet userRs = userStmt.executeQuery();
+                if (userRs.next()) {
+                    userName = userRs.getString("HoTen");
+                }
+                userRs.close();
+                userStmt.close();
+
+                // 2. Get all transactions to calculate totals and populate list
+                String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
+                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
+                PreparedStatement transStmt = connection.prepareStatement(transQuery);
+                transStmt.setInt(1, currentUserId);
+                ResultSet transRs = transStmt.executeQuery();
+
+                int incomeIndex = 0;
+                int expenseIndex = 0;
+                while (transRs.next()) {
+                    String tenGiaoDich = transRs.getString("TenGiaoDich");
+                    double soTien = transRs.getDouble("SoTien");
+                    Date ngayGiaoDich = transRs.getTimestamp("NgayGiaoDich");
+                    String tenDanhMuc = transRs.getString("TenDanhMuc");
+                    String loaiDanhMuc = transRs.getString("LoaiDanhMuc");
+                    String bieuTuong = transRs.getString("BieuTuong");
+
+                    if (transactions.size() < 5) { // Limit to 5 recent transactions for the list
+                       transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
+                    }
+
+                    if ("Thu nhập".equals(loaiDanhMuc)) {
+                        totalIncome += soTien;
+                        incomeEntries.add(new Entry(incomeIndex++, (float) soTien));
+                    } else {
+                        totalExpense += soTien;
+                        expenseEntries.add(new Entry(expenseIndex++, (float) soTien));
+                    }
+                }
+                transRs.close();
+                transStmt.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
+            } finally {
+                try {
+                    if (connection != null) connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String finalUserName = userName;
+            double finalTotalIncome = totalIncome;
+            double finalTotalExpense = totalExpense;
 
             runOnUiThread(() -> {
-                DecimalFormat df = new DecimalFormat("#,### VND");
-                tvTienThu.setText(df.format(totals[0]));
-                tvTienChi.setText(df.format(totals[1]));
-
-                danhSachGiaoDich.clear();
-                danhSachGiaoDich.addAll(list);
-                giaoDichAdapter.notifyDataSetChanged();
+                updateUI(finalUserName, finalTotalIncome, finalTotalExpense, transactions);
+                setupLineChart(incomeEntries, expenseEntries);
             });
         }).start();
     }
 
-    private void setupClickListeners() {
-        findViewById(R.id.btn_vi_tien).setOnClickListener(v -> {
-            Intent intent = new Intent(this, ViTienActivity.class);
-            intent.putExtra("USER_ID", currentUserId);
-            startActivity(intent);
-        });
-        // Thêm các click listener khác cho btnThemGiaoDich, btnThongKe...
+    private void updateUI(String userName, double income, double expense, List<GiaoDich> transactions) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+        tvGreeting.setText("Xin chào, " + userName);
+        tvTienThu.setText(formatter.format(income));
+        tvTienChi.setText(formatter.format(expense));
+        tvSoDu.setText(formatter.format(income - expense));
+
+        danhSachGiaoDich.clear();
+        danhSachGiaoDich.addAll(transactions);
+        giaoDichAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadDataFromSQL();
+    private void setupLineChart(ArrayList<Entry> incomeEntries, ArrayList<Entry> expenseEntries) {
+        LineDataSet incomeDataSet = new LineDataSet(incomeEntries, "Thu");
+        incomeDataSet.setColor(Color.parseColor("#43A047"));
+        incomeDataSet.setLineWidth(2f);
+        incomeDataSet.setCircleColor(Color.parseColor("#43A047"));
+        incomeDataSet.setDrawValues(false);
+
+        LineDataSet expenseDataSet = new LineDataSet(expenseEntries, "Chi");
+        expenseDataSet.setColor(Color.parseColor("#E53935"));
+        expenseDataSet.setLineWidth(2f);
+        expenseDataSet.setCircleColor(Color.parseColor("#E53935"));
+        expenseDataSet.setDrawValues(false);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(incomeDataSet);
+        dataSets.add(expenseDataSet);
+
+        LineData lineData = new LineData(dataSets);
+
+        lineChart.setData(lineData);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(true);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getAxisRight().setEnabled(false);
+
+        lineChart.invalidate(); // refresh
     }
 }
