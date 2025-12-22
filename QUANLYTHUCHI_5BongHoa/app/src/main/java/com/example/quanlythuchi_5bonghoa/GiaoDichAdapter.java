@@ -40,17 +40,26 @@ public class GiaoDichAdapter extends RecyclerView.Adapter<GiaoDichAdapter.GiaoDi
         // Hiển thị tên giao dịch
         holder.tvTenGiaoDich.setText(giaoDich.getTenGiaoDich());
         
-        // Hiển thị tên danh mục nếu có
-        if (holder.tvTenDanhMuc != null && giaoDich.getTenDanhMuc() != null) {
-            holder.tvTenDanhMuc.setText(giaoDich.getTenDanhMuc());
-            holder.tvTenDanhMuc.setVisibility(View.VISIBLE);
+        // Hiển thị tên danh mục
+        if (holder.tvTenDanhMuc != null) {
+            String tenDanhMuc = giaoDich.getTenDanhMuc();
+            if (tenDanhMuc != null && !tenDanhMuc.isEmpty()) {
+                holder.tvTenDanhMuc.setText(tenDanhMuc);
+                holder.tvTenDanhMuc.setVisibility(View.VISIBLE);
+            } else {
+                holder.tvTenDanhMuc.setVisibility(View.GONE);
+            }
         }
         
-        // Hiển thị ngày giao dịch nếu có
-        if (holder.tvNgayGiaoDich != null && giaoDich.getNgayGiaoDichDate() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("vi", "VN"));
-            holder.tvNgayGiaoDich.setText(sdf.format(giaoDich.getNgayGiaoDichDate()));
-            holder.tvNgayGiaoDich.setVisibility(View.VISIBLE);
+        // Hiển thị ngày giao dịch
+        if (holder.tvNgayGiaoDich != null) {
+            if (giaoDich.getNgayGiaoDichDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("vi", "VN"));
+                holder.tvNgayGiaoDich.setText(sdf.format(giaoDich.getNgayGiaoDichDate()));
+                holder.tvNgayGiaoDich.setVisibility(View.VISIBLE);
+            } else {
+                holder.tvNgayGiaoDich.setVisibility(View.GONE);
+            }
         }
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
