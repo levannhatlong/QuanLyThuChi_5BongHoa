@@ -27,10 +27,10 @@ import java.util.Locale;
 
 public class ViTienActivity extends AppCompatActivity {
 
-    private TextView tvSoDu, tvThuNhap, tvChiTieu, tvXemThem;
+    private TextView tvSoDu, tvThuNhap, tvChiTieu, tvXemThem, tvTenNganHang, tvSoTaiKhoan;
     private LinearProgressIndicator progressBalance;
     private RecyclerView recyclerViewRecentTransactions;
-    private FloatingActionButton fabHome;
+    private FloatingActionButton fabHome, fabAdd;
     private ImageView ivToggleBalance;
 
     private GiaoDichAdapter giaoDichAdapter;
@@ -72,7 +72,10 @@ public class ViTienActivity extends AppCompatActivity {
         ivToggleBalance = findViewById(R.id.iv_toggle_balance);
         recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
         fabHome = findViewById(R.id.fab_home);
+        fabAdd = findViewById(R.id.fab_add);
         tvXemThem = findViewById(R.id.tv_xem_them);
+        tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
+        tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
     }
 
     private void setupRecyclerView() {
@@ -88,6 +91,12 @@ public class ViTienActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
+        });
+
+        // FAB thêm giao dịch nhanh
+        fabAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(ViTienActivity.this, ThemGiaoDichActivity.class);
+            startActivity(intent);
         });
 
         ivToggleBalance.setOnClickListener(v -> {
@@ -113,6 +122,8 @@ public class ViTienActivity extends AppCompatActivity {
             double totalIncome = 0;
             double totalExpense = 0;
             List<GiaoDich> transactions = new ArrayList<>();
+            String tenNganHang = "";
+            String soTaiKhoan = "";
 
             try {
                 // 1. Calculate total income and expense
@@ -156,6 +167,19 @@ public class ViTienActivity extends AppCompatActivity {
                 recentRs.close();
                 recentStmt.close();
 
+                // 3. Fetch bank account info
+                String bankQuery = "SELECT TOP 1 TenNganHang, SoTaiKhoan FROM LienKetNganHang WHERE MaNguoiDung = ?";
+                PreparedStatement bankStmt = connection.prepareStatement(bankQuery);
+                bankStmt.setInt(1, currentUserId);
+                ResultSet bankRs = bankStmt.executeQuery();
+
+                if (bankRs.next()) {
+                    tenNganHang = bankRs.getString("TenNganHang");
+                    soTaiKhoan = bankRs.getString("SoTaiKhoan");
+                }
+                bankRs.close();
+                bankStmt.close();
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 runOnUiThread(() -> Toast.makeText(ViTienActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
@@ -169,9 +193,12 @@ public class ViTienActivity extends AppCompatActivity {
 
             double finalTotalIncome = totalIncome;
             double finalTotalExpense = totalExpense;
+            String finalTenNganHang = tenNganHang;
+            String finalSoTaiKhoan = soTaiKhoan;
 
             runOnUiThread(() -> {
                 updateUI(finalTotalIncome, finalTotalExpense, transactions);
+                updateBankInfo(finalTenNganHang, finalSoTaiKhoan);
             });
         }).start();
     }
@@ -201,5 +228,21 @@ public class ViTienActivity extends AppCompatActivity {
         recentTransactionList.clear();
         recentTransactionList.addAll(transactions);
         giaoDichAdapter.notifyDataSetChanged();
+    }
+
+    private void updateBankInfo(String tenNganHang, String soTaiKhoan) {
+        if (tenNganHang != null && !tenNganHang.isEmpty()) {
+            tvTenNganHang.setText(tenNganHang);
+            // Ẩn 4 số cuối tài khoản
+            if (soTaiKhoan != null && soTaiKhoan.length() > 4) {
+                String masked = "**** **** " + soTaiKhoan.substring(soTaiKhoan.length() - 4);
+                tvSoTaiKhoan.setText(masked);
+            } else {
+                tvSoTaiKhoan.setText(soTaiKhoan);
+            }
+        } else {
+            tvTenNganHang.setText("Chưa liên kết");
+            tvSoTaiKhoan.setText("Nhấn để thêm tài khoản");
+        }
     }
 }
