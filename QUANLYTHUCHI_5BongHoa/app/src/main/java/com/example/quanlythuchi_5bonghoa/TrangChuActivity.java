@@ -32,7 +32,7 @@ import java.util.Locale;
 
 public class TrangChuActivity extends AppCompatActivity {
 
-    private TextView tvGreeting, tvTienChi, tvTienThu, tvSoDu;
+    private TextView tvGreeting, tvTienChi, tvTienThu, tvSoDu, tvChiTiet;
     private LineChart lineChart;
     private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
@@ -72,6 +72,7 @@ public class TrangChuActivity extends AppCompatActivity {
         tvTienChi = findViewById(R.id.tv_tien_chi);
         tvTienThu = findViewById(R.id.tv_tien_thu);
         tvSoDu = findViewById(R.id.tv_so_du);
+        tvChiTiet = findViewById(R.id.tv_chi_tiet);
         lineChart = findViewById(R.id.line_chart);
         btnViTien = findViewById(R.id.btn_vi_tien);
         btnThemGiaoDich = findViewById(R.id.btn_them_giao_dich);
@@ -96,6 +97,9 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
         ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
         ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
+        
+        // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
+        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
     }
 
     private void loadDataFromDatabase() {
