@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mau_chu_dao" 
+        android:background="@color/mau_chu_dao"
         android:padding="16dp">
 
         <ImageView

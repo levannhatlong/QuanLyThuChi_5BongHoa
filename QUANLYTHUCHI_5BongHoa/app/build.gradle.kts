@@ -47,7 +47,14 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+<<<<<<< HEAD
 
     // Thêm thư viện JTDS để kết nối SQL Server
     implementation("net.sourceforge.jtds:jtds:1.3.1")
 }
+=======
+    
+    // JTDS driver để kết nối SQL Server
+    implementation("net.sourceforge.jtds:jtds:1.3.1")
+}
+>>>>>>> HoThiMyHa
