@@ -182,7 +182,7 @@ public class TrangChuActivity extends AppCompatActivity {
     private void updateUI(String userName, double income, double expense, List<GiaoDich> transactions) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
-        tvGreeting.setText("Xin chào, " + userName);
+        tvGreeting.setText(userName != null && !userName.isEmpty() ? userName : "Người dùng");
         tvTienThu.setText(formatter.format(income));
         tvTienChi.setText(formatter.format(expense));
         tvSoDu.setText(formatter.format(income - expense));
