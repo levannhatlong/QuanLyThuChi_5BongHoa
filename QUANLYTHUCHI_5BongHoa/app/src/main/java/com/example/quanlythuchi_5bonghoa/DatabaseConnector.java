@@ -8,13 +8,13 @@ import java.sql.DriverManager;
 public class DatabaseConnector {
     // 10.0.2.2 là IP mặc định để máy ảo Android hiểu đó là "localhost" của máy tính bạn
     // 192.168.20.65
-    private static final String IP = "10.0.2.2";
+    private static final String IP = "192.168.20.73";
     private static final String PORT = "1433";
     private static final String DATABASE = "5BongHoa_QLthuchi";
 
     // Lưu ý: Android bắt buộc phải có User/Pass của SQL Server để xác thực từ xa
     private static final String USER = "sa";
-    private static final String PASS = "123";
+    private static final String PASS = "Nl123@";
 
     public static Connection getConnection() {
         Connection conn = null;
