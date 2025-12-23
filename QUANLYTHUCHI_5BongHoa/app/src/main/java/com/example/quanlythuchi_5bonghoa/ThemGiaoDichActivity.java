@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -275,6 +276,11 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
                 int rowsInserted = stmt.executeUpdate();
                 stmt.close();
 
+                // Kiểm tra cảnh báo chi tiêu nếu là giao dịch chi tiêu
+                if (rowsInserted > 0 && radioChiTieu.isChecked()) {
+                    checkAndCreateWarningNotification(connection);
+                }
+
                 runOnUiThread(() -> {
                     if (rowsInserted > 0) {
                         Toast.makeText(this, "Thêm giao dịch thành công!", Toast.LENGTH_SHORT).show();
@@ -302,5 +308,44 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    private void checkAndCreateWarningNotification(Connection existingConn) {
+        try {
+            // Lấy cảnh báo của user
+            CanhBao canhBao = CanhBaoRepository.getCanhBao(currentUserId);
+            
+            if (canhBao != null && canhBao.isTrangThai() && canhBao.getHanMuc() > 0) {
+                // Lấy tổng chi tiêu theo chu kỳ
+                double tongChiTieu = CanhBaoRepository.getTongChiTieuTheoChuKy(
+                        currentUserId, canhBao.getChuKy());
+                
+                // Kiểm tra vượt mức
+                if (tongChiTieu > canhBao.getHanMuc()) {
+                    NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    
+                    String tieuDe = "⚠️ Cảnh báo vượt mức chi tiêu!";
+                    String noiDung = String.format(
+                            "Bạn đã chi tiêu %s, vượt quá hạn mức %s (%s) đã đặt.\n\n" +
+                            "Vượt mức: %s\n\n" +
+                            "Hãy cân nhắc điều chỉnh chi tiêu của bạn.",
+                            formatter.format(tongChiTieu),
+                            formatter.format(canhBao.getHanMuc()),
+                            canhBao.getChuKy().toLowerCase(),
+                            formatter.format(tongChiTieu - canhBao.getHanMuc())
+                    );
+                    
+                    // Tạo thông báo
+                    ThongBaoRepository.createNotification(currentUserId, tieuDe, noiDung, "canh_bao");
+                    
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "⚠️ Chi tiêu đã vượt mức cảnh báo!", 
+                                Toast.LENGTH_LONG).show();
+                    });
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

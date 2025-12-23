@@ -67,10 +67,7 @@ public class CaiDatActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Liên kết ngân hàng
-        layoutLienKetNganHang.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng đang phát triển", Toast.LENGTH_SHORT).show();
-        });
+
 
         // Đặt cảnh báo chi tiêu
         layoutDatCanhBao.setOnClickListener(v -> {
@@ -78,10 +75,6 @@ public class CaiDatActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Xuất dữ liệu
-        layoutXuatDuLieu.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng đang phát triển", Toast.LENGTH_SHORT).show();
-        });
 
         // Switch cảnh báo chi tiêu
         switchCanhBao.setOnCheckedChangeListener((buttonView, isChecked) -> {

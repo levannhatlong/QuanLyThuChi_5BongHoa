@@ -36,7 +36,7 @@ public class TrangChuActivity extends AppCompatActivity {
     private LineChart lineChart;
     private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
-    private ImageView ivNotification, ivSettings, ivGhichu;
+    private ImageView ivNotification, ivSettings, ivGhichu, ivLogout;
 
     private GiaoDichAdapter giaoDichAdapter;
     private List<GiaoDich> danhSachGiaoDich;
@@ -81,6 +81,7 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification = findViewById(R.id.iv_notification);
         ivSettings = findViewById(R.id.iv_settings);
         ivGhichu = findViewById(R.id.iv_ghichu);
+        ivLogout = findViewById(R.id.iv_logout);
     }
 
     private void setupRecyclerView() {
@@ -97,74 +98,113 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
         ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
         ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
+        ivLogout.setOnClickListener(v -> showLogoutDialog());
         
         // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
-        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
+        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, DanhSachGiaoDichActivity.class)));
+    }
+
+    private void showLogoutDialog() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Đăng xuất")
+                .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                    // Xóa thông tin đăng nhập
+                    SharedPreferences prefs1 = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                    prefs1.edit().clear().apply();
+                    
+                    SharedPreferences prefs2 = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    prefs2.edit().clear().apply();
+                    
+                    // Chuyển về màn hình đăng nhập
+                    Intent intent = new Intent(this, dangnhap.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
     }
 
     private void loadDataFromDatabase() {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        
-        // Lấy thông tin người dùng
-        dbHelper.getUserInfo(currentUserId, new DatabaseHelper.DataCallback<NguoiDung>() {
-            @Override
-            public void onSuccess(NguoiDung user) {
-                // Lấy giao dịch sau khi có thông tin người dùng
-                loadTransactions(dbHelper, user.getHoTen());
+        new Thread(() -> {
+            Connection connection = DatabaseConnector.getConnection();
+            if (connection == null) {
+                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
+                return;
             }
 
-            @Override
-            public void onError(String error) {
-                // Fallback với tên mặc định
-                loadTransactions(dbHelper, "Người dùng");
-            }
-        });
-    }
+            String userName = "";
+            double totalIncome = 0;
+            double totalExpense = 0;
+            List<GiaoDich> transactions = new ArrayList<>();
+            ArrayList<Entry> incomeEntries = new ArrayList<>();
+            ArrayList<Entry> expenseEntries = new ArrayList<>();
 
-    private void loadTransactions(DatabaseHelper dbHelper, String userName) {
-        dbHelper.getGiaoDich(currentUserId, "", new DatabaseHelper.DataCallback<List<GiaoDich>>() {
-            @Override
-            public void onSuccess(List<GiaoDich> transactions) {
-                runOnUiThread(() -> {
-                    double totalIncome = 0;
-                    double totalExpense = 0;
-                    List<GiaoDich> recentTransactions = new ArrayList<>();
-                    ArrayList<Entry> incomeEntries = new ArrayList<>();
-                    ArrayList<Entry> expenseEntries = new ArrayList<>();
-                    
-                    int incomeIndex = 0;
-                    int expenseIndex = 0;
-                    
-                    for (int i = 0; i < transactions.size(); i++) {
-                        GiaoDich gd = transactions.get(i);
-                        
-                        if (i < 5) { // Lấy 5 giao dịch gần nhất
-                            recentTransactions.add(gd);
-                        }
-                        
-                        if ("Thu nhập".equals(gd.getLoaiDanhMuc())) {
-                            totalIncome += gd.getSoTien();
-                            incomeEntries.add(new Entry(incomeIndex++, (float) gd.getSoTien()));
-                        } else {
-                            totalExpense += gd.getSoTien();
-                            expenseEntries.add(new Entry(expenseIndex++, (float) gd.getSoTien()));
-                        }
+            try {
+                // 1. Get user's name
+                PreparedStatement userStmt = connection.prepareStatement("SELECT HoTen FROM NguoiDung WHERE MaNguoiDung = ?");
+                userStmt.setInt(1, currentUserId);
+                ResultSet userRs = userStmt.executeQuery();
+                if (userRs.next()) {
+                    userName = userRs.getString("HoTen");
+                }
+                userRs.close();
+                userStmt.close();
+
+                // 2. Get all transactions to calculate totals and populate list
+                String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
+                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
+                PreparedStatement transStmt = connection.prepareStatement(transQuery);
+                transStmt.setInt(1, currentUserId);
+                ResultSet transRs = transStmt.executeQuery();
+
+                int incomeIndex = 0;
+                int expenseIndex = 0;
+                while (transRs.next()) {
+                    String tenGiaoDich = transRs.getString("TenGiaoDich");
+                    double soTien = transRs.getDouble("SoTien");
+                    Date ngayGiaoDich = transRs.getTimestamp("NgayGiaoDich");
+                    String tenDanhMuc = transRs.getString("TenDanhMuc");
+                    String loaiDanhMuc = transRs.getString("LoaiDanhMuc");
+                    String bieuTuong = transRs.getString("BieuTuong");
+
+                    if (transactions.size() < 5) { // Limit to 5 recent transactions for the list
+                       transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
                     }
-                    
-                    updateUI(userName, totalIncome, totalExpense, recentTransactions);
-                    setupLineChart(incomeEntries, expenseEntries);
-                });
+
+                    if ("Thu nhập".equals(loaiDanhMuc)) {
+                        totalIncome += soTien;
+                        incomeEntries.add(new Entry(incomeIndex++, (float) soTien));
+                    } else {
+                        totalExpense += soTien;
+                        expenseEntries.add(new Entry(expenseIndex++, (float) soTien));
+                    }
+                }
+                transRs.close();
+                transStmt.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
+            } finally {
+                try {
+                    if (connection != null) connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
-            @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
-                    Toast.makeText(TrangChuActivity.this, error, Toast.LENGTH_SHORT).show();
-                    updateUI(userName, 0, 0, new ArrayList<>());
-                    setupLineChart(new ArrayList<>(), new ArrayList<>());
-                });
-            }
-        });
+            String finalUserName = userName;
+            double finalTotalIncome = totalIncome;
+            double finalTotalExpense = totalExpense;
+
+            runOnUiThread(() -> {
+                updateUI(finalUserName, finalTotalIncome, finalTotalExpense, transactions);
+                setupLineChart(incomeEntries, expenseEntries);
+            });
+        }).start();
     }
 
     private void updateUI(String userName, double income, double expense, List<GiaoDich> transactions) {
