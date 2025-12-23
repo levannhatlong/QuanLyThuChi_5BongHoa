@@ -11,11 +11,11 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="330dp"
         android:background="@color/mau_chu_dao"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
-        android:paddingTop="16dp">
+        android:paddingTop="40dp">
 
         <!-- Top bar -->
         <RelativeLayout
@@ -36,8 +36,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/iv_notification"
                 android:layout_marginStart="12dp"
+                android:layout_toEndOf="@id/iv_notification"
                 android:orientation="vertical">
 
                 <TextView
@@ -62,8 +62,8 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/iv_settings"
                 android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@id/iv_settings"
                 android:padding="2dp"
                 android:src="@drawable/ic_ghichu"
                 app:tint="@android:color/white" />

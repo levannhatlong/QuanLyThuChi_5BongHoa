@@ -11,11 +11,14 @@
     <!-- HEADER -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="103dp"
         android:background="@color/mau_chu_dao"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/iv_back"

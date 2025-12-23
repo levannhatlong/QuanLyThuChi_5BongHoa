@@ -16,11 +16,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="103dp"
             android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="24dp"
-            android:paddingHorizontal="20dp">
+            android:paddingHorizontal="20dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="24dp">
 
             <!-- Header Row -->
             <RelativeLayout
@@ -32,21 +32,21 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_arrow_back_white_24dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Back"
                     android:padding="4dp"
-                    android:contentDescription="Back" />
+                    android:src="@drawable/ic_arrow_back_white_24dp" />
 
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-medium"
                     android:text="Thêm danh mục"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/btnSave"
@@ -54,11 +54,11 @@
                     android:layout_height="28dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_save"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Save"
                     android:padding="4dp"
-                    app:tint="@color/white"
-                    android:contentDescription="Save" />
+                    android:src="@drawable/ic_save"
+                    app:tint="@color/white" />
             </RelativeLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

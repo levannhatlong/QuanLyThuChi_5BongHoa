@@ -15,17 +15,20 @@
         <!-- Header giống hệt trang cảnh báo -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
             android:background="@color/mau_chu_dao"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingTop="40dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
 
             <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_arrow_back_white_24dp"
-                android:contentDescription="Quay lai" />
+                android:contentDescription="Quay lai"
+                android:src="@drawable/ic_arrow_back_white_24dp" />
 
             <TextView
                 android:id="@+id/tvHeader"

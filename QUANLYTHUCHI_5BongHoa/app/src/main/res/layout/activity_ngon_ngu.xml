@@ -9,28 +9,28 @@
     <!-- Header với gradient -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="144dp"
         android:background="@color/mau_chu_dao"
+        android:elevation="4dp"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="18dp"
-        android:elevation="4dp">
+        android:paddingTop="42dp"
+        android:paddingBottom="18dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/back"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_arrow_back_white_24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,11 +41,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="@string/language_title"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="4dp" />
+                android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
 
