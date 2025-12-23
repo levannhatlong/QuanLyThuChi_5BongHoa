@@ -72,12 +72,38 @@ public class ViTienActivity extends AppCompatActivity {
         ivToggleBalance = findViewById(R.id.iv_toggle_balance);
         recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
         fabHome = findViewById(R.id.fab_home);
+<<<<<<< HEAD
         fabAdd = findViewById(R.id.fab_add);
         tvXemThem = findViewById(R.id.tv_xem_them);
         tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
         tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
     }
 
+=======
+<<<<<<< HEAD
+    }
+
+    private void calculateBalance() {
+        soDu = tongThuNhap - tongChiTieu;
+
+        // Tính phần trăm cho progress bar
+        long tongGiaoDich = tongThuNhap + tongChiTieu;
+        if (tongGiaoDich > 0) {
+            int percentThuNhap = (int) ((tongThuNhap * 100) / tongGiaoDich);
+            progressBalance.setProgress(percentThuNhap);
+        }
+    }
+
+    
+=======
+        fabAdd = findViewById(R.id.fab_add);
+        tvXemThem = findViewById(R.id.tv_xem_them);
+        tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
+        tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
+    }
+>>>>>>> HoThiMyHa
+
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
     private void setupRecyclerView() {
         recyclerViewRecentTransactions.setLayoutManager(new LinearLayoutManager(this));
         recentTransactionList = new ArrayList<>();

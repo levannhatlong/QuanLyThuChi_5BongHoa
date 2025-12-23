@@ -228,4 +228,75 @@ public class TrangChuActivity extends AppCompatActivity {
 
         lineChart.invalidate(); // refresh
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    private void setupRecyclerView() {
+        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
+        danhSachGiaoDich = new ArrayList<>();
+        // Thêm dữ liệu mẫu
+        danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
+        danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
+        danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
+    }
+
+    private void setupClickListeners() {
+        btnViTien.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ViTienActivity.class);
+            startActivity(intent);
+        });
+
+        btnThemGiaoDich.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThemGiaoDichActivity.class);
+            startActivity(intent);
+        });
+
+        btnThongKe.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThongKeActivity.class);
+            startActivity(intent);
+        });
+
+        ivNotification.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
+            startActivity(intent);
+        });
+
+        ivGhichu.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, GhiChuActivity.class);
+            startActivity(intent);
+        });
+
+        ivSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, CaiDatActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    private void loadData() {
+        // Dữ liệu sẽ được tải từ database ở đây
+        // Tạm thời tính toán từ dữ liệu mẫu
+        double tongThu = 0;
+        double tongChi = 0;
+        for (GiaoDich gd : danhSachGiaoDich) {
+            if (gd.isTienVao()) {
+                tongThu += gd.getSoTien();
+            } else {
+                tongChi += gd.getSoTien();
+            }
+        }
+        tvTienThu.setText(String.format("%,.0f VND", tongThu));
+        tvTienChi.setText(String.format("%,.0f VND", tongChi));
+    }
+=======
+>>>>>>> HoThiMyHa
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
 }

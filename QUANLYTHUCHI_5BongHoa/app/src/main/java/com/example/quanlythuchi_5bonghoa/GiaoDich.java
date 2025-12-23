@@ -1,10 +1,19 @@
 package com.example.quanlythuchi_5bonghoa;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+// Lớp GiaoDich đã được chuyển thành một lớp Java thông thường (POJO)
+public class GiaoDich {
+
+=======
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
 import java.util.Date;
 
 // Lớp GiaoDich đã được chuyển thành một lớp Java thông thường (POJO)
 public class GiaoDich {
 
+>>>>>>> HoThiMyHa
     public int MaGiaoDich;
     public int MaNguoiDung;
     public int MaDanhMuc;
@@ -14,12 +23,21 @@ public class GiaoDich {
     public String GhiChu;
     public String AnhHoaDon;
     public boolean TienVao;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
     
     // Thêm các trường mới cho hiển thị
     public String TenDanhMuc;
     public String LoaiDanhMuc;
     public String BieuTuong;
     public Date NgayGiaoDichDate;
+<<<<<<< HEAD
+=======
+>>>>>>> HoThiMyHa
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
 
     // Hàm khởi tạo cho dữ liệu mẫu trong TrangChuActivity
     public GiaoDich(String tenGiaoDich, double soTien, boolean tienVao) {
@@ -28,6 +46,11 @@ public class GiaoDich {
         this.TienVao = tienVao;
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
     // Hàm khởi tạo đầy đủ từ database
     public GiaoDich(String tenGiaoDich, double soTien, Date ngayGiaoDich, String tenDanhMuc, String loaiDanhMuc, String bieuTuong) {
         this.TenGiaoDich = tenGiaoDich;
@@ -39,6 +62,10 @@ public class GiaoDich {
         this.TienVao = "Thu nhập".equals(loaiDanhMuc);
     }
 
+<<<<<<< HEAD
+=======
+>>>>>>> HoThiMyHa
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
     // Hàm khởi tạo mặc định
     public GiaoDich() {}
 
@@ -53,6 +80,25 @@ public class GiaoDich {
 
     public boolean isTienVao() {
         return TienVao;
+<<<<<<< HEAD
+=======
+    }
+    
+    public String getTenDanhMuc() {
+        return TenDanhMuc;
+    }
+    
+    public String getLoaiDanhMuc() {
+        return LoaiDanhMuc;
+    }
+    
+    public String getBieuTuong() {
+        return BieuTuong;
+    }
+    
+    public Date getNgayGiaoDichDate() {
+        return NgayGiaoDichDate;
+>>>>>>> HoThiMyHa
     }
     
     public String getTenDanhMuc() {
