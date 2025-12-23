@@ -23,15 +23,15 @@
             android:layout_height="50dp"
             app:cardCornerRadius="25dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#E3F2FD">
+            app:cardBackgroundColor="#F5F5F5">
 
             <ImageView
                 android:id="@+id/ivIconDanhMuc"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_food"
-                app:tint="#1976D2" />
+                android:src="@drawable/ic_thuc_pham"
+                android:scaleType="fitCenter" />
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Thông tin danh mục -->
@@ -69,8 +69,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:padding="8dp"
-            android:src="@android:drawable/ic_menu_edit"
-            app:tint="#1976D2"
+            android:src="@drawable/ic_edit"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Sửa" />
 
@@ -81,8 +80,7 @@
             android:layout_height="36dp"
             android:padding="8dp"
             android:layout_marginStart="4dp"
-            android:src="@android:drawable/ic_menu_delete"
-            app:tint="#E53935"
+            android:src="@drawable/bieu_tuong_huy"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Xóa" />
 
