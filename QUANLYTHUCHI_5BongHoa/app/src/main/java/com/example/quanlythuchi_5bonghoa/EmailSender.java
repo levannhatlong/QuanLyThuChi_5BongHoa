@@ -47,22 +47,14 @@ public class EmailSender {
                 message.setSubject("Mã OTP khôi phục mật khẩu - Quản Lý Thu Chi");
                 
                 String htmlContent = 
-                    "<div style='font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;'>" +
-                    "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;'>" +
-                    "<h1 style='color: white; margin: 0;'>🔐 Khôi phục mật khẩu</h1>" +
-                    "</div>" +
-                    "<div style='background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;'>" +
-                    "<p style='color: #333; font-size: 16px;'>Xin chào,</p>" +
-                    "<p style='color: #666; font-size: 14px;'>Bạn đã yêu cầu khôi phục mật khẩu cho tài khoản Quản Lý Thu Chi.</p>" +
-                    "<div style='background: white; border: 2px dashed #667eea; border-radius: 10px; padding: 20px; text-align: center; margin: 20px 0;'>" +
-                    "<p style='color: #666; margin: 0 0 10px 0; font-size: 14px;'>Mã OTP của bạn là:</p>" +
-                    "<h2 style='color: #667eea; font-size: 36px; letter-spacing: 8px; margin: 0;'>" + otpCode + "</h2>" +
-                    "</div>" +
-                    "<p style='color: #999; font-size: 12px;'>⏰ Mã OTP có hiệu lực trong 5 phút.</p>" +
-                    "<p style='color: #999; font-size: 12px;'>⚠️ Nếu bạn không yêu cầu khôi phục mật khẩu, vui lòng bỏ qua email này.</p>" +
-                    "<hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>" +
-                    "<p style='color: #999; font-size: 11px; text-align: center;'>© 2024 Quản Lý Thu Chi - 5 Bông Hoa</p>" +
-                    "</div>" +
+                    "<div style='font-family: Arial, sans-serif; padding: 20px; max-width: 400px;'>" +
+                    "<h2 style='color: #333;'>Khôi phục mật khẩu</h2>" +
+                    "<p>Mã OTP của bạn là:</p>" +
+                    "<h1 style='color: #4CAF50; font-size: 32px; letter-spacing: 5px; background: #f5f5f5; padding: 15px; text-align: center;'>" + otpCode + "</h1>" +
+                    "<p style='color: #666; font-size: 13px;'>Mã có hiệu lực trong 5 phút.</p>" +
+                    "<p style='color: #999; font-size: 12px;'>Nếu bạn không yêu cầu, hãy bỏ qua email này.</p>" +
+                    "<hr style='border: none; border-top: 1px solid #eee;'>" +
+                    "<p style='color: #999; font-size: 11px;'>Quản Lý Thu Chi - 5 Bông Hoa</p>" +
                     "</div>";
                 
                 message.setContent(htmlContent, "text/html; charset=utf-8");
