@@ -69,6 +69,12 @@ public class CaiDatActivity extends AppCompatActivity {
 
 
 
+        // Xuất dữ liệu
+        layoutXuatDuLieu.setOnClickListener(v -> {
+            Intent intent = new Intent(this, XuatDuLieuActivity.class);
+            startActivity(intent);
+        });
+
         // Đặt cảnh báo chi tiêu
         layoutDatCanhBao.setOnClickListener(v -> {
             Intent intent = new Intent(this, CaiDatCanhBao.class);
