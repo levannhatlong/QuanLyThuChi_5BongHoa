@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id("com.android.application")
 }
 
 android {
@@ -12,7 +12,6 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,6 +24,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -32,30 +32,18 @@ android {
 }
 
 dependencies {
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-<<<<<<< HEAD
-    
-    // JTDS driver để kết nối SQL Server
-    implementation("net.sourceforge.jtds:jtds:1.3.1")
-}
-=======
-<<<<<<< HEAD
 
-    // Thêm thư viện JTDS để kết nối SQL Server
+    // jTDS (SQL Server)
     implementation("net.sourceforge.jtds:jtds:1.3.1")
+
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
-=======
-    
-    // JTDS driver để kết nối SQL Server
-    implementation("net.sourceforge.jtds:jtds:1.3.1")
-}
->>>>>>> HoThiMyHa
->>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4

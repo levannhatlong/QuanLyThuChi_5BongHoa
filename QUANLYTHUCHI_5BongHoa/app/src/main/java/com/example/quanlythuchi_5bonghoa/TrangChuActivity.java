@@ -73,11 +73,15 @@ public class TrangChuActivity extends AppCompatActivity {
         tvTienThu = findViewById(R.id.tv_tien_thu);
         tvSoDu = findViewById(R.id.tv_so_du);
         tvChiTiet = findViewById(R.id.tv_chi_tiet);
+
         lineChart = findViewById(R.id.line_chart);
+
         btnViTien = findViewById(R.id.btn_vi_tien);
         btnThemGiaoDich = findViewById(R.id.btn_them_giao_dich);
         btnThongKe = findViewById(R.id.btn_thong_ke);
+
         recyclerViewGiaoDich = findViewById(R.id.recycler_view_giao_dich);
+
         ivNotification = findViewById(R.id.iv_notification);
         ivSettings = findViewById(R.id.iv_settings);
         ivGhichu = findViewById(R.id.iv_ghichu);
@@ -94,11 +98,12 @@ public class TrangChuActivity extends AppCompatActivity {
         btnViTien.setOnClickListener(v -> startActivity(new Intent(this, ViTienActivity.class)));
         btnThemGiaoDich.setOnClickListener(v -> startActivity(new Intent(this, ThemGiaoDichActivity.class)));
         btnThongKe.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
+
         ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
         ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
         ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
-        
-        // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
+
+        // "Xem tất cả" -> qua Thống kê (hoặc màn danh sách giao dịch nếu bạn có)
         tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
     }
 
@@ -106,7 +111,9 @@ public class TrangChuActivity extends AppCompatActivity {
         new Thread(() -> {
             Connection connection = DatabaseConnector.getConnection();
             if (connection == null) {
-                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() ->
+                        Toast.makeText(TrangChuActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show()
+                );
                 return;
             }
 
@@ -118,26 +125,29 @@ public class TrangChuActivity extends AppCompatActivity {
             ArrayList<Entry> expenseEntries = new ArrayList<>();
 
             try {
-                // 1. Get user's name
-                PreparedStatement userStmt = connection.prepareStatement("SELECT HoTen FROM NguoiDung WHERE MaNguoiDung = ?");
+                // 1) Lấy tên user
+                PreparedStatement userStmt = connection.prepareStatement(
+                        "SELECT HoTen FROM NguoiDung WHERE MaNguoiDung = ?"
+                );
                 userStmt.setInt(1, currentUserId);
                 ResultSet userRs = userStmt.executeQuery();
-                if (userRs.next()) {
-                    userName = userRs.getString("HoTen");
-                }
+                if (userRs.next()) userName = userRs.getString("HoTen");
                 userRs.close();
                 userStmt.close();
 
-                // 2. Get all transactions to calculate totals and populate list
-                String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
-                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
+                // 2) Lấy giao dịch + join danh mục để biết Thu/Chi
+                String transQuery =
+                        "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
+                                "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
+
                 PreparedStatement transStmt = connection.prepareStatement(transQuery);
                 transStmt.setInt(1, currentUserId);
                 ResultSet transRs = transStmt.executeQuery();
 
                 int incomeIndex = 0;
                 int expenseIndex = 0;
+
                 while (transRs.next()) {
                     String tenGiaoDich = transRs.getString("TenGiaoDich");
                     double soTien = transRs.getDouble("SoTien");
@@ -146,11 +156,12 @@ public class TrangChuActivity extends AppCompatActivity {
                     String loaiDanhMuc = transRs.getString("LoaiDanhMuc");
                     String bieuTuong = transRs.getString("BieuTuong");
 
-                    if (transactions.size() < 5) { // Limit to 5 recent transactions for the list
-                       transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
+                    // List 5 giao dịch gần nhất
+                    if (transactions.size() < 5) {
+                        transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
                     }
 
-                    if ("Thu nhập".equals(loaiDanhMuc)) {
+                    if ("Thu nhập".equalsIgnoreCase(loaiDanhMuc)) {
                         totalIncome += soTien;
                         incomeEntries.add(new Entry(incomeIndex++, (float) soTien));
                     } else {
@@ -158,18 +169,17 @@ public class TrangChuActivity extends AppCompatActivity {
                         expenseEntries.add(new Entry(expenseIndex++, (float) soTien));
                     }
                 }
+
                 transRs.close();
                 transStmt.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() ->
+                        Toast.makeText(TrangChuActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show()
+                );
             } finally {
-                try {
-                    if (connection != null) connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                try { connection.close(); } catch (SQLException ignored) {}
             }
 
             String finalUserName = userName;
@@ -226,77 +236,6 @@ public class TrangChuActivity extends AppCompatActivity {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisRight().setEnabled(false);
 
-        lineChart.invalidate(); // refresh
+        lineChart.invalidate();
     }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-    private void setupRecyclerView() {
-        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
-        danhSachGiaoDich = new ArrayList<>();
-        // Thêm dữ liệu mẫu
-        danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
-        danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
-        danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
-        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
-        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
-    }
-
-    private void setupClickListeners() {
-        btnViTien.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ViTienActivity.class);
-            startActivity(intent);
-        });
-
-        btnThemGiaoDich.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ThemGiaoDichActivity.class);
-            startActivity(intent);
-        });
-
-        btnThongKe.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ThongKeActivity.class);
-            startActivity(intent);
-        });
-
-        ivNotification.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
-            startActivity(intent);
-        });
-
-        ivGhichu.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, GhiChuActivity.class);
-            startActivity(intent);
-        });
-
-        ivSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, CaiDatActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-    }
-
-    private void loadData() {
-        // Dữ liệu sẽ được tải từ database ở đây
-        // Tạm thời tính toán từ dữ liệu mẫu
-        double tongThu = 0;
-        double tongChi = 0;
-        for (GiaoDich gd : danhSachGiaoDich) {
-            if (gd.isTienVao()) {
-                tongThu += gd.getSoTien();
-            } else {
-                tongChi += gd.getSoTien();
-            }
-        }
-        tvTienThu.setText(String.format("%,.0f VND", tongThu));
-        tvTienChi.setText(String.format("%,.0f VND", tongChi));
-    }
-=======
->>>>>>> HoThiMyHa
->>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
 }
