@@ -224,7 +224,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_thuc_uong"
+                    android:src="@drawable/ic_fashtion"
                     android:contentDescription="Thức uống" />
 
                 <TextView
