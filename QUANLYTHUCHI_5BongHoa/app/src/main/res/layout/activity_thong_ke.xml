@@ -126,28 +126,28 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp">
                         <TextView
+                            android:id="@+id/tvTongThu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="#43A047"
                             android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:text="TỔNG THU: 30,000,000 VND"/>
+                            android:textStyle="bold" />
                         <TextView
+                            android:id="@+id/tvTongChi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="#E53935"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            android:text="TỔNG CHI: 5,000,000 VND"/>
+                            android:layout_marginTop="8dp" />
                         <TextView
+                            android:id="@+id/tvConLai"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/mau_chu_toi"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            android:text="CÒN LẠI: 25,000,000 VND"/>
+                            android:layout_marginTop="8dp" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
