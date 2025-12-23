@@ -1,8 +1,14 @@
 package com.example.quanlythuchi_5bonghoa;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -163,12 +169,94 @@ public class ThongBaoActivity extends AppCompatActivity implements ThongBaoAdapt
             }).start();
         }
 
-        // Hiển thị chi tiết
-        new AlertDialog.Builder(this)
-                .setTitle(thongBao.getTieuDe())
-                .setMessage(thongBao.getNoiDung())
-                .setPositiveButton("Đóng", null)
-                .show();
+        // Hiển thị dialog chi tiết
+        showDetailDialog(thongBao);
+    }
+
+    private void showDetailDialog(ThongBao thongBao) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_chi_tiet_thong_bao);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(params);
+
+        // Ánh xạ views
+        ImageView ivIconDialog = dialog.findViewById(R.id.ivIconDialog);
+        ImageView btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
+        TextView tvLoaiThongBao = dialog.findViewById(R.id.tvLoaiThongBao);
+        TextView tvThoiGianDialog = dialog.findViewById(R.id.tvThoiGianDialog);
+        TextView tvTieuDeDialog = dialog.findViewById(R.id.tvTieuDeDialog);
+        TextView tvNoiDungDialog = dialog.findViewById(R.id.tvNoiDungDialog);
+        TextView tvTrangThai = dialog.findViewById(R.id.tvTrangThai);
+        View viewTrangThai = dialog.findViewById(R.id.viewTrangThai);
+        TextView btnXoaThongBao = dialog.findViewById(R.id.btnXoaThongBao);
+        TextView btnDongDialog = dialog.findViewById(R.id.btnDongDialog);
+
+        // Set dữ liệu
+        tvTieuDeDialog.setText(thongBao.getTieuDe() != null ? thongBao.getTieuDe() : "Thông báo");
+        tvNoiDungDialog.setText(thongBao.getNoiDung() != null ? thongBao.getNoiDung() : "");
+        tvThoiGianDialog.setText(thongBao.getNgayTao() != null ? thongBao.getNgayTao() : "");
+
+        // Loại thông báo
+        String loai = thongBao.getLoaiThongBao();
+        if (loai != null) {
+            switch (loai) {
+                case "canh_bao":
+                    tvLoaiThongBao.setText("⚠️ Cảnh báo");
+                    ivIconDialog.setImageResource(R.drawable.ic_alert);
+                    break;
+                case "nhac_nho":
+                    tvLoaiThongBao.setText("📅 Nhắc nhở");
+                    ivIconDialog.setImageResource(R.drawable.ic_calendar);
+                    break;
+                default:
+                    tvLoaiThongBao.setText("🔔 Thông báo hệ thống");
+                    ivIconDialog.setImageResource(R.drawable.ic_notification);
+            }
+        } else {
+            tvLoaiThongBao.setText("🔔 Thông báo hệ thống");
+        }
+
+        // Trạng thái đọc
+        if (thongBao.isDaDoc()) {
+            tvTrangThai.setText("Đã đọc");
+            viewTrangThai.setBackgroundResource(R.drawable.bg_status_active);
+        } else {
+            tvTrangThai.setText("Chưa đọc");
+            viewTrangThai.setBackgroundResource(R.drawable.bg_unread_dot);
+        }
+
+        // Sự kiện
+        btnCloseDialog.setOnClickListener(v -> dialog.dismiss());
+        btnDongDialog.setOnClickListener(v -> dialog.dismiss());
+
+        btnXoaThongBao.setOnClickListener(v -> {
+            dialog.dismiss();
+            new AlertDialog.Builder(this)
+                    .setTitle("Xóa thông báo")
+                    .setMessage("Bạn có muốn xóa thông báo này?")
+                    .setPositiveButton("Xóa", (d, which) -> {
+                        new Thread(() -> {
+                            boolean success = ThongBaoRepository.deleteNotification(thongBao.getMaThongBao());
+                            runOnUiThread(() -> {
+                                if (success) {
+                                    Toast.makeText(this, "Đã xóa thông báo", Toast.LENGTH_SHORT).show();
+                                    loadNotifications();
+                                } else {
+                                    Toast.makeText(this, "Lỗi khi xóa", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }).start();
+                    })
+                    .setNegativeButton("Hủy", null)
+                    .show();
+        });
+
+        dialog.show();
     }
 
     @Override
