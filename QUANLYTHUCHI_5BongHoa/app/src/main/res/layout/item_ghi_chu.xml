@@ -54,6 +54,30 @@
                 android:src="@drawable/bieu_tuong_huy"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Xóa" />
+
+            <!-- Nút Khôi phục (cho lịch sử) -->
+            <ImageView
+                android:id="@+id/btnRestore"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:padding="4dp"
+                android:src="@drawable/bieu_tuong_dat_lai"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Khôi phục"
+                android:visibility="gone" />
+
+            <!-- Nút Xóa vĩnh viễn (cho lịch sử) -->
+            <ImageView
+                android:id="@+id/btnPermanentDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:padding="4dp"
+                android:src="@drawable/bieu_tuong_huy"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Xóa vĩnh viễn"
+                android:visibility="gone" />
         </LinearLayout>
 
         <!-- Nội dung -->

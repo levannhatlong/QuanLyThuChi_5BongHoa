@@ -12,16 +12,20 @@ import java.util.List;
 public class GhiChuAdapter extends RecyclerView.Adapter<GhiChuAdapter.ViewHolder> {
 
     private List<GhiChu> ghiChuList;
+    private boolean isHistoryMode;
     private OnNoteActionListener listener;
 
     public interface OnNoteActionListener {
         void onEdit(GhiChu ghiChu);
         void onDelete(GhiChu ghiChu);
+        void onRestore(GhiChu ghiChu);
+        void onPermanentDelete(GhiChu ghiChu);
         void onClick(GhiChu ghiChu);
     }
 
-    public GhiChuAdapter(List<GhiChu> ghiChuList, OnNoteActionListener listener) {
+    public GhiChuAdapter(List<GhiChu> ghiChuList, boolean isHistoryMode, OnNoteActionListener listener) {
         this.ghiChuList = ghiChuList;
+        this.isHistoryMode = isHistoryMode;
         this.listener = listener;
     }
 
@@ -40,7 +44,23 @@ public class GhiChuAdapter extends RecyclerView.Adapter<GhiChuAdapter.ViewHolder
         holder.tvTitle.setText(ghiChu.getTieuDe() != null && !ghiChu.getTieuDe().isEmpty() 
                 ? ghiChu.getTieuDe() : "Không có tiêu đề");
         holder.tvContent.setText(ghiChu.getNoiDung() != null ? ghiChu.getNoiDung() : "");
-        holder.tvDate.setText(ghiChu.getNgayTao() != null ? ghiChu.getNgayTao() : "");
+        
+        // Hiển thị ngày cập nhật nếu có, không thì ngày tạo
+        String displayDate = ghiChu.getNgayCapNhat() != null ? ghiChu.getNgayCapNhat() : ghiChu.getNgayTao();
+        holder.tvDate.setText(displayDate != null ? displayDate : "");
+
+        // Hiển thị nút theo chế độ
+        if (isHistoryMode) {
+            holder.btnEdit.setVisibility(View.GONE);
+            holder.btnDelete.setVisibility(View.GONE);
+            holder.btnRestore.setVisibility(View.VISIBLE);
+            holder.btnPermanentDelete.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnEdit.setVisibility(View.VISIBLE);
+            holder.btnDelete.setVisibility(View.VISIBLE);
+            holder.btnRestore.setVisibility(View.GONE);
+            holder.btnPermanentDelete.setVisibility(View.GONE);
+        }
 
         // Sự kiện click
         holder.itemView.setOnClickListener(v -> {
@@ -54,6 +74,14 @@ public class GhiChuAdapter extends RecyclerView.Adapter<GhiChuAdapter.ViewHolder
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) listener.onDelete(ghiChu);
         });
+
+        holder.btnRestore.setOnClickListener(v -> {
+            if (listener != null) listener.onRestore(ghiChu);
+        });
+
+        holder.btnPermanentDelete.setOnClickListener(v -> {
+            if (listener != null) listener.onPermanentDelete(ghiChu);
+        });
     }
 
     @Override
@@ -61,14 +89,15 @@ public class GhiChuAdapter extends RecyclerView.Adapter<GhiChuAdapter.ViewHolder
         return ghiChuList != null ? ghiChuList.size() : 0;
     }
 
-    public void updateData(List<GhiChu> newList) {
+    public void updateData(List<GhiChu> newList, boolean historyMode) {
         this.ghiChuList = newList;
+        this.isHistoryMode = historyMode;
         notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvContent, tvDate;
-        ImageView btnEdit, btnDelete;
+        ImageView btnEdit, btnDelete, btnRestore, btnPermanentDelete;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +106,8 @@ public class GhiChuAdapter extends RecyclerView.Adapter<GhiChuAdapter.ViewHolder
             tvDate = itemView.findViewById(R.id.tvDate);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
+            btnRestore = itemView.findViewById(R.id.btnRestore);
+            btnPermanentDelete = itemView.findViewById(R.id.btnPermanentDelete);
         }
     }
 }

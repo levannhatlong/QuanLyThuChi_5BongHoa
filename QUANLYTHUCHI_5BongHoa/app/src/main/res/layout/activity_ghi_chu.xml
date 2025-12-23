@@ -31,12 +31,49 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
+    <!-- Tab chuyển đổi Ghi chú / Lịch sử -->
+    <LinearLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/tabActive"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:gravity="center"
+            android:text="Ghi chú"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_tab_selected" />
+
+        <TextView
+            android:id="@+id/tabHistory"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:gravity="center"
+            android:text="Đã xóa"
+            android:textSize="14sp"
+            android:textColor="@color/mau_chu_dao"
+            android:background="@drawable/bg_tab_unselected" />
+    </LinearLayout>
+
     <!-- Thông báo trống -->
     <LinearLayout
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header"
+        android:layout_below="@id/tabLayout"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:gravity="center"
@@ -64,7 +101,7 @@
         android:id="@+id/recyclerViewNotes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header"
+        android:layout_below="@id/tabLayout"
         android:layout_marginBottom="80dp"
         android:padding="12dp"
         android:clipToPadding="false" />

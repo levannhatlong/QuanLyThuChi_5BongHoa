@@ -9,16 +9,17 @@ import java.util.List;
 
 public class GhiChuRepository {
 
-    // Lấy danh sách ghi chú
+    // Lấy danh sách ghi chú chưa xóa
     public static List<GhiChu> getActiveNotes(int userId) {
         List<GhiChu> list = new ArrayList<>();
         try {
             Connection conn = DatabaseConnector.getConnection();
             if (conn != null) {
                 String sql = "SELECT MaGhiChu, MaNguoiDung, TieuDe, NoiDung, " +
-                        "FORMAT(NgayTao, 'dd/MM/yyyy, HH:mm') as NgayTao " +
-                        "FROM GhiChu WHERE MaNguoiDung = ? " +
-                        "ORDER BY NgayTao DESC";
+                        "FORMAT(NgayTao, 'dd/MM/yyyy, HH:mm') as NgayTao, " +
+                        "FORMAT(NgayCapNhat, 'dd/MM/yyyy, HH:mm') as NgayCapNhat, DaXoa " +
+                        "FROM GhiChu WHERE MaNguoiDung = ? AND DaXoa = 0 " +
+                        "ORDER BY COALESCE(NgayCapNhat, NgayTao) DESC";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setInt(1, userId);
                 ResultSet rs = stmt.executeQuery();
@@ -29,6 +30,8 @@ public class GhiChuRepository {
                     gc.setTieuDe(rs.getString("TieuDe"));
                     gc.setNoiDung(rs.getString("NoiDung"));
                     gc.setNgayTao(rs.getString("NgayTao"));
+                    gc.setNgayCapNhat(rs.getString("NgayCapNhat"));
+                    gc.setDaXoa(rs.getBoolean("DaXoa"));
                     list.add(gc);
                 }
                 rs.close();
@@ -37,6 +40,41 @@ public class GhiChuRepository {
             }
         } catch (Exception e) {
             Log.e("GhiChuRepo", "Lỗi lấy ghi chú: " + e.getMessage());
+        }
+        return list;
+    }
+
+    // Lấy danh sách ghi chú đã xóa (lịch sử)
+    public static List<GhiChu> getDeletedNotes(int userId) {
+        List<GhiChu> list = new ArrayList<>();
+        try {
+            Connection conn = DatabaseConnector.getConnection();
+            if (conn != null) {
+                String sql = "SELECT MaGhiChu, MaNguoiDung, TieuDe, NoiDung, " +
+                        "FORMAT(NgayTao, 'dd/MM/yyyy, HH:mm') as NgayTao, " +
+                        "FORMAT(NgayCapNhat, 'dd/MM/yyyy, HH:mm') as NgayCapNhat, DaXoa " +
+                        "FROM GhiChu WHERE MaNguoiDung = ? AND DaXoa = 1 " +
+                        "ORDER BY NgayCapNhat DESC";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    GhiChu gc = new GhiChu();
+                    gc.setMaGhiChu(rs.getInt("MaGhiChu"));
+                    gc.setMaNguoiDung(rs.getInt("MaNguoiDung"));
+                    gc.setTieuDe(rs.getString("TieuDe"));
+                    gc.setNoiDung(rs.getString("NoiDung"));
+                    gc.setNgayTao(rs.getString("NgayTao"));
+                    gc.setNgayCapNhat(rs.getString("NgayCapNhat"));
+                    gc.setDaXoa(rs.getBoolean("DaXoa"));
+                    list.add(gc);
+                }
+                rs.close();
+                stmt.close();
+                conn.close();
+            }
+        } catch (Exception e) {
+            Log.e("GhiChuRepo", "Lỗi lấy lịch sử: " + e.getMessage());
         }
         return list;
     }
@@ -67,7 +105,7 @@ public class GhiChuRepository {
         try {
             Connection conn = DatabaseConnector.getConnection();
             if (conn != null) {
-                String sql = "UPDATE GhiChu SET TieuDe = ?, NoiDung = ? WHERE MaGhiChu = ?";
+                String sql = "UPDATE GhiChu SET TieuDe = ?, NoiDung = ?, NgayCapNhat = GETDATE() WHERE MaGhiChu = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, tieuDe);
                 stmt.setString(2, noiDung);
@@ -83,12 +121,12 @@ public class GhiChuRepository {
         return false;
     }
 
-    // Xóa ghi chú
-    public static boolean deleteNote(int maGhiChu) {
+    // Xóa mềm (chuyển vào lịch sử)
+    public static boolean softDeleteNote(int maGhiChu) {
         try {
             Connection conn = DatabaseConnector.getConnection();
             if (conn != null) {
-                String sql = "DELETE FROM GhiChu WHERE MaGhiChu = ?";
+                String sql = "UPDATE GhiChu SET DaXoa = 1, NgayCapNhat = GETDATE() WHERE MaGhiChu = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setInt(1, maGhiChu);
                 int result = stmt.executeUpdate();
@@ -102,36 +140,41 @@ public class GhiChuRepository {
         return false;
     }
 
-    // Lấy ghi chú theo ID
-    public static GhiChu getNoteById(int maGhiChu) {
+    // Khôi phục ghi chú từ lịch sử
+    public static boolean restoreNote(int maGhiChu) {
         try {
             Connection conn = DatabaseConnector.getConnection();
             if (conn != null) {
-                String sql = "SELECT MaGhiChu, MaNguoiDung, TieuDe, NoiDung, " +
-                        "FORMAT(NgayTao, 'dd/MM/yyyy, HH:mm') as NgayTao " +
-                        "FROM GhiChu WHERE MaGhiChu = ?";
+                String sql = "UPDATE GhiChu SET DaXoa = 0, NgayCapNhat = GETDATE() WHERE MaGhiChu = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setInt(1, maGhiChu);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    GhiChu gc = new GhiChu();
-                    gc.setMaGhiChu(rs.getInt("MaGhiChu"));
-                    gc.setMaNguoiDung(rs.getInt("MaNguoiDung"));
-                    gc.setTieuDe(rs.getString("TieuDe"));
-                    gc.setNoiDung(rs.getString("NoiDung"));
-                    gc.setNgayTao(rs.getString("NgayTao"));
-                    rs.close();
-                    stmt.close();
-                    conn.close();
-                    return gc;
-                }
-                rs.close();
+                int result = stmt.executeUpdate();
                 stmt.close();
                 conn.close();
+                return result > 0;
             }
         } catch (Exception e) {
-            Log.e("GhiChuRepo", "Lỗi lấy ghi chú: " + e.getMessage());
+            Log.e("GhiChuRepo", "Lỗi khôi phục: " + e.getMessage());
         }
-        return null;
+        return false;
+    }
+
+    // Xóa vĩnh viễn
+    public static boolean permanentDeleteNote(int maGhiChu) {
+        try {
+            Connection conn = DatabaseConnector.getConnection();
+            if (conn != null) {
+                String sql = "DELETE FROM GhiChu WHERE MaGhiChu = ?";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, maGhiChu);
+                int result = stmt.executeUpdate();
+                stmt.close();
+                conn.close();
+                return result > 0;
+            }
+        } catch (Exception e) {
+            Log.e("GhiChuRepo", "Lỗi xóa vĩnh viễn: " + e.getMessage());
+        }
+        return false;
     }
 }
