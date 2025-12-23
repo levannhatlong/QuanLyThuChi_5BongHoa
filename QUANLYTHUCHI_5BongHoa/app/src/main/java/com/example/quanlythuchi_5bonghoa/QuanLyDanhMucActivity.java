@@ -1,6 +1,5 @@
 package com.example.quanlythuchi_5bonghoa;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -40,37 +38,28 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
     private List<DanhMuc> danhSachDanhMuc;
     private List<DanhMuc> danhSachGoc;
     private boolean isChiTieu = true;
-    private DatabaseHelper dbHelper;
 
     // Biến lưu lựa chọn icon và màu trong dialog
-    private int selectedIconResId = R.drawable.ic_food_modern;
-    private String selectedColor = "#0EA5E9";
+    private int selectedIconResId = R.drawable.ic_food;
+    private String selectedColor = "#1976D2";
 
-    // Danh sách icon và màu sắc hiện đại với màu cũ
+    // Danh sách icon và màu sắc
     private final int[] iconList = {
-            R.drawable.ic_food_modern,
-            R.drawable.ic_transport_modern,
-            R.drawable.ic_shopping_modern,
-            R.drawable.ic_entertainment_modern,
-            R.drawable.ic_bills_modern,
-            R.drawable.ic_salary_modern,
-            R.drawable.ic_investment_modern,
-            R.drawable.ic_health_modern,
-            R.drawable.ic_education_modern,
-            R.drawable.ic_travel_modern
+            R.drawable.ic_food,
+            R.drawable.ic_travel,
+            R.drawable.ic_salary,
+            R.drawable.ic_wallet,
+            R.drawable.ic_chart,
+            R.drawable.ic_settings
     };
 
     private final String[] colorList = {
-            "#0EA5E9",  // Màu chủ đạo cũ
+            "#1976D2",  // Xanh dương
             "#E53935",  // Đỏ
             "#43A047",  // Xanh lá
             "#FB8C00",  // Cam
             "#8E24AA",  // Tím
-            "#EC407A",  // Hồng
-            "#1976D2",  // Xanh dương
-            "#795548",  // Nâu
-            "#607D8B",  // Xanh xám
-            "#FF5722"   // Cam đậm
+            "#EC407A"   // Hồng
     };
 
     @Override
@@ -78,12 +67,10 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quan_ly_danh_muc);
 
-        dbHelper = new DatabaseHelper(this);
         initViews();
         loadDanhMuc();
         setupListeners();
         setupRecyclerView();
-        updateCategoryCount();
     }
 
     private void initViews() {
@@ -96,20 +83,19 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
     }
 
     private void loadDanhMuc() {
-        try {
-            // Load từ database thay vì dữ liệu mẫu
-            danhSachGoc = dbHelper.getAllCategories();
-            filterByType();
-        } catch (Exception e) {
-            Toast.makeText(this, "Lỗi khi tải dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-            danhSachGoc = new ArrayList<>();
-            filterByType();
-        }
-    }
+        danhSachGoc = new ArrayList<>();
+        // Danh mục chi tiêu mẫu
+        danhSachGoc.add(new DanhMuc(1, "Ăn uống", "Chi phí ăn uống hàng ngày", R.drawable.ic_food, "#E53935", true));
+        danhSachGoc.add(new DanhMuc(2, "Di chuyển", "Chi phí đi lại, xăng xe", R.drawable.ic_travel, "#FB8C00", true));
+        danhSachGoc.add(new DanhMuc(3, "Mua sắm", "Chi phí mua sắm", R.drawable.ic_wallet, "#8E24AA", true));
+        danhSachGoc.add(new DanhMuc(4, "Giải trí", "Chi phí giải trí", R.drawable.ic_chart, "#1976D2", true));
+        danhSachGoc.add(new DanhMuc(5, "Hóa đơn", "Điện, nước, internet", R.drawable.ic_settings, "#43A047", true));
+        // Danh mục thu nhập mẫu
+        danhSachGoc.add(new DanhMuc(6, "Tiền lương", "Lương hàng tháng", R.drawable.ic_salary, "#43A047", false));
+        danhSachGoc.add(new DanhMuc(7, "Tiền thưởng", "Thưởng, bonus", R.drawable.ic_salary, "#1976D2", false));
+        danhSachGoc.add(new DanhMuc(8, "Đầu tư", "Lợi nhuận đầu tư", R.drawable.ic_chart, "#FB8C00", false));
 
-    private void refreshData() {
-        loadDanhMuc();
-        updateCategoryCount();
+        filterByType();
     }
 
     private void filterByType() {
@@ -129,15 +115,7 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
         adapter = new DanhMucAdapter(this, danhSachDanhMuc, new DanhMucAdapter.OnItemClickListener() {
             @Override
             public void onEditClick(DanhMuc danhMuc, int position) {
-                Intent intent = new Intent(QuanLyDanhMucActivity.this, ThemSuaDanhMucActivity.class);
-                intent.putExtra("EDIT_MODE", true);
-                intent.putExtra("CATEGORY_ID", danhMuc.getId());
-                intent.putExtra("CATEGORY_NAME", danhMuc.getTen());
-                intent.putExtra("CATEGORY_DESC", danhMuc.getMoTa());
-                intent.putExtra("CATEGORY_ICON", danhMuc.getIconResId());
-                intent.putExtra("CATEGORY_COLOR", danhMuc.getMauSac());
-                intent.putExtra("IS_EXPENSE", danhMuc.isChiTieu());
-                startActivityForResult(intent, 101);
+                showDialogThemSua(danhMuc, position);
             }
 
             @Override
@@ -163,11 +141,7 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
             filterByType();
         });
 
-        fabThemDanhMuc.setOnClickListener(v -> {
-            Intent intent = new Intent(QuanLyDanhMucActivity.this, ThemSuaDanhMucActivity.class);
-            intent.putExtra("EDIT_MODE", false);
-            startActivityForResult(intent, 100);
-        });
+        fabThemDanhMuc.setOnClickListener(v -> showDialogThemSua(null, -1));
 
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -198,102 +172,176 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
     }
 
     private void filterByKeyword(String keyword) {
-        try {
-            if (keyword.isEmpty()) {
-                filterByType();
-            } else {
-                danhSachDanhMuc = dbHelper.searchCategories(keyword, isChiTieu);
-                adapter.updateData(danhSachDanhMuc);
+        List<DanhMuc> filtered = new ArrayList<>();
+        for (DanhMuc dm : danhSachGoc) {
+            if (dm.isChiTieu() == isChiTieu &&
+                    dm.getTen().toLowerCase().contains(keyword.toLowerCase())) {
+                filtered.add(dm);
             }
-        } catch (Exception e) {
-            Toast.makeText(this, "Lỗi khi tìm kiếm", Toast.LENGTH_SHORT).show();
-            filterByType(); // Fallback to showing all categories of current type
+        }
+        adapter.updateData(filtered);
+    }
+
+    private void showDialogThemSua(DanhMuc danhMuc, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_them_sua_danh_muc, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvTitle = view.findViewById(R.id.tvDialogTitle);
+        RadioGroup radioGroup = view.findViewById(R.id.radioGroupLoai);
+        RadioButton radioChiTieu = view.findViewById(R.id.radioChiTieu);
+        RadioButton radioThuNhap = view.findViewById(R.id.radioThuNhap);
+        EditText edtTen = view.findViewById(R.id.edtTenDanhMuc);
+        EditText edtMoTa = view.findViewById(R.id.edtMoTa);
+        LinearLayout layoutIcons = view.findViewById(R.id.layoutIcons);
+        LinearLayout layoutColors = view.findViewById(R.id.layoutColors);
+        MaterialButton btnHuy = view.findViewById(R.id.btnHuy);
+        MaterialButton btnLuu = view.findViewById(R.id.btnLuu);
+
+        // Khởi tạo giá trị mặc định
+        if (danhMuc != null) {
+            tvTitle.setText("Sửa danh mục");
+            edtTen.setText(danhMuc.getTen());
+            edtMoTa.setText(danhMuc.getMoTa());
+            selectedIconResId = danhMuc.getIconResId();
+            selectedColor = danhMuc.getMauSac();
+            if (danhMuc.isChiTieu()) {
+                radioChiTieu.setChecked(true);
+            } else {
+                radioThuNhap.setChecked(true);
+            }
+        } else {
+            tvTitle.setText("Thêm danh mục mới");
+            selectedIconResId = R.drawable.ic_food;
+            selectedColor = "#1976D2";
+            if (isChiTieu) {
+                radioChiTieu.setChecked(true);
+            } else {
+                radioThuNhap.setChecked(true);
+            }
+        }
+
+        // Setup icon selection
+        setupIconSelection(layoutIcons);
+
+        // Setup color selection
+        setupColorSelection(layoutColors);
+
+        btnHuy.setOnClickListener(v -> dialog.dismiss());
+
+        btnLuu.setOnClickListener(v -> {
+            String ten = edtTen.getText().toString().trim();
+            String moTa = edtMoTa.getText().toString().trim();
+            boolean loaiChiTieu = radioChiTieu.isChecked();
+
+            if (ten.isEmpty()) {
+                edtTen.setError("Vui lòng nhập tên danh mục");
+                return;
+            }
+
+            if (danhMuc != null) {
+                // Cập nhật
+                danhMuc.setTen(ten);
+                danhMuc.setMoTa(moTa);
+                danhMuc.setChiTieu(loaiChiTieu);
+                danhMuc.setIconResId(selectedIconResId);
+                danhMuc.setMauSac(selectedColor);
+
+                // Cập nhật lại list
+                filterByType();
+                Toast.makeText(this, "Đã cập nhật danh mục", Toast.LENGTH_SHORT).show();
+            } else {
+                // Thêm mới
+                int newId = danhSachGoc.size() + 1;
+                DanhMuc newDM = new DanhMuc(newId, ten, moTa, selectedIconResId, selectedColor, loaiChiTieu);
+                danhSachGoc.add(newDM);
+                filterByType();
+                Toast.makeText(this, "Đã thêm danh mục mới", Toast.LENGTH_SHORT).show();
+            }
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    private void setupIconSelection(LinearLayout layoutIcons) {
+        layoutIcons.removeAllViews();
+
+        for (int i = 0; i < iconList.length; i++) {
+            final int iconRes = iconList[i];
+
+            View iconContainer = LayoutInflater.from(this).inflate(R.layout.item_icon_selector, layoutIcons, false);
+            MaterialCardView cardIcon = iconContainer.findViewById(R.id.cardIconSelector);
+            ImageView ivIcon = iconContainer.findViewById(R.id.ivIconSelector);
+
+            ivIcon.setImageResource(iconRes);
+
+            // Đánh dấu icon đã chọn
+            if (iconRes == selectedIconResId) {
+                cardIcon.setCardBackgroundColor(Color.parseColor("#E3F2FD"));
+                cardIcon.setStrokeColor(Color.parseColor("#1976D2"));
+                cardIcon.setStrokeWidth(4);
+                ivIcon.setColorFilter(Color.parseColor("#1976D2"));
+            } else {
+                cardIcon.setCardBackgroundColor(Color.parseColor("#F5F5F5"));
+                cardIcon.setStrokeWidth(0);
+                ivIcon.setColorFilter(Color.parseColor("#546E7A"));
+            }
+
+            // Click listener
+            cardIcon.setOnClickListener(v -> {
+                selectedIconResId = iconRes;
+                setupIconSelection(layoutIcons); // Refresh UI
+            });
+
+            layoutIcons.addView(iconContainer);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        if (resultCode == RESULT_OK && data != null) {
-            String name = data.getStringExtra("CATEGORY_NAME");
-            String desc = data.getStringExtra("CATEGORY_DESC");
-            int iconRes = data.getIntExtra("CATEGORY_ICON", R.drawable.ic_food_modern);
-            String color = data.getStringExtra("CATEGORY_COLOR");
-            boolean isExpense = data.getBooleanExtra("IS_EXPENSE", true);
-            
-            if (requestCode == 100) {
-                // Add new category to database
-                long newId = dbHelper.addCategory(name, desc, iconRes, color, isExpense);
-                if (newId > 0) {
-                    Toast.makeText(this, "Đã thêm danh mục mới", Toast.LENGTH_SHORT).show();
-                    refreshData();
-                } else {
-                    Toast.makeText(this, "Lỗi khi thêm danh mục", Toast.LENGTH_SHORT).show();
-                }
-            } else if (requestCode == 101) {
-                // Edit existing category in database
-                int categoryId = data.getIntExtra("CATEGORY_ID", -1);
-                int rowsAffected = dbHelper.updateCategory(categoryId, name, desc, iconRes, color, isExpense);
-                if (rowsAffected > 0) {
-                    Toast.makeText(this, "Đã cập nhật danh mục", Toast.LENGTH_SHORT).show();
-                    refreshData();
-                } else {
-                    Toast.makeText(this, "Lỗi khi cập nhật danh mục", Toast.LENGTH_SHORT).show();
-                }
+    private void setupColorSelection(LinearLayout layoutColors) {
+        layoutColors.removeAllViews();
+
+        for (int i = 0; i < colorList.length; i++) {
+            final String color = colorList[i];
+
+            View colorContainer = LayoutInflater.from(this).inflate(R.layout.item_color_selector, layoutColors, false);
+            MaterialCardView cardColor = colorContainer.findViewById(R.id.cardColorSelector);
+
+            cardColor.setCardBackgroundColor(Color.parseColor(color));
+
+            // Đánh dấu màu đã chọn
+            if (color.equals(selectedColor)) {
+                cardColor.setStrokeColor(Color.parseColor("#263238"));
+                cardColor.setStrokeWidth(6);
+            } else {
+                cardColor.setStrokeWidth(0);
             }
+
+            // Click listener
+            cardColor.setOnClickListener(v -> {
+                selectedColor = color;
+                setupColorSelection(layoutColors); // Refresh UI
+            });
+
+            layoutColors.addView(colorContainer);
         }
     }
 
     private void showDeleteConfirmDialog(DanhMuc danhMuc, int position) {
-        new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Xác nhận xóa")
-                .setMessage("Bạn có chắc chắn muốn xóa danh mục \"" + danhMuc.getTen() + "\"?")
-                .setPositiveButton("Xóa", (dialog, which) -> {
-                    int rowsAffected = dbHelper.deleteCategory(danhMuc.getId());
-                    if (rowsAffected > 0) {
-                        Toast.makeText(this, "Đã xóa danh mục", Toast.LENGTH_SHORT).show();
-                        refreshData();
-                    } else {
-                        Toast.makeText(this, "Lỗi khi xóa danh mục", Toast.LENGTH_SHORT).show();
-                    }
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa danh mục")
+                .setMessage("Bạn có chắc chắn muốn xóa danh mục \"" + danhMuc.getTen() + "\" không?")
+                .setPositiveButton("Xóa", (d, w) -> {
+                    danhSachGoc.remove(danhMuc);
+                    danhSachDanhMuc.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    Toast.makeText(this, "Đã xóa danh mục", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
-    }
-
-    private void updateCategoryCount() {
-        try {
-            TextView tvExpenseCount = findViewById(R.id.tvExpenseCount);
-            TextView tvIncomeCount = findViewById(R.id.tvIncomeCount);
-            
-            int expenseCount = dbHelper.getCategoryCount(true);
-            int incomeCount = dbHelper.getCategoryCount(false);
-            
-            tvExpenseCount.setText(String.valueOf(expenseCount));
-            tvIncomeCount.setText(String.valueOf(incomeCount));
-        } catch (Exception e) {
-            // Nếu có lỗi, hiển thị 0
-            TextView tvExpenseCount = findViewById(R.id.tvExpenseCount);
-            TextView tvIncomeCount = findViewById(R.id.tvIncomeCount);
-            tvExpenseCount.setText("0");
-            tvIncomeCount.setText("0");
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Refresh data when returning to this activity
-        refreshData();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
     }
 
     // Inner class DanhMuc

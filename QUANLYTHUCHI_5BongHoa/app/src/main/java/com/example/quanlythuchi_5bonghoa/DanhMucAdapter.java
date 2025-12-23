@@ -50,22 +50,11 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.DanhMucV
         // Set màu cho icon background
         try {
             int color = Color.parseColor(danhMuc.getMauSac());
-            holder.cardIcon.setCardBackgroundColor(adjustAlpha(color, 0.15f));
+            holder.cardIcon.setCardBackgroundColor(adjustAlpha(color, 0.2f));
             holder.ivIconDanhMuc.setColorFilter(color);
         } catch (Exception e) {
-            holder.cardIcon.setCardBackgroundColor(Color.parseColor("#E8F4F8"));
-            holder.ivIconDanhMuc.setColorFilter(Color.parseColor("#0EA5E9"));
-        }
-
-        // Set type badge
-        if (danhMuc.isChiTieu()) {
-            holder.tvTypeBadge.setText("Chi tiêu");
-            holder.tvTypeBadge.setTextColor(Color.parseColor("#E53935"));
-            holder.cardTypeBadge.setCardBackgroundColor(Color.parseColor("#FFEBEE"));
-        } else {
-            holder.tvTypeBadge.setText("Thu nhập");
-            holder.tvTypeBadge.setTextColor(Color.parseColor("#43A047"));
-            holder.cardTypeBadge.setCardBackgroundColor(Color.parseColor("#E8F5E8"));
+            holder.cardIcon.setCardBackgroundColor(Color.parseColor("#E3F2FD"));
+            holder.ivIconDanhMuc.setColorFilter(Color.parseColor("#1976D2"));
         }
 
         // Click listeners
@@ -102,18 +91,16 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.DanhMucV
     }
 
     public static class DanhMucViewHolder extends RecyclerView.ViewHolder {
-        MaterialCardView cardIcon, cardTypeBadge;
+        MaterialCardView cardIcon;
         ImageView ivIconDanhMuc, btnEdit, btnDelete;
-        TextView tvTenDanhMuc, tvMoTa, tvTypeBadge;
+        TextView tvTenDanhMuc, tvMoTa;
 
         public DanhMucViewHolder(@NonNull View itemView) {
             super(itemView);
             cardIcon = itemView.findViewById(R.id.cardIcon);
-            cardTypeBadge = itemView.findViewById(R.id.cardTypeBadge);
             ivIconDanhMuc = itemView.findViewById(R.id.ivIconDanhMuc);
             tvTenDanhMuc = itemView.findViewById(R.id.tvTenDanhMuc);
             tvMoTa = itemView.findViewById(R.id.tvMoTa);
-            tvTypeBadge = itemView.findViewById(R.id.tvTypeBadge);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }

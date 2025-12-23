@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="24dp">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm danh mục mới"
+        android:textColor="#263238"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Chọn loại: Chi tiêu / Thu nhập -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loại danh mục"
+        android:textColor="#546E7A"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupLoai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/radioChiTieu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiêu"
+            android:textColor="#263238"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radioThuNhap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thu nhập"
+            android:textColor="#263238"
+            android:layout_marginStart="24dp" />
+    </RadioGroup>
+
+    <!-- Tên danh mục -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#1976D2"
+        app:hintTextColor="#1976D2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtTenDanhMuc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tên danh mục *"
+            android:inputType="text"
+            android:textColor="#263238" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Mô tả -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#1976D2"
+        app:hintTextColor="#1976D2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtMoTa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mô tả (không bắt buộc)"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:textColor="#263238" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Chọn icon -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn biểu tượng"
+        android:textColor="#546E7A"
+        android:textSize="14sp"
+        android:layout_marginBottom="12dp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/layoutIcons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Icon 1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#E3F2FD"
+                app:strokeWidth="2dp"
+                app:strokeColor="#1976D2">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_food"
+                    app:tint="#1976D2" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Icon 2 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#F5F5F5">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_travel"
+                    app:tint="#546E7A" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Icon 3 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#F5F5F5">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_salary"
+                    app:tint="#546E7A" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Icon 4 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#F5F5F5">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_wallet"
+                    app:tint="#546E7A" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Icon 5 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#F5F5F5">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_chart"
+                    app:tint="#546E7A" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Icon 6 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#F5F5F5">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_settings"
+                    app:tint="#546E7A" />
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Chọn màu -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn màu sắc"
+        android:textColor="#546E7A"
+        android:textSize="14sp"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:id="@+id/layoutColors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <!-- Màu xanh dương -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#1976D2"
+            app:strokeWidth="3dp"
+            app:strokeColor="#FFFFFF" />
+
+        <!-- Màu đỏ -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#E53935" />
+
+        <!-- Màu xanh lá -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#43A047" />
+
+        <!-- Màu cam -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#FB8C00" />
+
+        <!-- Màu tím -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#8E24AA" />
+
+        <!-- Màu hồng -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#EC407A" />
+
+    </LinearLayout>
+
+    <!-- Nút hành động -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHuy"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hủy"
+            android:textColor="#546E7A" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLuu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Lưu"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#1976D2"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
