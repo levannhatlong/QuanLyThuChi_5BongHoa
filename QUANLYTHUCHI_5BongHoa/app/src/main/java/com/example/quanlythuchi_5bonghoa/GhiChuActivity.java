@@ -18,7 +18,7 @@ public class GhiChuActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.listViewNotes);
 
-        // === DỮ LIỆU GIẢ (10 ghi chú đẹp, thêm 5 cái mới) ===
+        // === DỮ LIỆU GIẢ  ===
         String[] titles = {
                 "Họp team cuối tuần",
                 "Mua quà sinh nhật mẹ",
