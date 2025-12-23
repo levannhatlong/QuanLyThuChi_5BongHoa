@@ -17,16 +17,25 @@ public class DatabaseHelper {
         this.context = context;
     }
 
-    // Lấy danh mục theo loại
-    public List<DanhMuc> getDanhMucByLoai(String loaiDanhMuc) {
-        List<DanhMuc> categories = new ArrayList<>();
-        
+    // Interface cho callback
+    public interface DataCallback<T> {
+        void onSuccess(T result);
+        void onError(String error);
+    }
+
+    // Lấy danh mục theo loại với callback
+    public void getDanhMucByLoai(String loaiDanhMuc, DataCallback<List<DanhMuc>> callback) {
         new Thread(() -> {
+            List<DanhMuc> categories = new ArrayList<>();
             Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) return;
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
             
             try {
-                String query = "SELECT MaDanhMuc, TenDanhMuc, MoTa, Icon, MauSac, LoaiDanhMuc FROM DanhMuc WHERE LoaiDanhMuc = ? ORDER BY TenDanhMuc";
+                String query = "SELECT MaDanhMuc, TenDanhMuc, MoTa, LoaiDanhMuc FROM DanhMuc WHERE LoaiDanhMuc = ? ORDER BY TenDanhMuc";
                 PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.setString(1, loaiDanhMuc);
                 ResultSet rs = stmt.executeQuery();
@@ -35,17 +44,19 @@ public class DatabaseHelper {
                     DanhMuc category = new DanhMuc(
                         rs.getInt("MaDanhMuc"),
                         rs.getString("TenDanhMuc"),
-                        rs.getString("MoTa"),
-                        rs.getString("Icon"),
-                        rs.getString("MauSac"),
+                        rs.getString("MoTa") != null ? rs.getString("MoTa") : "",
+                        "ic_category", // Default icon
+                        "#0EA5E9", // Default color
                         "Chi tiêu".equals(rs.getString("LoaiDanhMuc"))
                     );
                     categories.add(category);
                 }
                 rs.close();
                 stmt.close();
+                callback.onSuccess(categories);
             } catch (SQLException e) {
                 e.printStackTrace();
+                callback.onError("Lỗi khi tải dữ liệu: " + e.getMessage());
             } finally {
                 try {
                     connection.close();
@@ -54,20 +65,21 @@ public class DatabaseHelper {
                 }
             }
         }).start();
-        
-        return categories;
     }
 
-    // Tìm kiếm danh mục
-    public List<DanhMuc> searchDanhMuc(String keyword, String loaiDanhMuc) {
-        List<DanhMuc> categories = new ArrayList<>();
-        
+    // Tìm kiếm danh mục với callback
+    public void searchDanhMuc(String keyword, String loaiDanhMuc, DataCallback<List<DanhMuc>> callback) {
         new Thread(() -> {
+            List<DanhMuc> categories = new ArrayList<>();
             Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) return;
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
             
             try {
-                String query = "SELECT MaDanhMuc, TenDanhMuc, MoTa, Icon, MauSac, LoaiDanhMuc FROM DanhMuc WHERE TenDanhMuc LIKE ? AND LoaiDanhMuc = ? ORDER BY TenDanhMuc";
+                String query = "SELECT MaDanhMuc, TenDanhMuc, MoTa, LoaiDanhMuc FROM DanhMuc WHERE TenDanhMuc LIKE ? AND LoaiDanhMuc = ? ORDER BY TenDanhMuc";
                 PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.setString(1, "%" + keyword + "%");
                 stmt.setString(2, loaiDanhMuc);
@@ -77,17 +89,19 @@ public class DatabaseHelper {
                     DanhMuc category = new DanhMuc(
                         rs.getInt("MaDanhMuc"),
                         rs.getString("TenDanhMuc"),
-                        rs.getString("MoTa"),
-                        rs.getString("Icon"),
-                        rs.getString("MauSac"),
+                        rs.getString("MoTa") != null ? rs.getString("MoTa") : "",
+                        "ic_category", // Default icon
+                        "#0EA5E9", // Default color
                         "Chi tiêu".equals(rs.getString("LoaiDanhMuc"))
                     );
                     categories.add(category);
                 }
                 rs.close();
                 stmt.close();
+                callback.onSuccess(categories);
             } catch (SQLException e) {
                 e.printStackTrace();
+                callback.onError("Lỗi khi tìm kiếm: " + e.getMessage());
             } finally {
                 try {
                     connection.close();
@@ -96,27 +110,28 @@ public class DatabaseHelper {
                 }
             }
         }).start();
-        
-        return categories;
     }
 
-    // Xóa danh mục
-    public boolean deleteDanhMuc(int maDanhMuc) {
-        final boolean[] success = {false};
-        
-        Thread thread = new Thread(() -> {
+    // Xóa danh mục với callback
+    public void deleteDanhMuc(int maDanhMuc, DataCallback<Boolean> callback) {
+        new Thread(() -> {
             Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) return;
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
             
             try {
                 String query = "DELETE FROM DanhMuc WHERE MaDanhMuc = ?";
                 PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.setInt(1, maDanhMuc);
                 int rowsAffected = stmt.executeUpdate();
-                success[0] = rowsAffected > 0;
                 stmt.close();
+                callback.onSuccess(rowsAffected > 0);
             } catch (SQLException e) {
                 e.printStackTrace();
+                callback.onError("Lỗi khi xóa: " + e.getMessage());
             } finally {
                 try {
                     connection.close();
@@ -124,25 +139,18 @@ public class DatabaseHelper {
                     e.printStackTrace();
                 }
             }
-        });
-        
-        thread.start();
-        try {
-            thread.join(); // Wait for thread to complete
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        return success[0];
+        }).start();
     }
 
-    // Kiểm tra tên danh mục đã tồn tại chưa
-    public boolean isCategoryNameExists(String name, boolean isExpense, int excludeId) {
-        final boolean[] exists = {false};
-        
-        Thread thread = new Thread(() -> {
+    // Kiểm tra tên danh mục đã tồn tại với callback
+    public void isCategoryNameExists(String name, boolean isExpense, int excludeId, DataCallback<Boolean> callback) {
+        new Thread(() -> {
             Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) return;
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
             
             try {
                 String loaiDanhMuc = isExpense ? "Chi tiêu" : "Thu nhập";
@@ -161,13 +169,124 @@ public class DatabaseHelper {
                 }
                 
                 ResultSet rs = stmt.executeQuery();
+                boolean exists = false;
                 if (rs.next()) {
-                    exists[0] = rs.getInt(1) > 0;
+                    exists = rs.getInt(1) > 0;
+                }
+                rs.close();
+                stmt.close();
+                callback.onSuccess(exists);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                callback.onError("Lỗi khi kiểm tra: " + e.getMessage());
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    // Thêm danh mục mới với callback
+    public void addDanhMuc(String tenDanhMuc, String moTa, String bieuTuong, String mauSac, String loaiDanhMuc, DataCallback<Boolean> callback) {
+        new Thread(() -> {
+            Connection connection = DatabaseConnector.getConnection();
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
+            
+            try {
+                String query = "INSERT INTO DanhMuc (TenDanhMuc, MoTa, LoaiDanhMuc) VALUES (?, ?, ?)";
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setString(1, tenDanhMuc);
+                stmt.setString(2, moTa);
+                stmt.setString(3, loaiDanhMuc);
+                
+                int rowsAffected = stmt.executeUpdate();
+                stmt.close();
+                callback.onSuccess(rowsAffected > 0);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                callback.onError("Lỗi khi thêm: " + e.getMessage());
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    // Cập nhật danh mục với callback
+    public void updateDanhMuc(int maDanhMuc, String tenDanhMuc, String moTa, String bieuTuong, String mauSac, String loaiDanhMuc, DataCallback<Boolean> callback) {
+        new Thread(() -> {
+            Connection connection = DatabaseConnector.getConnection();
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
+            
+            try {
+                String query = "UPDATE DanhMuc SET TenDanhMuc = ?, MoTa = ?, LoaiDanhMuc = ? WHERE MaDanhMuc = ?";
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setString(1, tenDanhMuc);
+                stmt.setString(2, moTa);
+                stmt.setString(3, loaiDanhMuc);
+                stmt.setInt(4, maDanhMuc);
+                
+                int rowsAffected = stmt.executeUpdate();
+                stmt.close();
+                callback.onSuccess(rowsAffected > 0);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                callback.onError("Lỗi khi cập nhật: " + e.getMessage());
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    // Lấy thông tin người dùng với callback
+    public void getUserInfo(int userId, DataCallback<NguoiDung> callback) {
+        new Thread(() -> {
+            Connection connection = DatabaseConnector.getConnection();
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
+            
+            try {
+                String query = "SELECT MaNguoiDung, HoTen FROM NguoiDung WHERE MaNguoiDung = ?";
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                
+                if (rs.next()) {
+                    NguoiDung user = new NguoiDung();
+                    user.setMaNguoiDung(rs.getInt("MaNguoiDung"));
+                    user.setHoTen(rs.getString("HoTen"));
+                    user.setEmail("user@example.com"); // Default email
+                    user.setSoDienThoai("0123456789"); // Default phone
+                    callback.onSuccess(user);
+                } else {
+                    callback.onError("Không tìm thấy người dùng");
                 }
                 rs.close();
                 stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                callback.onError("Lỗi khi tải thông tin người dùng: " + e.getMessage());
             } finally {
                 try {
                     connection.close();
@@ -175,40 +294,107 @@ public class DatabaseHelper {
                     e.printStackTrace();
                 }
             }
-        });
-        
-        thread.start();
-        try {
-            thread.join(); // Wait for thread to complete
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        return exists[0];
+        }).start();
     }
 
-    // Thêm danh mục mới
-    public boolean addDanhMuc(String tenDanhMuc, String moTa, String bieuTuong, String mauSac, String loaiDanhMuc) {
-        final boolean[] success = {false};
-        
-        Thread thread = new Thread(() -> {
+    // Lấy giao dịch với callback
+    public void getGiaoDich(int userId, String dateFilter, DataCallback<List<GiaoDich>> callback) {
+        new Thread(() -> {
+            List<GiaoDich> transactions = new ArrayList<>();
             Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) return;
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
             
             try {
-                String query = "INSERT INTO DanhMuc (TenDanhMuc, MoTa, Icon, MauSac, LoaiDanhMuc) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement stmt = connection.prepareStatement(query);
-                stmt.setString(1, tenDanhMuc);
-                stmt.setString(2, moTa);
-                stmt.setString(3, bieuTuong);
-                stmt.setString(4, mauSac);
-                stmt.setString(5, loaiDanhMuc);
+                String query = "SELECT g.MaGiaoDich, g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, " +
+                              "d.TenDanhMuc, d.LoaiDanhMuc " +
+                              "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                              "WHERE g.MaNguoiDung = ? " + dateFilter +
+                              " ORDER BY g.NgayGiaoDich DESC";
                 
-                int rowsAffected = stmt.executeUpdate();
-                success[0] = rowsAffected > 0;
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                
+                while (rs.next()) {
+                    GiaoDich gd = new GiaoDich();
+                    gd.setMaGiaoDich(rs.getInt("MaGiaoDich"));
+                    gd.setTenGiaoDich(rs.getString("TenGiaoDich"));
+                    gd.setSoTien(rs.getDouble("SoTien"));
+                    gd.setNgayGiaoDich(rs.getTimestamp("NgayGiaoDich"));
+                    gd.setTenDanhMuc(rs.getString("TenDanhMuc"));
+                    gd.setLoaiDanhMuc(rs.getString("LoaiDanhMuc"));
+                    gd.setBieuTuong("ic_category"); // Default icon
+                    gd.setMauSac("#0EA5E9"); // Default color
+                    transactions.add(gd);
+                }
+                rs.close();
+                stmt.close();
+                callback.onSuccess(transactions);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                callback.onError("Lỗi khi tải giao dịch: " + e.getMessage());
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    // Phương thức đồng bộ cho compatibility (deprecated)
+    @Deprecated
+    public List<DanhMuc> getDanhMucByLoai(String loaiDanhMuc) {
+        // Trả về danh sách rỗng để tránh lỗi, khuyến khích dùng callback
+        return new ArrayList<>();
+    }
+
+    @Deprecated
+    public List<DanhMuc> searchDanhMuc(String keyword, String loaiDanhMuc) {
+        return new ArrayList<>();
+    }
+
+    @Deprecated
+    public boolean deleteDanhMuc(int maDanhMuc) {
+        return false;
+    }
+
+    @Deprecated
+    public boolean isCategoryNameExists(String name, boolean isExpense, int excludeId) {
+        return false;
+    }
+
+    // Test method để kiểm tra kết nối database
+    public void testConnection(DataCallback<String> callback) {
+        new Thread(() -> {
+            Connection connection = DatabaseConnector.getConnection();
+            
+            if (connection == null) {
+                callback.onError("Không thể kết nối database");
+                return;
+            }
+            
+            try {
+                String query = "SELECT COUNT(*) as total FROM DanhMuc";
+                PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+                
+                if (rs.next()) {
+                    int count = rs.getInt("total");
+                    callback.onSuccess("Kết nối thành công! Có " + count + " danh mục trong database.");
+                } else {
+                    callback.onSuccess("Kết nối thành công! Database trống.");
+                }
+                rs.close();
                 stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                callback.onError("Lỗi khi test: " + e.getMessage());
             } finally {
                 try {
                     connection.close();
@@ -216,57 +402,6 @@ public class DatabaseHelper {
                     e.printStackTrace();
                 }
             }
-        });
-        
-        thread.start();
-        try {
-            thread.join(); // Wait for thread to complete
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        return success[0];
-    }
-
-    // Cập nhật danh mục
-    public boolean updateDanhMuc(int maDanhMuc, String tenDanhMuc, String moTa, String bieuTuong, String mauSac, String loaiDanhMuc) {
-        final boolean[] success = {false};
-        
-        Thread thread = new Thread(() -> {
-            Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) return;
-            
-            try {
-                String query = "UPDATE DanhMuc SET TenDanhMuc = ?, MoTa = ?, Icon = ?, MauSac = ?, LoaiDanhMuc = ? WHERE MaDanhMuc = ?";
-                PreparedStatement stmt = connection.prepareStatement(query);
-                stmt.setString(1, tenDanhMuc);
-                stmt.setString(2, moTa);
-                stmt.setString(3, bieuTuong);
-                stmt.setString(4, mauSac);
-                stmt.setString(5, loaiDanhMuc);
-                stmt.setInt(6, maDanhMuc);
-                
-                int rowsAffected = stmt.executeUpdate();
-                success[0] = rowsAffected > 0;
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        
-        thread.start();
-        try {
-            thread.join(); // Wait for thread to complete
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        return success[0];
+        }).start();
     }
 }

@@ -325,41 +325,94 @@ public class ThemSuaDanhMucActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseHelper dbHelper = null;
-        try {
-            // Kiểm tra tên danh mục đã tồn tại chưa
-            dbHelper = new DatabaseHelper(this);
-            boolean nameExists = dbHelper.isCategoryNameExists(name, isExpenseSelected, isEditMode ? editCategoryId : -1);
-            
-            if (nameExists) {
-                Toast.makeText(this, "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.", Toast.LENGTH_SHORT).show();
-                edtTenDanhMuc.requestFocus();
-                edtTenDanhMuc.setError("Tên danh mục đã tồn tại");
-                return;
-            }
-            
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("CATEGORY_NAME", name);
-            resultIntent.putExtra("CATEGORY_DESC", desc);
-            resultIntent.putExtra("CATEGORY_ICON", selectedIconResId);
-            resultIntent.putExtra("CATEGORY_COLOR", selectedColor);
-            resultIntent.putExtra("IS_EXPENSE", isExpenseSelected);
-            
-            if (isEditMode) {
-                resultIntent.putExtra("CATEGORY_ID", editCategoryId);
-                Toast.makeText(this, "Đã cập nhật danh mục", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Đã thêm danh mục mới", Toast.LENGTH_SHORT).show();
-            }
-            
-            setResult(RESULT_OK, resultIntent);
-            finish();
-            
-        } catch (Exception e) {
-            Toast.makeText(this, "Lỗi khi kiểm tra dữ liệu. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
-        } finally {
-            // No need to close dbHelper as it doesn't extend SQLiteOpenHelper
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        
+        // Kiểm tra tên danh mục đã tồn tại chưa
+        dbHelper.isCategoryNameExists(name, isExpenseSelected, isEditMode ? editCategoryId : -1, 
+            new DatabaseHelper.DataCallback<Boolean>() {
+                @Override
+                public void onSuccess(Boolean nameExists) {
+                    runOnUiThread(() -> {
+                        if (nameExists) {
+                            Toast.makeText(ThemSuaDanhMucActivity.this, "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.", Toast.LENGTH_SHORT).show();
+                            edtTenDanhMuc.requestFocus();
+                            edtTenDanhMuc.setError("Tên danh mục đã tồn tại");
+                            return;
+                        }
+                        
+                        // Tên không trùng, tiến hành lưu
+                        saveCategoryToDatabase(name, desc, dbHelper);
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(ThemSuaDanhMucActivity.this, "Lỗi khi kiểm tra: " + error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+    }
+
+    private void saveCategoryToDatabase(String name, String desc, DatabaseHelper dbHelper) {
+        String loaiDanhMuc = isExpenseSelected ? "Chi tiêu" : "Thu nhập";
+        String iconName = getIconName(selectedIconResId);
+        
+        if (isEditMode) {
+            // Cập nhật danh mục
+            dbHelper.updateDanhMuc(editCategoryId, name, desc, iconName, selectedColor, loaiDanhMuc,
+                new DatabaseHelper.DataCallback<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        runOnUiThread(() -> {
+                            if (result) {
+                                Toast.makeText(ThemSuaDanhMucActivity.this, "Đã cập nhật danh mục", Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            } else {
+                                Toast.makeText(ThemSuaDanhMucActivity.this, "Không thể cập nhật danh mục", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(ThemSuaDanhMucActivity.this, "Lỗi khi cập nhật: " + error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
+        } else {
+            // Thêm danh mục mới
+            dbHelper.addDanhMuc(name, desc, iconName, selectedColor, loaiDanhMuc,
+                new DatabaseHelper.DataCallback<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        runOnUiThread(() -> {
+                            if (result) {
+                                Toast.makeText(ThemSuaDanhMucActivity.this, "Đã thêm danh mục mới", Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            } else {
+                                Toast.makeText(ThemSuaDanhMucActivity.this, "Không thể thêm danh mục", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(ThemSuaDanhMucActivity.this, "Lỗi khi thêm: " + error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
         }
+    }
+
+    private String getIconName(int iconResId) {
+        // Chuyển đổi resource ID thành tên icon để lưu vào database
+        String resourceName = getResources().getResourceEntryName(iconResId);
+        return resourceName;
     }
 
     // Helper method để tạo màu nhạt hơn

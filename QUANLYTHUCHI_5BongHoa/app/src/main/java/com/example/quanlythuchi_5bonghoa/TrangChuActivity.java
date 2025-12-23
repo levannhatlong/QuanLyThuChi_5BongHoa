@@ -103,84 +103,68 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void loadDataFromDatabase() {
-        new Thread(() -> {
-            Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) {
-                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
-                return;
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        
+        // Lấy thông tin người dùng
+        dbHelper.getUserInfo(currentUserId, new DatabaseHelper.DataCallback<NguoiDung>() {
+            @Override
+            public void onSuccess(NguoiDung user) {
+                // Lấy giao dịch sau khi có thông tin người dùng
+                loadTransactions(dbHelper, user.getHoTen());
             }
 
-            String userName = "";
-            double totalIncome = 0;
-            double totalExpense = 0;
-            List<GiaoDich> transactions = new ArrayList<>();
-            ArrayList<Entry> incomeEntries = new ArrayList<>();
-            ArrayList<Entry> expenseEntries = new ArrayList<>();
+            @Override
+            public void onError(String error) {
+                // Fallback với tên mặc định
+                loadTransactions(dbHelper, "Người dùng");
+            }
+        });
+    }
 
-            try {
-                // 1. Get user's name
-                PreparedStatement userStmt = connection.prepareStatement("SELECT HoTen FROM NguoiDung WHERE MaNguoiDung = ?");
-                userStmt.setInt(1, currentUserId);
-                ResultSet userRs = userStmt.executeQuery();
-                if (userRs.next()) {
-                    userName = userRs.getString("HoTen");
-                }
-                userRs.close();
-                userStmt.close();
-
-                // 2. Get all transactions to calculate totals and populate list
-                String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
-                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
-                PreparedStatement transStmt = connection.prepareStatement(transQuery);
-                transStmt.setInt(1, currentUserId);
-                ResultSet transRs = transStmt.executeQuery();
-
-                int incomeIndex = 0;
-                int expenseIndex = 0;
-                while (transRs.next()) {
-                    String tenGiaoDich = transRs.getString("TenGiaoDich");
-                    double soTien = transRs.getDouble("SoTien");
-                    Date ngayGiaoDich = transRs.getTimestamp("NgayGiaoDich");
-                    String tenDanhMuc = transRs.getString("TenDanhMuc");
-                    String loaiDanhMuc = transRs.getString("LoaiDanhMuc");
-                    String bieuTuong = transRs.getString("BieuTuong");
-
-                    if (transactions.size() < 5) { // Limit to 5 recent transactions for the list
-                       transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
+    private void loadTransactions(DatabaseHelper dbHelper, String userName) {
+        dbHelper.getGiaoDich(currentUserId, "", new DatabaseHelper.DataCallback<List<GiaoDich>>() {
+            @Override
+            public void onSuccess(List<GiaoDich> transactions) {
+                runOnUiThread(() -> {
+                    double totalIncome = 0;
+                    double totalExpense = 0;
+                    List<GiaoDich> recentTransactions = new ArrayList<>();
+                    ArrayList<Entry> incomeEntries = new ArrayList<>();
+                    ArrayList<Entry> expenseEntries = new ArrayList<>();
+                    
+                    int incomeIndex = 0;
+                    int expenseIndex = 0;
+                    
+                    for (int i = 0; i < transactions.size(); i++) {
+                        GiaoDich gd = transactions.get(i);
+                        
+                        if (i < 5) { // Lấy 5 giao dịch gần nhất
+                            recentTransactions.add(gd);
+                        }
+                        
+                        if ("Thu nhập".equals(gd.getLoaiDanhMuc())) {
+                            totalIncome += gd.getSoTien();
+                            incomeEntries.add(new Entry(incomeIndex++, (float) gd.getSoTien()));
+                        } else {
+                            totalExpense += gd.getSoTien();
+                            expenseEntries.add(new Entry(expenseIndex++, (float) gd.getSoTien()));
+                        }
                     }
-
-                    if ("Thu nhập".equals(loaiDanhMuc)) {
-                        totalIncome += soTien;
-                        incomeEntries.add(new Entry(incomeIndex++, (float) soTien));
-                    } else {
-                        totalExpense += soTien;
-                        expenseEntries.add(new Entry(expenseIndex++, (float) soTien));
-                    }
-                }
-                transRs.close();
-                transStmt.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
-            } finally {
-                try {
-                    if (connection != null) connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                    
+                    updateUI(userName, totalIncome, totalExpense, recentTransactions);
+                    setupLineChart(incomeEntries, expenseEntries);
+                });
             }
 
-            String finalUserName = userName;
-            double finalTotalIncome = totalIncome;
-            double finalTotalExpense = totalExpense;
-
-            runOnUiThread(() -> {
-                updateUI(finalUserName, finalTotalIncome, finalTotalExpense, transactions);
-                setupLineChart(incomeEntries, expenseEntries);
-            });
-        }).start();
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(TrangChuActivity.this, error, Toast.LENGTH_SHORT).show();
+                    updateUI(userName, 0, 0, new ArrayList<>());
+                    setupLineChart(new ArrayList<>(), new ArrayList<>());
+                });
+            }
+        });
     }
 
     private void updateUI(String userName, double income, double expense, List<GiaoDich> transactions) {

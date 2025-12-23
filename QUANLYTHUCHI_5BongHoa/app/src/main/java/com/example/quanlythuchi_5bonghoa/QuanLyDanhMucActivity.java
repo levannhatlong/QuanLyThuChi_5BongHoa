@@ -47,7 +47,29 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
         initViews();
         setupListeners();
         setupRecyclerView();
-        loadDanhMuc();
+        
+        // Test kết nối database trước khi load dữ liệu
+        testDatabaseConnection();
+    }
+
+    private void testDatabaseConnection() {
+        dbHelper.testConnection(new DatabaseHelper.DataCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                runOnUiThread(() -> {
+                    Toast.makeText(QuanLyDanhMucActivity.this, result, Toast.LENGTH_SHORT).show();
+                    loadDanhMuc(); // Load dữ liệu sau khi test thành công
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(QuanLyDanhMucActivity.this, "Lỗi kết nối: " + error, Toast.LENGTH_LONG).show();
+                    updateEmptyView(); // Hiển thị empty view nếu không kết nối được
+                });
+            }
+        });
     }
 
     private void initViews() {
@@ -137,13 +159,26 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
     private void loadDanhMuc() {
         try {
             String loaiDanhMuc = isChiTieu ? "Chi tiêu" : "Thu nhập";
-            List<DanhMuc> list = dbHelper.getDanhMucByLoai(loaiDanhMuc);
             
-            danhMucList.clear();
-            danhMucList.addAll(list);
-            adapter.notifyDataSetChanged();
-            
-            updateEmptyView();
+            dbHelper.getDanhMucByLoai(loaiDanhMuc, new DatabaseHelper.DataCallback<List<DanhMuc>>() {
+                @Override
+                public void onSuccess(List<DanhMuc> result) {
+                    runOnUiThread(() -> {
+                        danhMucList.clear();
+                        danhMucList.addAll(result);
+                        adapter.notifyDataSetChanged();
+                        updateEmptyView();
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(QuanLyDanhMucActivity.this, error, Toast.LENGTH_SHORT).show();
+                        updateEmptyView();
+                    });
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi khi tải danh mục: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -153,19 +188,29 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
     private void filterByKeyword(String keyword) {
         try {
             String loaiDanhMuc = isChiTieu ? "Chi tiêu" : "Thu nhập";
-            List<DanhMuc> filteredList;
             
             if (keyword.trim().isEmpty()) {
-                filteredList = dbHelper.getDanhMucByLoai(loaiDanhMuc);
+                loadDanhMuc(); // Reload all data
             } else {
-                filteredList = dbHelper.searchDanhMuc(keyword, loaiDanhMuc);
+                dbHelper.searchDanhMuc(keyword, loaiDanhMuc, new DatabaseHelper.DataCallback<List<DanhMuc>>() {
+                    @Override
+                    public void onSuccess(List<DanhMuc> result) {
+                        runOnUiThread(() -> {
+                            danhMucList.clear();
+                            danhMucList.addAll(result);
+                            adapter.notifyDataSetChanged();
+                            updateEmptyView();
+                        });
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(QuanLyDanhMucActivity.this, error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
             }
-            
-            danhMucList.clear();
-            danhMucList.addAll(filteredList);
-            adapter.notifyDataSetChanged();
-            
-            updateEmptyView();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi khi tìm kiếm: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -187,20 +232,28 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa danh mục \"" + danhMuc.getTenDanhMuc() + "\"?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
-                    try {
-                        boolean success = dbHelper.deleteDanhMuc(danhMuc.getMaDanhMuc());
-                        if (success) {
-                            danhMucList.remove(position);
-                            adapter.notifyItemRemoved(position);
-                            updateEmptyView();
-                            Toast.makeText(this, "Đã xóa danh mục thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, "Không thể xóa danh mục", Toast.LENGTH_SHORT).show();
+                    dbHelper.deleteDanhMuc(danhMuc.getMaDanhMuc(), new DatabaseHelper.DataCallback<Boolean>() {
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            runOnUiThread(() -> {
+                                if (result) {
+                                    danhMucList.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                    updateEmptyView();
+                                    Toast.makeText(QuanLyDanhMucActivity.this, "Đã xóa danh mục thành công", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(QuanLyDanhMucActivity.this, "Không thể xóa danh mục", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+
+                        @Override
+                        public void onError(String error) {
+                            runOnUiThread(() -> {
+                                Toast.makeText(QuanLyDanhMucActivity.this, error, Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    });
                 })
                 .setNegativeButton("Hủy", null)
                 .show();

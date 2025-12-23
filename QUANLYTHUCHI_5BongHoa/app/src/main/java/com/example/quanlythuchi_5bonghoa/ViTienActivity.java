@@ -119,95 +119,45 @@ public class ViTienActivity extends AppCompatActivity {
     }
 
     private void loadDataFromDatabase() {
-        new Thread(() -> {
-            Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) {
-                runOnUiThread(() -> Toast.makeText(ViTienActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
-                return;
-            }
-
-            double totalIncome = 0;
-            double totalExpense = 0;
-            List<GiaoDich> transactions = new ArrayList<>();
-            String tenNganHang = "";
-            String soTaiKhoan = "";
-
-            try {
-                // 1. Calculate total income and expense
-                String summaryQuery = "SELECT d.LoaiDanhMuc, SUM(g.SoTien) as TongSoTien " +
-                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                                    "WHERE g.MaNguoiDung = ? " +
-                                    "GROUP BY d.LoaiDanhMuc";
-                PreparedStatement summaryStmt = connection.prepareStatement(summaryQuery);
-                summaryStmt.setInt(1, currentUserId);
-                ResultSet summaryRs = summaryStmt.executeQuery();
-
-                while (summaryRs.next()) {
-                    String loai = summaryRs.getString("LoaiDanhMuc");
-                    double total = summaryRs.getDouble("TongSoTien");
-                    if ("Thu nhập".equals(loai)) {
-                        totalIncome = total;
-                    } else if ("Chi tiêu".equals(loai)) {
-                        totalExpense = total;
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        
+        // Lấy giao dịch của người dùng
+        dbHelper.getGiaoDich(currentUserId, "", new DatabaseHelper.DataCallback<List<GiaoDich>>() {
+            @Override
+            public void onSuccess(List<GiaoDich> transactions) {
+                runOnUiThread(() -> {
+                    double totalIncome = 0;
+                    double totalExpense = 0;
+                    List<GiaoDich> recentTransactions = new ArrayList<>();
+                    
+                    // Tính tổng và lấy 3 giao dịch gần nhất
+                    for (int i = 0; i < transactions.size(); i++) {
+                        GiaoDich gd = transactions.get(i);
+                        if ("Thu nhập".equals(gd.getLoaiDanhMuc())) {
+                            totalIncome += gd.getSoTien();
+                        } else {
+                            totalExpense += gd.getSoTien();
+                        }
+                        
+                        if (i < 3) {
+                            recentTransactions.add(gd);
+                        }
                     }
-                }
-                summaryRs.close();
-                summaryStmt.close();
-
-                // 2. Fetch recent transactions (top 3)
-                String recentQuery = "SELECT TOP 3 g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
-                                   "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                                   "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
-                PreparedStatement recentStmt = connection.prepareStatement(recentQuery);
-                recentStmt.setInt(1, currentUserId);
-                ResultSet recentRs = recentStmt.executeQuery();
-
-                while (recentRs.next()) {
-                    String tenGiaoDich = recentRs.getString("TenGiaoDich");
-                    double soTien = recentRs.getDouble("SoTien");
-                    Date ngayGiaoDich = recentRs.getTimestamp("NgayGiaoDich");
-                    String tenDanhMuc = recentRs.getString("TenDanhMuc");
-                    String loaiDanhMuc = recentRs.getString("LoaiDanhMuc");
-                    String bieuTuong = recentRs.getString("BieuTuong");
-                    transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
-                }
-                recentRs.close();
-                recentStmt.close();
-
-                // 3. Fetch bank account info
-                String bankQuery = "SELECT TOP 1 TenNganHang, SoTaiKhoan FROM LienKetNganHang WHERE MaNguoiDung = ?";
-                PreparedStatement bankStmt = connection.prepareStatement(bankQuery);
-                bankStmt.setInt(1, currentUserId);
-                ResultSet bankRs = bankStmt.executeQuery();
-
-                if (bankRs.next()) {
-                    tenNganHang = bankRs.getString("TenNganHang");
-                    soTaiKhoan = bankRs.getString("SoTaiKhoan");
-                }
-                bankRs.close();
-                bankStmt.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(ViTienActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
-            } finally {
-                try {
-                    if (connection != null) connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                    
+                    updateUI(totalIncome, totalExpense, recentTransactions);
+                    updateBankInfo("Ngân hàng ABC", "1234567890"); // Mock data
+                });
             }
 
-            double finalTotalIncome = totalIncome;
-            double finalTotalExpense = totalExpense;
-            String finalTenNganHang = tenNganHang;
-            String finalSoTaiKhoan = soTaiKhoan;
-
-            runOnUiThread(() -> {
-                updateUI(finalTotalIncome, finalTotalExpense, transactions);
-                updateBankInfo(finalTenNganHang, finalSoTaiKhoan);
-            });
-        }).start();
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(ViTienActivity.this, error, Toast.LENGTH_SHORT).show();
+                    updateUI(0, 0, new ArrayList<>());
+                    updateBankInfo("Chưa liên kết", "Nhấn để thêm tài khoản");
+                });
+            }
+        });
     }
 
     private void updateUI(double income, double expense, List<GiaoDich> transactions) {

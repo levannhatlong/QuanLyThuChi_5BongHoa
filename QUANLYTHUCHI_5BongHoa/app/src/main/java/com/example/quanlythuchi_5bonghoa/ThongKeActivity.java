@@ -108,69 +108,36 @@ public class ThongKeActivity extends AppCompatActivity {
     }
 
     private void loadDataFromDatabase() {
-        new Thread(() -> {
-            Connection connection = DatabaseConnector.getConnection();
-            if (connection == null) {
-                runOnUiThread(() -> Toast.makeText(this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
-                return;
-            }
-
-            double totalIncome = 0;
-            double totalExpense = 0;
-            List<GiaoDich> transactions = new ArrayList<>();
-
-            try {
-                // Tạo điều kiện lọc theo thời gian
-                String dateCondition = getDateCondition();
-
-                // Query lấy giao dịch
-                String query = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
-                        "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                        "WHERE g.MaNguoiDung = ? " + dateCondition +
-                        " ORDER BY g.NgayGiaoDich DESC";
-
-                PreparedStatement stmt = connection.prepareStatement(query);
-                stmt.setInt(1, currentUserId);
-                ResultSet rs = stmt.executeQuery();
-
-                while (rs.next()) {
-                    String tenGiaoDich = rs.getString("TenGiaoDich");
-                    double soTien = rs.getDouble("SoTien");
-                    Date ngayGiaoDich = rs.getTimestamp("NgayGiaoDich");
-                    String tenDanhMuc = rs.getString("TenDanhMuc");
-                    String loaiDanhMuc = rs.getString("LoaiDanhMuc");
-                    String bieuTuong = rs.getString("BieuTuong");
-
-                    transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
-
-                    if ("Thu nhập".equals(loaiDanhMuc)) {
-                        totalIncome += soTien;
-                    } else {
-                        totalExpense += soTien;
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        String dateCondition = getDateCondition();
+        
+        dbHelper.getGiaoDich(currentUserId, dateCondition, new DatabaseHelper.DataCallback<List<GiaoDich>>() {
+            @Override
+            public void onSuccess(List<GiaoDich> transactions) {
+                runOnUiThread(() -> {
+                    double totalIncome = 0;
+                    double totalExpense = 0;
+                    
+                    for (GiaoDich gd : transactions) {
+                        if ("Thu nhập".equals(gd.getLoaiDanhMuc())) {
+                            totalIncome += gd.getSoTien();
+                        } else {
+                            totalExpense += gd.getSoTien();
+                        }
                     }
-                }
-                rs.close();
-                stmt.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(this, "Lỗi khi tải dữ liệu", Toast.LENGTH_SHORT).show());
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                    
+                    updateUI(totalIncome, totalExpense, transactions);
+                });
             }
 
-            double finalTotalIncome = totalIncome;
-            double finalTotalExpense = totalExpense;
-            List<GiaoDich> finalTransactions = transactions;
-
-            runOnUiThread(() -> {
-                updateUI(finalTotalIncome, finalTotalExpense, finalTransactions);
-            });
-        }).start();
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(ThongKeActivity.this, error, Toast.LENGTH_SHORT).show();
+                    updateUI(0, 0, new ArrayList<>());
+                });
+            }
+        });
     }
 
     private String getDateCondition() {

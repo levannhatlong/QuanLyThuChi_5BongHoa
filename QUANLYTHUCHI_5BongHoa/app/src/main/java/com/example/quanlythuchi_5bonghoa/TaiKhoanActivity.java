@@ -106,6 +106,40 @@ public class TaiKhoanActivity extends AppCompatActivity {
 
     private void loadUserData() {
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", -1);
+        
+        if (userId == -1) {
+            // Fallback to SharedPreferences data
+            loadUserDataFromPrefs();
+            return;
+        }
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        dbHelper.getUserInfo(userId, new DatabaseHelper.DataCallback<NguoiDung>() {
+            @Override
+            public void onSuccess(NguoiDung user) {
+                runOnUiThread(() -> {
+                    tvUserName.setText(user.getHoTen());
+                    tvTenDangNhap.setText(user.getEmail());
+                    tvHoTen.setText(user.getHoTen());
+                    tvEmail.setText(user.getEmail());
+                    tvNgaySinh.setText("Chưa cập nhật");
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(TaiKhoanActivity.this, "Lỗi khi tải thông tin: " + error, Toast.LENGTH_SHORT).show();
+                    // Fallback to SharedPreferences data
+                    loadUserDataFromPrefs();
+                });
+            }
+        });
+    }
+
+    private void loadUserDataFromPrefs() {
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String tenDangNhap = prefs.getString("username", "user@example.com");
         String hoTen = prefs.getString("full_name", "Người dùng");
         String email = prefs.getString("email", "user@example.com");
