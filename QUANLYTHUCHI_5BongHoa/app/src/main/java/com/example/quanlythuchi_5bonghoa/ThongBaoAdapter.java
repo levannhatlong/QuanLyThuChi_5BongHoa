@@ -13,10 +13,16 @@ import java.util.List;
 
 public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ThongBaoViewHolder> {
 
-    private List<ThongBaoActivity.ThongBao> thongBaoList;
+    public interface OnThongBaoClickListener {
+        void onThongBaoClick(ThongBaoActivity.ThongBao thongBao);
+    }
 
-    public ThongBaoAdapter(List<ThongBaoActivity.ThongBao> thongBaoList) {
+    private List<ThongBaoActivity.ThongBao> thongBaoList;
+    private final OnThongBaoClickListener listener;
+
+    public ThongBaoAdapter(List<ThongBaoActivity.ThongBao> thongBaoList, OnThongBaoClickListener listener) {
         this.thongBaoList = thongBaoList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -29,6 +35,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ThongB
     @Override
     public void onBindViewHolder(@NonNull ThongBaoViewHolder holder, int position) {
         ThongBaoActivity.ThongBao thongBao = thongBaoList.get(position);
+
         holder.tvNoiDung.setText(thongBao.getNoiDung());
         holder.tvThoiGian.setText(thongBao.getThoiGian());
 
@@ -39,11 +46,15 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ThongB
             holder.tvUnreadIndicator.setVisibility(View.VISIBLE);
             holder.tvNoiDung.setTypeface(null, Typeface.BOLD);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onThongBaoClick(thongBao);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return thongBaoList.size();
+        return thongBaoList != null ? thongBaoList.size() : 0;
     }
 
     public void updateData(List<ThongBaoActivity.ThongBao> newList) {

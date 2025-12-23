@@ -1,15 +1,24 @@
 package com.example.quanlythuchi_5bonghoa;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ThongBaoActivity extends AppCompatActivity {
 
@@ -18,8 +27,11 @@ public class ThongBaoActivity extends AppCompatActivity {
     private RecyclerView recyclerViewThongBao;
     private ThongBaoAdapter adapter;
 
-    private List<ThongBao> allNotifications;
+    private List<ThongBao> allNotifications = new ArrayList<>();
     private String currentTab = "tatca";
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private int userId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +39,30 @@ public class ThongBaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thong_bao);
 
         initViews();
+
+        userId = getUserId();
+        if (userId <= 0) {
+            toast("Chưa xác định người dùng. Vui lòng đăng nhập lại.");
+            finish();
+            return;
+        }
+
         setupRecyclerView();
         setupListeners();
-        loadNotifications();
+
         selectTab("tatca");
+        loadNotificationsFromDb();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdownNow();
+    }
+
+    private int getUserId() {
+        SharedPreferences sp = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        return sp.getInt("user_id", -1);
     }
 
     private void initViews() {
@@ -43,7 +75,14 @@ public class ThongBaoActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         recyclerViewThongBao.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ThongBaoAdapter(new ArrayList<>());
+        adapter = new ThongBaoAdapter(new ArrayList<>(), thongBao -> {
+            // bấm thông báo -> đánh dấu đã đọc (nếu chưa đọc)
+            if (!thongBao.isDaDoc()) {
+                markAsRead(thongBao.getMaThongBao());
+                thongBao.setDaDoc(true);
+                filterNotifications(currentTab);
+            }
+        });
         recyclerViewThongBao.setAdapter(adapter);
     }
 
@@ -86,40 +125,89 @@ public class ThongBaoActivity extends AppCompatActivity {
         }
     }
 
-    private void loadNotifications() {
-        allNotifications = new ArrayList<>();
+    private void loadNotificationsFromDb() {
+        executor.execute(() -> {
+            List<ThongBao> list = fetchThongBao(userId);
 
-        allNotifications.add(new ThongBao(
-                "Cảnh báo: Chi tiêu vượt mức giới hạn. 🔥",
-                "6 phút trước",
-                false
-        ));
+            runOnUiThread(() -> {
+                if (list == null) {
+                    toast("Lỗi kết nối hoặc truy vấn ThongBao.");
+                    return;
+                }
+                allNotifications.clear();
+                allNotifications.addAll(list);
 
-        allNotifications.add(new ThongBao(
-                "Nhắc nhở: Nạp tiền vào ví cho thánh toán sử dụng ngân hàng Vietcombank.",
-                "1 ngày trước",
-                false
-        ));
+                filterNotifications(currentTab);
+                if (allNotifications.isEmpty()) {
+                    toast("Không có thông báo cho tài khoản này.");
+                }
+            });
+        });
+    }
 
-        allNotifications.add(new ThongBao(
-                "Nhắc nhở: Phải nộp chi tiền 5,000,000 VNĐ.",
-                "1 ngày trước",
-                true
-        ));
+    private List<ThongBao> fetchThongBao(int userId) {
+        List<ThongBao> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        allNotifications.add(new ThongBao(
-                "Nhắc nhở: Đã thanh toán tiền 400,000 VNĐ.",
-                "2 ngày trước",
-                true
-        ));
+        try {
+            conn = DatabaseConnector.getConnection();
+            if (conn == null) return null;
 
-        allNotifications.add(new ThongBao(
-                "Nhắc nhở: Đã chi tiền 300,000 VNĐ cho ăn uống.",
-                "2 ngày trước",
-                true
-        ));
+            String sql =
+                    "SELECT MaThongBao, NoiDung, DaDoc, NgayTao " +
+                            "FROM ThongBao " +
+                            "WHERE MaNguoiDung = ? " +
+                            "ORDER BY NgayTao DESC";
 
-        filterNotifications(currentTab);
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int maThongBao = rs.getInt("MaThongBao");
+                String noiDung = rs.getString("NoiDung");
+                boolean daDoc = rs.getBoolean("DaDoc");
+                Date ngayTao = rs.getTimestamp("NgayTao");
+
+                String thoiGian = formatRelativeTime(ngayTao);
+                list.add(new ThongBao(maThongBao, noiDung, thoiGian, daDoc));
+            }
+
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception ignored) {}
+            try { if (ps != null) ps.close(); } catch (Exception ignored) {}
+            try { if (conn != null) conn.close(); } catch (Exception ignored) {}
+        }
+    }
+
+    private void markAsRead(int maThongBao) {
+        executor.execute(() -> {
+            Connection conn = null;
+            PreparedStatement ps = null;
+            try {
+                conn = DatabaseConnector.getConnection();
+                if (conn == null) return;
+
+                String sql = "UPDATE ThongBao SET DaDoc = 1 WHERE MaThongBao = ? AND MaNguoiDung = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, maThongBao);
+                ps.setInt(2, userId);
+                ps.executeUpdate();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try { if (ps != null) ps.close(); } catch (Exception ignored) {}
+                try { if (conn != null) conn.close(); } catch (Exception ignored) {}
+            }
+        });
     }
 
     private void filterNotifications(String filter) {
@@ -127,20 +215,16 @@ public class ThongBaoActivity extends AppCompatActivity {
 
         switch (filter) {
             case "tatca":
-                filteredList = allNotifications;
+                filteredList.addAll(allNotifications);
                 break;
             case "dadoc":
                 for (ThongBao tb : allNotifications) {
-                    if (tb.isDaDoc()) {
-                        filteredList.add(tb);
-                    }
+                    if (tb.isDaDoc()) filteredList.add(tb);
                 }
                 break;
             case "chuadoc":
                 for (ThongBao tb : allNotifications) {
-                    if (!tb.isDaDoc()) {
-                        filteredList.add(tb);
-                    }
+                    if (!tb.isDaDoc()) filteredList.add(tb);
                 }
                 break;
         }
@@ -148,32 +232,38 @@ public class ThongBaoActivity extends AppCompatActivity {
         adapter.updateData(filteredList);
     }
 
-    // Inner class for Notification data
+    private String formatRelativeTime(Date date) {
+        if (date == null) return "";
+        long now = System.currentTimeMillis();
+        return DateUtils.getRelativeTimeSpanString(
+                date.getTime(),
+                now,
+                DateUtils.MINUTE_IN_MILLIS
+        ).toString(); // ví dụ: "6 phút trước", "Hôm qua", ...
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    // Inner class (giữ nguyên để bạn khỏi tạo file mới)
     public static class ThongBao {
-        private String noiDung;
-        private String thoiGian;
+        private final int maThongBao;
+        private final String noiDung;
+        private final String thoiGian;
         private boolean daDoc;
 
-        public ThongBao(String noiDung, String thoiGian, boolean daDoc) {
+        public ThongBao(int maThongBao, String noiDung, String thoiGian, boolean daDoc) {
+            this.maThongBao = maThongBao;
             this.noiDung = noiDung;
             this.thoiGian = thoiGian;
             this.daDoc = daDoc;
         }
 
-        public String getNoiDung() {
-            return noiDung;
-        }
-
-        public String getThoiGian() {
-            return thoiGian;
-        }
-
-        public boolean isDaDoc() {
-            return daDoc;
-        }
-
-        public void setDaDoc(boolean daDoc) {
-            this.daDoc = daDoc;
-        }
+        public int getMaThongBao() { return maThongBao; }
+        public String getNoiDung() { return noiDung; }
+        public String getThoiGian() { return thoiGian; }
+        public boolean isDaDoc() { return daDoc; }
+        public void setDaDoc(boolean daDoc) { this.daDoc = daDoc; }
     }
 }
