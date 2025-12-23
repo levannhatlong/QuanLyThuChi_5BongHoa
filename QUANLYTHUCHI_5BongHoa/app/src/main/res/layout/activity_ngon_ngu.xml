@@ -1,186 +1,361 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#E8F5F5">
+    android:background="#F8FAFC">
 
-    <!-- Header -->
+    <!-- Header với gradient -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mau_chu_dao"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="18dp"
+        android:elevation="4dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
+            android:padding="8dp"
             android:src="@drawable/ic_arrow_back_white_24dp"
-            android:contentDescription="Back" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="CÀI ĐẶT NGÔN NGỮ"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:gravity="center">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌐"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/language_title"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
     </RelativeLayout>
 
-    <!-- Content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:padding="20dp">
 
-            <!-- Thay toàn bộ phần bên trong ScrollView (từ <TextView "Chọn ngôn ngữ hiển thị"> trở xuống) -->
+            <!-- Card ngôn ngữ hiện tại -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_current_language">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_language"
+                            android:textSize="13sp"
+                            android:textColor="#64748B"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.05" />
+
+                        <TextView
+                            android:id="@+id/tvCurrentLanguage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vietnamese"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/mau_chu_dao"
+                            android:layout_marginTop="6dp" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_flag_container">
+
+                        <TextView
+                            android:id="@+id/tvCurrentFlag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="🇻🇳"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Tiêu đề chọn ngôn ngữ -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn ngôn ngữ hiển thị"
+                android:text="@string/select_language"
                 android:textSize="16sp"
-                android:textColor="#333333"
                 android:textStyle="bold"
-                android:layout_marginBottom="16dp" />
+                android:textColor="#334155"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp" />
 
-            <!-- Thay RadioGroup bằng 2 item này -->
-            <LinearLayout
+            <!-- Tiếng Việt -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardVietnamese"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
 
-                <!-- Tiếng Việt -->
                 <LinearLayout
                     android:id="@+id/itemVietnamese"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:padding="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center_vertical">
+                    android:background="@drawable/bg_language_item_new">
 
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_language"
-                        android:layout_marginEnd="16dp" />
+                    <!-- Flag container -->
+                    <FrameLayout
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_flag_container">
 
-                    <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="🇻🇳"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Tiếng Việt"
-                        android:textSize="16sp"
-                        android:textColor="#333333" />
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
 
-                    <!-- Dùng icon check có sẵn của Android -->
-                    <ImageView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiếng Việt"
+                            android:textSize="17sp"
+                            android:textColor="#1E293B"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vietnamese"
+                            android:textSize="13sp"
+                            android:textColor="#94A3B8"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+
+                    <!-- Check icon -->
+                    <FrameLayout
                         android:id="@+id/checkVietnamese"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@android:drawable/checkbox_on_background"
-                        android:visibility="gone" />
-                </LinearLayout>
+                        android:background="@drawable/bg_check_selected"
+                        android:visibility="gone">
 
-                <!-- English -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="✓"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- English -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
+
                 <LinearLayout
                     android:id="@+id/itemEnglish"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:padding="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_language_item_new">
+
+                    <!-- Flag container -->
+                    <FrameLayout
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_flag_container">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="🇺🇸"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="English"
+                            android:textSize="17sp"
+                            android:textColor="#1E293B"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiếng Anh"
+                            android:textSize="13sp"
+                            android:textColor="#94A3B8"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+
+                    <!-- Check icon -->
+                    <FrameLayout
+                        android:id="@+id/checkEnglish"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:background="@drawable/bg_check_selected"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="✓"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Lưu ý -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FEF3C7">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="14dp"
                     android:gravity="center_vertical">
 
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_language"
-                        android:layout_marginEnd="16dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💡"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="English"
-                        android:textSize="16sp"
-                        android:textColor="#333333" />
-
-                    <ImageView
-                        android:id="@+id/checkEnglish"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@android:drawable/checkbox_on_background"
-                        android:visibility="gone" />
+                        android:layout_marginStart="10dp"
+                        android:text="@string/language_note"
+                        android:textSize="13sp"
+                        android:textColor="#92400E"
+                        android:lineSpacingExtra="2dp" />
                 </LinearLayout>
-            </LinearLayout>
-
-            <!-- Nút Hủy và Lưu -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end"
-                android:layout_marginTop="24dp"
-                android:paddingHorizontal="8dp">
-
-                <TextView
-                    android:id="@+id/btnDiscard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_button_rounded"
-                    android:backgroundTint="#B0B0B0"
-                    android:padding="12dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
-                    android:text="Hủy"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/btnSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_button_rounded"
-                    android:backgroundTint="@color/mau_chu_dao"
-                    android:padding="12dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
-                    android:text="Lưu"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lưu ý: Ứng dụng cần khởi động lại để áp dụng ngôn ngữ mới"
-                android:textSize="12sp"
-                android:textColor="#666666"
-                android:layout_marginTop="24dp"
-                android:layout_gravity="center" />
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- Bottom buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="#FFFFFF"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/btnDiscard"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="52dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_button_cancel"
+            android:text="@string/cancel"
+            android:textColor="@color/mau_chu_dao"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_button_save"
+            android:text="@string/save_changes"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+    </LinearLayout>
 </LinearLayout>

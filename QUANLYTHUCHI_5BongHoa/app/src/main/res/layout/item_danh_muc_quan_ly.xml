@@ -23,15 +23,24 @@
             android:layout_height="64dp"
             app:cardCornerRadius="32dp"
             app:cardElevation="0dp"
+<<<<<<< HEAD
             app:cardBackgroundColor="@color/mau_nen_sang">
+=======
+            app:cardBackgroundColor="#F5F5F5">
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
             <ImageView
                 android:id="@+id/ivIconDanhMuc"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
+<<<<<<< HEAD
                 android:src="@drawable/ic_food_modern"
                 app:tint="@color/mau_chu_dao" />
+=======
+                android:src="@drawable/ic_thuc_pham"
+                android:scaleType="fitCenter" />
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Category Information -->
@@ -132,6 +141,7 @@
             </LinearLayout>
         </LinearLayout>
 
+<<<<<<< HEAD
         <!-- Action Buttons Container -->
         <LinearLayout
             android:layout_width="wrap_content"
@@ -147,6 +157,28 @@
                 app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/mau_nen_sang">
+=======
+        <!-- Nút chỉnh sửa -->
+        <ImageView
+            android:id="@+id/btnEdit"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Sửa" />
+
+        <!-- Nút xóa -->
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/bieu_tuong_huy"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Xóa" />
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
                 <ImageView
                     android:id="@+id/btnEdit"
@@ -180,6 +212,7 @@
         </LinearLayout>
     </LinearLayout>
 
+<<<<<<< HEAD
     <!-- Subtle Divider -->
     <View
         android:layout_width="match_parent"
@@ -189,3 +222,6 @@
         android:layout_marginHorizontal="20dp" />
 
 </com.google.android.material.card.MaterialCardView>
+=======
+</com.google.android.material.card.MaterialCardView>
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066

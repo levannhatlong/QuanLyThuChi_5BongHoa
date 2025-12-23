@@ -195,7 +195,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_tien_khac"
+                    android:src="@drawable/ic_dau_tu"
                     android:contentDescription="Tiền khác" />
 
                 <TextView

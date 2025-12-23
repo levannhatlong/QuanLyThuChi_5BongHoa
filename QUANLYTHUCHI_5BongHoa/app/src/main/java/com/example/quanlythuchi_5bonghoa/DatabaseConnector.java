@@ -13,7 +13,11 @@ public class DatabaseConnector {
 
     // Lưu ý: Android bắt buộc phải có User/Pass của SQL Server để xác thực từ xa
     private static final String USER = "sa";
+<<<<<<< HEAD
     private static final String PASS = "A01249727402a";
+=======
+    private static final String PASS = "123";
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
     public static Connection getConnection() {
         Connection conn = null;

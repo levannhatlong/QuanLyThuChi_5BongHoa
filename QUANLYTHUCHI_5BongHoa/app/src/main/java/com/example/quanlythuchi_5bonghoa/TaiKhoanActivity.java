@@ -1,8 +1,14 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.app.DatePickerDialog;
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +27,7 @@ import java.util.Calendar;
 public class TaiKhoanActivity extends AppCompatActivity {
 
     private ImageView btnBack, imgProfile;
+<<<<<<< HEAD
     private TextView tvUserName, tvUserEmail;
     private TextInputEditText edtName, edtEmail, edtPhone, edtBirthDate;
     private LinearLayout layoutChangePassword, layoutTwoFactor, layoutBackupData, 
@@ -29,14 +36,39 @@ public class TaiKhoanActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fabSave;
     
     private SharedPreferences userPrefs;
+=======
+    private TextView btnEdit, btnSave;
+    private TextView tvUserName;
+    
+    // TextView hiển thị (chế độ xem)
+    private TextView tvTenDangNhap, tvHoTen, tvEmailSoDienThoai, tvNgaySinh;
+    
+    // EditText chỉnh sửa (chế độ sửa)
+    private EditText edtHoTen, edtEmailSoDienThoai;
+    private LinearLayout layoutNgaySinhEdit;
+    private TextView tvNgaySinhEdit;
+    
+    private LinearLayout layoutDoiMatKhau, layoutXoaCache;
+    private TextView btnDangXuat, btnXoaTaiKhoan;
+
+    private int userId;
+    private String selectedDate = "";
+    private boolean isEditMode = false;
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tai_khoan);
 
+<<<<<<< HEAD
         userPrefs = getSharedPreferences("UserData", MODE_PRIVATE);
         
+=======
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        userId = prefs.getInt("user_id", -1);
+
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
         initViews();
         setupListeners();
         loadUserData();
@@ -44,8 +76,11 @@ public class TaiKhoanActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
+        btnEdit = findViewById(R.id.btnEdit);
+        btnSave = findViewById(R.id.btnSave);
         imgProfile = findViewById(R.id.imgProfile);
         tvUserName = findViewById(R.id.tvUserName);
+<<<<<<< HEAD
         tvUserEmail = findViewById(R.id.tvUserEmail);
         edtName = findViewById(R.id.edtName);
         edtEmail = findViewById(R.id.edtEmail);
@@ -61,25 +96,57 @@ public class TaiKhoanActivity extends AppCompatActivity {
         
         switchTwoFactor = findViewById(R.id.switchTwoFactor);
         fabSave = findViewById(R.id.fabSave);
+=======
+        
+        // TextView hiển thị
+        tvTenDangNhap = findViewById(R.id.tvTenDangNhap);
+        tvHoTen = findViewById(R.id.tvHoTen);
+        tvEmailSoDienThoai = findViewById(R.id.tvEmailSoDienThoai);
+        tvNgaySinh = findViewById(R.id.tvNgaySinh);
+        
+        // EditText chỉnh sửa
+        edtHoTen = findViewById(R.id.edtHoTen);
+        edtEmailSoDienThoai = findViewById(R.id.edtEmailSoDienThoai);
+        layoutNgaySinhEdit = findViewById(R.id.layoutNgaySinhEdit);
+        tvNgaySinhEdit = findViewById(R.id.tvNgaySinhEdit);
+        
+        layoutDoiMatKhau = findViewById(R.id.layoutDoiMatKhau);
+        layoutXoaCache = findViewById(R.id.layoutXoaCache);
+        btnDangXuat = findViewById(R.id.btnDangXuat);
+        btnXoaTaiKhoan = findViewById(R.id.btnXoaTaiKhoan);
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
     }
 
 
     private void setupListeners() {
         // Back button click
         btnBack.setOnClickListener(v -> {
-            saveUserData();
-            finish();
+            if (isEditMode) {
+                toggleEditMode(false);
+                loadUserData();
+            } else {
+                finish();
+            }
         });
 
+<<<<<<< HEAD
         // Profile image click
         imgProfile.setOnClickListener(v -> {
             Toast.makeText(this, "Chọn ảnh đại diện", Toast.LENGTH_SHORT).show();
             // TODO: Implement image picker
+=======
+        btnEdit.setOnClickListener(v -> toggleEditMode(true));
+
+        btnSave.setOnClickListener(v -> saveUserData());
+
+        layoutNgaySinhEdit.setOnClickListener(v -> {
+            if (isEditMode) showDatePicker();
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
         });
 
-        // Birth date picker
-        edtBirthDate.setOnClickListener(v -> showDatePicker());
+        layoutDoiMatKhau.setOnClickListener(v -> showChangePasswordDialog());
 
+<<<<<<< HEAD
         // Change Password
         layoutChangePassword.setOnClickListener(v -> showChangePasswordDialog());
 
@@ -140,35 +207,160 @@ public class TaiKhoanActivity extends AppCompatActivity {
             saveUserData();
             Toast.makeText(this, "Đã lưu thông tin thành công", Toast.LENGTH_SHORT).show();
         });
+=======
+        layoutXoaCache.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Xóa bộ nhớ cache")
+                    .setMessage("Bạn có chắc muốn xóa bộ nhớ cache?")
+                    .setPositiveButton("Xóa", (dialog, which) -> {
+                        clearCache();
+                        Toast.makeText(this, "Đã xóa bộ nhớ cache", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Hủy", null)
+                    .show();
+        });
+
+        btnDangXuat.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Đăng xuất")
+                    .setMessage("Bạn có chắc muốn đăng xuất?")
+                    .setPositiveButton("Đăng xuất", (dialog, which) -> logout())
+                    .setNegativeButton("Hủy", null)
+                    .show();
+        });
+
+        btnXoaTaiKhoan.setOnClickListener(v -> showDeleteAccountDialog());
+    }
+
+    private void toggleEditMode(boolean editMode) {
+        isEditMode = editMode;
+        
+        // Hiển thị/ẩn nút Sửa/Lưu
+        btnEdit.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        btnSave.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        // Hiển thị/ẩn TextView và EditText
+        tvHoTen.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        edtHoTen.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        tvEmailSoDienThoai.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        edtEmailSoDienThoai.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        tvNgaySinh.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        layoutNgaySinhEdit.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        if (editMode) {
+            // Copy dữ liệu từ TextView sang EditText
+            String hoTen = tvHoTen.getText().toString();
+            edtHoTen.setText(hoTen.equals("--") ? "" : hoTen);
+            
+            String emailSdt = tvEmailSoDienThoai.getText().toString();
+            edtEmailSoDienThoai.setText(emailSdt.equals("--") ? "" : emailSdt);
+            
+            String ngaySinh = tvNgaySinh.getText().toString();
+            if (!ngaySinh.equals("--")) {
+                selectedDate = ngaySinh;
+                tvNgaySinhEdit.setText(ngaySinh);
+                tvNgaySinhEdit.setTextColor(getResources().getColor(android.R.color.black));
+            } else {
+                tvNgaySinhEdit.setText("Chọn ngày");
+                tvNgaySinhEdit.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
+        }
+    }
+
+    private void loadUserData() {
+        new Thread(() -> {
+            NguoiDungRepository.NguoiDung nd = NguoiDungRepository.getNguoiDung(userId);
+            runOnUiThread(() -> {
+                if (nd != null) {
+                    // Tên hiển thị dưới avatar
+                    tvUserName.setText(nd.hoTen != null && !nd.hoTen.isEmpty() ? nd.hoTen : "Chưa cập nhật");
+
+                    // Thông tin cá nhân từ database
+                    tvTenDangNhap.setText(nd.tenDangNhap != null ? nd.tenDangNhap : "--");
+                    tvHoTen.setText(nd.hoTen != null && !nd.hoTen.isEmpty() ? nd.hoTen : "--");
+                    tvEmailSoDienThoai.setText(nd.emailSoDienThoai != null && !nd.emailSoDienThoai.isEmpty() ? nd.emailSoDienThoai : "--");
+                    tvNgaySinh.setText(nd.ngaySinh != null && !nd.ngaySinh.isEmpty() ? nd.ngaySinh : "--");
+
+                    // Lưu ngày sinh để edit
+                    if (nd.ngaySinh != null && !nd.ngaySinh.isEmpty()) {
+                        selectedDate = nd.ngaySinh;
+                    }
+                } else {
+                    tvUserName.setText("Lỗi kết nối");
+                    Toast.makeText(this, "Không thể tải thông tin người dùng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
+    }
+
+    private void saveUserData() {
+        String hoTen = edtHoTen.getText().toString().trim();
+        String emailSoDienThoai = edtEmailSoDienThoai.getText().toString().trim();
+
+        if (hoTen.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập họ tên", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new Thread(() -> {
+            boolean success = NguoiDungRepository.updateNguoiDung(userId, hoTen, emailSoDienThoai, selectedDate);
+            runOnUiThread(() -> {
+                if (success) {
+                    Toast.makeText(this, "Đã lưu thông tin", Toast.LENGTH_SHORT).show();
+                    toggleEditMode(false);
+                    loadUserData();
+                } else {
+                    Toast.makeText(this, "Lỗi khi lưu thông tin", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
     }
 
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        
+        if (!selectedDate.isEmpty()) {
+            try {
+                String[] parts = selectedDate.split("/");
+                if (parts.length == 3) {
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+                    calendar.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+                    calendar.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+                }
+            } catch (Exception ignored) {}
+        }
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    String date = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear);
-                    edtBirthDate.setText(date);
+        DatePickerDialog datePicker = new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> {
+                    selectedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year);
+                    tvNgaySinhEdit.setText(selectedDate);
+                    tvNgaySinhEdit.setTextColor(getResources().getColor(android.R.color.black));
                 },
-                year, month, day
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         );
-        datePickerDialog.show();
+        datePicker.show();
     }
 
     private void showChangePasswordDialog() {
+<<<<<<< HEAD
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Đổi mật khẩu");
         builder.setMessage("Tính năng đổi mật khẩu sẽ được cập nhật trong phiên bản tiếp theo.");
         builder.setPositiveButton("OK", null);
         builder.show();
     }
+=======
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_doi_mat_khau, null);
+        EditText edtMatKhauCu = dialogView.findViewById(R.id.edtMatKhauCu);
+        EditText edtMatKhauMoi = dialogView.findViewById(R.id.edtMatKhauMoi);
+        EditText edtXacNhanMatKhau = dialogView.findViewById(R.id.edtXacNhanMatKhau);
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
-    private void showConfirmDialog(String title, String message, Runnable onConfirm) {
         new AlertDialog.Builder(this)
+<<<<<<< HEAD
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton("Xác nhận", (dialog, which) -> onConfirm.run())
@@ -188,11 +380,46 @@ public class TaiKhoanActivity extends AppCompatActivity {
                             .setPositiveButton("CHẮC CHẮN", (d, w) -> onConfirm.run())
                             .setNegativeButton("HỦY", null)
                             .show();
+=======
+                .setTitle("Đổi mật khẩu")
+                .setView(dialogView)
+                .setPositiveButton("Đổi", (dialog, which) -> {
+                    String matKhauCu = edtMatKhauCu.getText().toString();
+                    String matKhauMoi = edtMatKhauMoi.getText().toString();
+                    String xacNhan = edtXacNhanMatKhau.getText().toString();
+
+                    if (matKhauCu.isEmpty() || matKhauMoi.isEmpty() || xacNhan.isEmpty()) {
+                        Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!matKhauMoi.equals(xacNhan)) {
+                        Toast.makeText(this, "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (matKhauMoi.length() < 6) {
+                        Toast.makeText(this, "Mật khẩu mới phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    new Thread(() -> {
+                        boolean success = NguoiDungRepository.doiMatKhau(userId, matKhauCu, matKhauMoi);
+                        runOnUiThread(() -> {
+                            if (success) {
+                                Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }).start();
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
 
+<<<<<<< HEAD
     private void loadUserData() {
         String name = userPrefs.getString("name", "S Bông Hoa");
         String email = userPrefs.getString("email", "5bonghoa@gmail.com");
@@ -239,6 +466,44 @@ public class TaiKhoanActivity extends AppCompatActivity {
         // Update header info
         tvUserName.setText(name);
         tvUserEmail.setText(email);
+=======
+    private void logout() {
+        getSharedPreferences("user_prefs", MODE_PRIVATE).edit().clear().apply();
+        Intent intent = new Intent(this, dangnhap.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showDeleteAccountDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa tài khoản")
+                .setMessage("CẢNH BÁO: Hành động này sẽ xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn!")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Xác nhận")
+                            .setMessage("Bạn thực sự muốn xóa tài khoản?")
+                            .setPositiveButton("Có, xóa ngay", (d, w) -> deleteAccount())
+                            .setNegativeButton("Không", null)
+                            .show();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void deleteAccount() {
+        new Thread(() -> {
+            boolean success = NguoiDungRepository.xoaTaiKhoan(userId);
+            runOnUiThread(() -> {
+                if (success) {
+                    Toast.makeText(this, "Tài khoản đã được xóa", Toast.LENGTH_SHORT).show();
+                    logout();
+                } else {
+                    Toast.makeText(this, "Lỗi khi xóa tài khoản", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
     }
 
     private void clearCache() {
@@ -249,6 +514,7 @@ public class TaiKhoanActivity extends AppCompatActivity {
         }
     }
 
+<<<<<<< HEAD
     private void clearAppData() {
         // Clear SharedPreferences
         userPrefs.edit().clear().apply();
@@ -280,15 +546,15 @@ public class TaiKhoanActivity extends AppCompatActivity {
         System.exit(0);
     }
 
+=======
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
     private boolean deleteDir(java.io.File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             if (children != null) {
                 for (String child : children) {
                     boolean success = deleteDir(new java.io.File(dir, child));
-                    if (!success) {
-                        return false;
-                    }
+                    if (!success) return false;
                 }
             }
             return dir.delete();
@@ -297,6 +563,7 @@ public class TaiKhoanActivity extends AppCompatActivity {
         }
         return false;
     }
+<<<<<<< HEAD
 
     @Override
     public void onBackPressed() {
@@ -304,3 +571,6 @@ public class TaiKhoanActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 }
+=======
+}
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
