@@ -18,7 +18,7 @@ public class ThemGhiChuActivity extends AppCompatActivity {
         etTitle = findViewById(R.id.etTitle);
         etContent = findViewById(R.id.etContent);
 
-        // Nút Back trên header
+        // Nút Back
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         // Nút Lưu
@@ -34,19 +34,21 @@ public class ThemGhiChuActivity extends AppCompatActivity {
 
         if (content.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập nội dung ghi chú", Toast.LENGTH_SHORT).show();
+            etContent.requestFocus();
             return;
         }
 
-        // Nếu tiêu đề trống → tự sinh tiêu đề từ 10 ký tự đầu nội dung
+        // Nếu tiêu đề trống → tự sinh từ 20 ký tự đầu nội dung
         if (title.isEmpty()) {
-            title = content.length() > 10 ? content.substring(0, 10) + "..." : content;
+            title = content.length() > 20 ? content.substring(0, 20) + "..." : content;
         }
 
-        // TODO: Lưu vào SQLite / Room / SharedPreferences
-        // Ví dụ tạm thời dùng Toast
-        Toast.makeText(this, "Đã lưu ghi chú:\n" + title, Toast.LENGTH_LONG).show();
+        // TODO: Lưu vào Room hoặc SQLite
+        // Ví dụ: GhiChu ghiChu = new GhiChu(0, title, content, maNguoiDung);
+        // ghiChuRepository.insert(ghiChu);
 
-        // Quay về trang danh sách
+        Toast.makeText(this, "Đã lưu ghi chú: " + title, Toast.LENGTH_SHORT).show();
+
         setResult(RESULT_OK);
         finish();
     }
