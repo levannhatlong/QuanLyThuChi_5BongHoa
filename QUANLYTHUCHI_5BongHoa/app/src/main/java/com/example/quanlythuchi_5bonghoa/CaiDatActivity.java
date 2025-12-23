@@ -67,7 +67,11 @@ public class CaiDatActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
+        // Liên kết ngân hàng
+        layoutLienKetNganHang.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LienKetNganHangActivity.class);
+            startActivity(intent);
+        });
 
         // Xuất dữ liệu
         layoutXuatDuLieu.setOnClickListener(v -> {

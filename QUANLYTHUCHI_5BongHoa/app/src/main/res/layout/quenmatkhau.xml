@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đừng lo, chúng tôi sẽ giúp bạn"
+            android:text="Chúng tôi sẽ gửi mã OTP về email của bạn"
             android:textColor="#B3FFFFFF"
             android:textSize="14sp"
             android:layout_marginTop="8dp"
@@ -52,7 +52,7 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- Step 1: Nhập email/username -->
+                <!-- Step 1: Nhập email -->
                 <LinearLayout
                     android:id="@+id/layoutStep1"
                     android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bước 1: Xác minh tài khoản"
+                        android:text="Bước 1: Nhập email"
                         android:textColor="@color/mau_chu_dao"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -72,7 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nhập email hoặc tên đăng nhập đã đăng ký"
+                        android:text="Nhập email đã đăng ký để nhận mã OTP"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:layout_marginBottom="16dp" />
@@ -89,21 +89,21 @@
                             android:id="@+id/edtEmailForgot"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Email hoặc tên đăng nhập"
+                            android:hint="Email đã đăng ký"
                             android:inputType="textEmailAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnXacMinh"
+                        android:id="@+id/btnGuiOTP"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
-                        android:text="Xác minh"
+                        android:text="📧 Gửi mã OTP"
                         android:textSize="15sp"
                         android:backgroundTint="@color/mau_chu_dao"
                         app:cornerRadius="12dp" />
                 </LinearLayout>
 
-                <!-- Step 2: Đặt mật khẩu mới -->
+                <!-- Step 2: Nhập OTP -->
                 <LinearLayout
                     android:id="@+id/layoutStep2"
                     android:layout_width="match_parent"
@@ -122,13 +122,13 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="Bước 2: Đặt mật khẩu mới"
+                            android:text="Bước 2: Xác minh OTP"
                             android:textColor="@color/mau_chu_dao"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/btnQuayLai"
+                            android:id="@+id/btnQuayLaiStep1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="← Quay lại"
@@ -138,10 +138,88 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvThongTinTaiKhoan"
+                        android:id="@+id/tvEmailDaGui"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tài khoản: example@email.com"
+                        android:text="📧 Mã OTP đã gửi đến: example@email.com"
+                        android:textColor="#43A047"
+                        android:textSize="13sp"
+                        android:background="#E8F5E9"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/mau_chu_dao">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtOTP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nhập mã OTP (6 số)"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:gravity="center"
+                            android:textSize="20sp"
+                            android:letterSpacing="0.3" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tvCountdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏰ Mã có hiệu lực trong 5:00"
+                        android:textColor="#FF9800"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvGuiLai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gửi lại mã OTP"
+                        android:textColor="@color/mau_chu_dao"
+                        android:textSize="13sp"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnXacNhanOTP"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Xác nhận OTP"
+                        android:textSize="15sp"
+                        android:backgroundTint="@color/mau_chu_dao"
+                        app:cornerRadius="12dp"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- Step 3: Đặt mật khẩu mới -->
+                <LinearLayout
+                    android:id="@+id/layoutStep3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bước 3: Đặt mật khẩu mới"
+                        android:textColor="@color/mau_chu_dao"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="✅ Xác minh OTP thành công!"
                         android:textColor="#43A047"
                         android:textSize="13sp"
                         android:background="#E8F5E9"
@@ -184,7 +262,7 @@
                         android:id="@+id/btnDatLaiMatKhau"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
-                        android:text="Đặt lại mật khẩu"
+                        android:text="🔒 Đặt lại mật khẩu"
                         android:textSize="15sp"
                         android:backgroundTint="@color/mau_chu_dao"
                         app:cornerRadius="12dp" />
