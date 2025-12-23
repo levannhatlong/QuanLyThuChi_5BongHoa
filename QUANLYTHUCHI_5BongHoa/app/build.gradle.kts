@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    // Plugin KSP đã được xóa vì không còn sử dụng Room
 }
 
 android {
@@ -31,13 +29,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
-    // Các thư viện Room đã được xóa bỏ
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -47,7 +41,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // Thêm thư viện JTDS để kết nối SQL Server
+    
+    // JTDS driver để kết nối SQL Server
     implementation("net.sourceforge.jtds:jtds:1.3.1")
 }
