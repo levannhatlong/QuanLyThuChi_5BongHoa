@@ -101,7 +101,7 @@ public class TrangChuActivity extends AppCompatActivity {
         ivLogout.setOnClickListener(v -> showLogoutDialog());
         
         // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
-        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
+        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, DanhSachGiaoDichActivity.class)));
     }
 
     private void showLogoutDialog() {

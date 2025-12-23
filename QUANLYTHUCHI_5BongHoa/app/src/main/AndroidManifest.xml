@@ -48,6 +48,7 @@
         <activity android:name=".CaiDatCanhBao" />
         <activity android:name=".LienKetNganHangActivity" />
         <activity android:name=".XuatDuLieuActivity" />
+        <activity android:name=".DanhSachGiaoDichActivity" />
 
     </application>
 
