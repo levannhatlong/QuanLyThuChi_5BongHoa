@@ -155,7 +155,7 @@ public class TrangChuActivity extends AppCompatActivity {
                 // 2. Get all transactions to calculate totals and populate list
                 String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
                                     "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
+                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
                 PreparedStatement transStmt = connection.prepareStatement(transQuery);
                 transStmt.setInt(1, currentUserId);
                 ResultSet transRs = transStmt.executeQuery();

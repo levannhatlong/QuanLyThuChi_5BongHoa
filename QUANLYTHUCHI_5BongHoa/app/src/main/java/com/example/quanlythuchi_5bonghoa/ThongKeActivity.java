@@ -127,7 +127,7 @@ public class ThongKeActivity extends AppCompatActivity {
                 String query = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
                         "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
                         "WHERE g.MaNguoiDung = ? " + dateCondition +
-                        " ORDER BY g.NgayGiaoDich DESC";
+                        " ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
 
                 PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.setInt(1, currentUserId);

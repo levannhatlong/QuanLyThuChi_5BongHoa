@@ -202,4 +202,28 @@ public class ThongBaoRepository {
         }
         return 0;
     }
+
+    // Tạo thông báo mới
+    public static boolean createNotification(int userId, String tieuDe, String noiDung, String loaiThongBao) {
+        try {
+            Connection conn = DatabaseConnector.getConnection();
+            if (conn != null) {
+                String sql = "INSERT INTO ThongBao (MaNguoiDung, TieuDe, NoiDung, DaDoc, NgayTao, LoaiThongBao) " +
+                        "VALUES (?, ?, ?, 0, GETDATE(), ?)";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, userId);
+                stmt.setString(2, tieuDe);
+                stmt.setString(3, noiDung);
+                stmt.setString(4, loaiThongBao);
+                int result = stmt.executeUpdate();
+                stmt.close();
+                conn.close();
+                Log.d("ThongBaoRepo", "Tạo thông báo: " + (result > 0 ? "thành công" : "thất bại"));
+                return result > 0;
+            }
+        } catch (Exception e) {
+            Log.e("ThongBaoRepo", "Lỗi tạo thông báo: " + e.getMessage());
+        }
+        return false;
+    }
 }

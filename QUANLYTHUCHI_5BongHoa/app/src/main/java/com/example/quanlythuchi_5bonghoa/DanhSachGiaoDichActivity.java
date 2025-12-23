@@ -89,7 +89,7 @@ public class DanhSachGiaoDichActivity extends AppCompatActivity {
                 String query = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, " +
                         "d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
                         "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                        "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
+                        "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
 
                 PreparedStatement stmt = conn.prepareStatement(query);
                 stmt.setInt(1, userId);

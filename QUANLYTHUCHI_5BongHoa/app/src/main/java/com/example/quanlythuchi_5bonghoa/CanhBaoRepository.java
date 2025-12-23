@@ -131,4 +131,50 @@ public class CanhBaoRepository {
         }
         return false;
     }
+
+    // Lấy tổng chi tiêu theo chu kỳ
+    public static double getTongChiTieuTheoChuKy(int userId, String chuKy) {
+        try {
+            Connection conn = DatabaseConnector.getConnection();
+            if (conn != null) {
+                String dateCondition;
+                switch (chuKy) {
+                    case "Ngày":
+                        dateCondition = "CAST(g.NgayGiaoDich AS DATE) = CAST(GETDATE() AS DATE)";
+                        break;
+                    case "Tuần":
+                        dateCondition = "g.NgayGiaoDich >= DATEADD(DAY, -7, GETDATE())";
+                        break;
+                    case "Tháng":
+                        dateCondition = "YEAR(g.NgayGiaoDich) = YEAR(GETDATE()) AND MONTH(g.NgayGiaoDich) = MONTH(GETDATE())";
+                        break;
+                    case "Năm":
+                        dateCondition = "YEAR(g.NgayGiaoDich) = YEAR(GETDATE())";
+                        break;
+                    default:
+                        dateCondition = "1=1";
+                }
+
+                String sql = "SELECT ISNULL(SUM(g.SoTien), 0) as TongChi " +
+                        "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                        "WHERE g.MaNguoiDung = ? AND d.LoaiDanhMuc = N'Chi tiêu' AND " + dateCondition;
+                
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                
+                double tongChi = 0;
+                if (rs.next()) {
+                    tongChi = rs.getDouble("TongChi");
+                }
+                rs.close();
+                stmt.close();
+                conn.close();
+                return tongChi;
+            }
+        } catch (Exception e) {
+            Log.e("CanhBaoRepo", "Lỗi lấy tổng chi tiêu: " + e.getMessage());
+        }
+        return 0;
+    }
 }
