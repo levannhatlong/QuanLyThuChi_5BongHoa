@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">5BongHoa Money</string>
+
+    <!-- Language -->
+    <string name="language_title">Language</string>
+    <string name="current_language">Current language</string>
+    <string name="select_language">Select language</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="english">English</string>
+    <string name="language_note">The app will restart to apply the new language</string>
+    <string name="cancel">Cancel</string>
+    <string name="save_changes">Save changes</string>
+    <string name="changes_cancelled">Changes cancelled</string>
+    <string name="saved">Saved</string>
+    <string name="restarting_app">Restarting app...</string>
+    <string name="unsaved_changes">Unsaved changes</string>
+    <string name="back">Back</string>
+
+    <string-array name="canh_bao_options">
+        <item>Daily</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+</resources>
