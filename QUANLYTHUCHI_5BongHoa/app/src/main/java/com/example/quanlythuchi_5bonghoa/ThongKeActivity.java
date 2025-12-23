@@ -1,13 +1,9 @@
 package com.example.quanlythuchi_5bonghoa;
 
-<<<<<<< HEAD
-=======
 import android.content.SharedPreferences;
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,15 +19,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.sql.Connection;
-<<<<<<< HEAD
-import java.sql.ResultSet;
-import java.sql.Statement;
-=======
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -87,9 +78,6 @@ public class ThongKeActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tv_empty);
     }
 
-<<<<<<< HEAD
-        setupRecyclerView();
-=======
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         giaoDichAdapter = new GiaoDichAdapter(this, new ArrayList<>());
@@ -97,11 +85,7 @@ public class ThongKeActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
         ivBack.setOnClickListener(v -> finish());
-
-        // Bắt đầu quá trình lấy dữ liệu từ SQL Server
-        new FetchGiaoDichTask().execute();
 
         toggleButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
@@ -119,31 +103,6 @@ public class ThongKeActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-        toggleButtonGroup.check(R.id.btn_thang);
-    }
-
-    private void setupPieChart(List<GiaoDich> giaoDichs) {
-        float tongThu = 0;
-        float tongChi = 0;
-
-        for (GiaoDich gd : giaoDichs) {
-            // Cần logic để xác định giao dịch là thu hay chi, tạm thời giả định
-            if (gd.getTenGiaoDich().toLowerCase().contains("lương")) { // Ví dụ: nếu tên có chữ "lương" thì là thu
-                gd.TienVao = true;
-            }
-
-            if (gd.isTienVao()) {
-                tongThu += gd.getSoTien();
-            } else {
-                tongChi += gd.getSoTien();
-            }
-        }
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(tongChi, "Tổng chi"));
-        entries.add(new PieEntry(tongThu, "Tổng thu"));
-=======
         // Mặc định chọn tháng
         toggleButtonGroup.check(R.id.btn_thang);
     }
@@ -264,7 +223,6 @@ public class ThongKeActivity extends AppCompatActivity {
         } else {
             entries.add(new PieEntry(1, "Chưa có dữ liệu"));
         }
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 
@@ -295,63 +253,4 @@ public class ThongKeActivity extends AppCompatActivity {
         pieChart.animateY(800);
         pieChart.invalidate();
     }
-<<<<<<< HEAD
-
-    private void setupRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        giaoDichAdapter = new GiaoDichAdapter(this, new ArrayList<>());
-        recyclerView.setAdapter(giaoDichAdapter);
-    }
-
-    private void updateDataFor(String filter) {
-        Toast.makeText(this, "Lọc theo: " + filter, Toast.LENGTH_SHORT).show();
-    }
-
-    // Lớp nội để thực hiện tác vụ mạng trên luồng nền
-    private class FetchGiaoDichTask extends AsyncTask<Void, Void, List<GiaoDich>> {
-        @Override
-        protected List<GiaoDich> doInBackground(Void... voids) {
-            List<GiaoDich> giaoDichs = new ArrayList<>();
-            Connection connection = DatabaseConnector.getConnection();
-
-            if (connection == null) {
-                return null; // Trả về null nếu kết nối thất bại
-            }
-
-            try (Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery("SELECT TenGiaoDich, SoTien FROM GiaoDich")) {
-
-                while (resultSet.next()) {
-                    String tenGiaoDich = resultSet.getString("TenGiaoDich");
-                    double soTien = resultSet.getDouble("SoTien");
-                    giaoDichs.add(new GiaoDich(tenGiaoDich, soTien, false)); // Tạm thời mặc định là tiền chi (false)
-                }
-                return giaoDichs;
-            } catch (Exception e) {
-                Log.e("FetchGiaoDichTask", "Lỗi khi lấy dữ liệu", e);
-                return null;
-            } finally {
-                try {
-                    connection.close();
-                } catch (Exception e) {
-                    Log.e("FetchGiaoDichTask", "Lỗi khi đóng kết nối", e);
-                }
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<GiaoDich> result) {
-            if (result != null) {
-                Log.d("FetchGiaoDichTask", "Lấy thành công " + result.size() + " giao dịch.");
-                giaoDichAdapter.setGiaoDichs(result);
-                setupPieChart(result);
-            } else {
-                Log.e("FetchGiaoDichTask", "Lấy dữ liệu thất bại hoặc không có dữ liệu.");
-                Toast.makeText(ThongKeActivity.this, "Lỗi kết nối cơ sở dữ liệu", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }
-=======
-}
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066

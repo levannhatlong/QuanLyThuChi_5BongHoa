@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -38,6 +39,18 @@ public class NgonNguActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ngon_ngu);
 
         sharedPreferences = getSharedPreferences("AppSettings", MODE_PRIVATE);
+
+        // Handle back press using OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (!selectedLanguage.equals(originalLanguage)) {
+                    // Show confirmation if there are unsaved changes
+                    Toast.makeText(NgonNguActivity.this, R.string.unsaved_changes, Toast.LENGTH_SHORT).show();
+                }
+                finish();
+            }
+        });
 
         initViews();
         loadSavedLanguage();
@@ -194,14 +207,5 @@ public class NgonNguActivity extends AppCompatActivity {
         } else {
             recreate();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!selectedLanguage.equals(originalLanguage)) {
-            // Show confirmation if there are unsaved changes
-            Toast.makeText(this, R.string.unsaved_changes, Toast.LENGTH_SHORT).show();
-        }
-        super.onBackPressed();
     }
 }

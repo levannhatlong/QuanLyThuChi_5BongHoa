@@ -358,9 +358,7 @@ public class ThemSuaDanhMucActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Lỗi khi kiểm tra dữ liệu. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
         } finally {
-            if (dbHelper != null) {
-                dbHelper.close();
-            }
+            // No need to close dbHelper as it doesn't extend SQLiteOpenHelper
         }
     }
 

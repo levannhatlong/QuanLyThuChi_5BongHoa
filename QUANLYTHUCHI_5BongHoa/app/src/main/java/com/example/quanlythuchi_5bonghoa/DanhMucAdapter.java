@@ -43,28 +43,6 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         holder.tvTenDanhMuc.setText(dm.getTenDanhMuc());
         holder.tvMoTa.setText(dm.getMoTa() != null ? dm.getMoTa() : "");
 
-<<<<<<< HEAD
-        // Set màu cho icon background
-        try {
-            int color = Color.parseColor(danhMuc.getMauSac());
-            holder.cardIcon.setCardBackgroundColor(adjustAlpha(color, 0.15f));
-            holder.ivIconDanhMuc.setColorFilter(color);
-        } catch (Exception e) {
-            holder.cardIcon.setCardBackgroundColor(Color.parseColor("#E8F4F8"));
-            holder.ivIconDanhMuc.setColorFilter(Color.parseColor("#0EA5E9"));
-        }
-
-        // Set type badge
-        if (danhMuc.isChiTieu()) {
-            holder.tvTypeBadge.setText("Chi tiêu");
-            holder.tvTypeBadge.setTextColor(Color.parseColor("#E53935"));
-            holder.cardTypeBadge.setCardBackgroundColor(Color.parseColor("#FFEBEE"));
-        } else {
-            holder.tvTypeBadge.setText("Thu nhập");
-            holder.tvTypeBadge.setTextColor(Color.parseColor("#43A047"));
-            holder.cardTypeBadge.setCardBackgroundColor(Color.parseColor("#E8F5E8"));
-        }
-=======
         // Set icon - giữ nguyên màu gốc PNG
         int iconRes = getIconResource(dm.getBieuTuong());
         holder.ivIconDanhMuc.setImageResource(iconRes);
@@ -78,7 +56,6 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         // Hiển thị nút sửa và xóa cho tất cả danh mục
         holder.btnDelete.setVisibility(View.VISIBLE);
         holder.btnEdit.setVisibility(View.VISIBLE);
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
 
         holder.btnEdit.setOnClickListener(v -> {
             if (listener != null) listener.onEditClick(dm, holder.getAdapterPosition());
@@ -133,24 +110,17 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         }
     }
 
-<<<<<<< HEAD
-    public static class DanhMucViewHolder extends RecyclerView.ViewHolder {
-        MaterialCardView cardIcon, cardTypeBadge;
-=======
     static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView cardIcon;
->>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
         ImageView ivIconDanhMuc, btnEdit, btnDelete;
-        TextView tvTenDanhMuc, tvMoTa, tvTypeBadge;
+        TextView tvTenDanhMuc, tvMoTa;
 
         ViewHolder(View itemView) {
             super(itemView);
             cardIcon = itemView.findViewById(R.id.cardIcon);
-            cardTypeBadge = itemView.findViewById(R.id.cardTypeBadge);
             ivIconDanhMuc = itemView.findViewById(R.id.ivIconDanhMuc);
             tvTenDanhMuc = itemView.findViewById(R.id.tvTenDanhMuc);
             tvMoTa = itemView.findViewById(R.id.tvMoTa);
-            tvTypeBadge = itemView.findViewById(R.id.tvTypeBadge);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
