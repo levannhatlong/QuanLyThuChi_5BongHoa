@@ -145,7 +145,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\Admin\.android\avd\Small_Phone.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -182,7 +182,7 @@
     "git-widget-placeholder": "NhatLong",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "D:/UTE/HK125/7.1.2_LTTD03/CK/QUANLYTHUCHI_5BongHoa/QUANLYTHUCHI_5BongHoa/app/src/main/java",
-    "last_opened_file_path": "D:/Documents/SourceTree_AndroidDEV/QuanLyThuChi_5BongHoa/QuanLyThuChi_5BongHoa/build.gradle.kts"
+    "last_opened_file_path": "D:/Documents/SourceTree_AndroidDEV/QuanLyThuChi_5BongHoa/QUANLYTHUCHI_5BongHoa/build.gradle.kts"
   }
 }]]></component>
   <component name="RunManager">
