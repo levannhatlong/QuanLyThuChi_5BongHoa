@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">5BongHoa Money</string>
 
+    <!-- Ngôn ngữ -->
+    <string name="language_title">Ngôn ngữ</string>
+    <string name="current_language">Ngôn ngữ hiện tại</string>
+    <string name="select_language">Chọn ngôn ngữ</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="english">English</string>
+    <string name="language_note">Ứng dụng sẽ khởi động lại để áp dụng ngôn ngữ mới</string>
+    <string name="cancel">Hủy</string>
+    <string name="save_changes">Lưu thay đổi</string>
+    <string name="changes_cancelled">Đã hủy thay đổi</string>
+    <string name="saved">Đã lưu</string>
+    <string name="restarting_app">Đang khởi động lại ứng dụng...</string>
+    <string name="unsaved_changes">Thay đổi chưa được lưu</string>
+    <string name="back">Quay lại</string>
+
     <string-array name="canh_bao_options">
         <item>Theo ngày</item>
         <item>Theo tháng</item>

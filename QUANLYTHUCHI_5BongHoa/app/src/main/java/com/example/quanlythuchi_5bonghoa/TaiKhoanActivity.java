@@ -1,9 +1,14 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,13 +20,31 @@ import java.util.Calendar;
 public class TaiKhoanActivity extends AppCompatActivity {
 
     private ImageView btnBack, imgProfile;
-    private EditText edtName, edtEmail, edtBirthDate;
-    private TextView btnDoiMatKhau, btnXoaBoNhoCache, btnXoaTaiLieu, btnXoaTaiKhoan;
+    private TextView btnEdit, btnSave;
+    private TextView tvUserName;
+    
+    // TextView hiển thị (chế độ xem)
+    private TextView tvTenDangNhap, tvHoTen, tvEmailSoDienThoai, tvNgaySinh;
+    
+    // EditText chỉnh sửa (chế độ sửa)
+    private EditText edtHoTen, edtEmailSoDienThoai;
+    private LinearLayout layoutNgaySinhEdit;
+    private TextView tvNgaySinhEdit;
+    
+    private LinearLayout layoutDoiMatKhau, layoutXoaCache;
+    private TextView btnDangXuat, btnXoaTaiKhoan;
+
+    private int userId;
+    private String selectedDate = "";
+    private boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tai_khoan);
+
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        userId = prefs.getInt("user_id", -1);
 
         initViews();
         setupListeners();
@@ -30,156 +53,272 @@ public class TaiKhoanActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
+        btnEdit = findViewById(R.id.btnEdit);
+        btnSave = findViewById(R.id.btnSave);
         imgProfile = findViewById(R.id.imgProfile);
-        edtName = findViewById(R.id.edtName);
-        edtEmail = findViewById(R.id.edtEmail);
-        edtBirthDate = findViewById(R.id.edtBirthDate);
-        btnDoiMatKhau = findViewById(R.id.btnDoiMatKhau);
-        btnXoaBoNhoCache = findViewById(R.id.btnXoaBoNhoCache);
-        btnXoaTaiLieu = findViewById(R.id.btnXoaTaiLieu);
+        tvUserName = findViewById(R.id.tvUserName);
+        
+        // TextView hiển thị
+        tvTenDangNhap = findViewById(R.id.tvTenDangNhap);
+        tvHoTen = findViewById(R.id.tvHoTen);
+        tvEmailSoDienThoai = findViewById(R.id.tvEmailSoDienThoai);
+        tvNgaySinh = findViewById(R.id.tvNgaySinh);
+        
+        // EditText chỉnh sửa
+        edtHoTen = findViewById(R.id.edtHoTen);
+        edtEmailSoDienThoai = findViewById(R.id.edtEmailSoDienThoai);
+        layoutNgaySinhEdit = findViewById(R.id.layoutNgaySinhEdit);
+        tvNgaySinhEdit = findViewById(R.id.tvNgaySinhEdit);
+        
+        layoutDoiMatKhau = findViewById(R.id.layoutDoiMatKhau);
+        layoutXoaCache = findViewById(R.id.layoutXoaCache);
+        btnDangXuat = findViewById(R.id.btnDangXuat);
         btnXoaTaiKhoan = findViewById(R.id.btnXoaTaiKhoan);
     }
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> {
-            saveUserData();
-            finish();
+            if (isEditMode) {
+                toggleEditMode(false);
+                loadUserData();
+            } else {
+                finish();
+            }
         });
 
-        // Profile image click
-        imgProfile.setOnClickListener(v -> {
-            // Mở gallery để chọn ảnh
-            Toast.makeText(this, "Chọn ảnh đại diện", Toast.LENGTH_SHORT).show();
-            // TODO: Implement image picker
+        btnEdit.setOnClickListener(v -> toggleEditMode(true));
+
+        btnSave.setOnClickListener(v -> saveUserData());
+
+        layoutNgaySinhEdit.setOnClickListener(v -> {
+            if (isEditMode) showDatePicker();
         });
 
-        // Birth date picker
-        edtBirthDate.setOnClickListener(v -> showDatePicker());
+        layoutDoiMatKhau.setOnClickListener(v -> showChangePasswordDialog());
 
-        // Đổi mật khẩu
-        btnDoiMatKhau.setOnClickListener(v -> {
-            // Mở dialog hoặc activity đổi mật khẩu
-            showChangePasswordDialog();
-        });
-
-        // Xóa bộ nhớ cache
-        btnXoaBoNhoCache.setOnClickListener(v -> {
-            showConfirmDialog(
-                    "Xóa bộ nhớ cache",
-                    "Bạn có chắc chắn muốn xóa bộ nhớ cache không?",
-                    () -> {
+        layoutXoaCache.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Xóa bộ nhớ cache")
+                    .setMessage("Bạn có chắc muốn xóa bộ nhớ cache?")
+                    .setPositiveButton("Xóa", (dialog, which) -> {
                         clearCache();
                         Toast.makeText(this, "Đã xóa bộ nhớ cache", Toast.LENGTH_SHORT).show();
-                    }
-            );
+                    })
+                    .setNegativeButton("Hủy", null)
+                    .show();
         });
 
-        // Xóa dữ liệu ứng dụng
-        btnXoaTaiLieu.setOnClickListener(v -> {
-            showConfirmDialog(
-                    "Xóa dữ liệu ứng dụng",
-                    "CẢNH BÁO: Hành động này sẽ xóa toàn bộ dữ liệu của bạn và không thể khôi phục. Bạn có chắc chắn muốn tiếp tục?",
-                    () -> {
-                        clearAppData();
-                        Toast.makeText(this, "Đã xóa dữ liệu ứng dụng", Toast.LENGTH_SHORT).show();
-                    }
-            );
+        btnDangXuat.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Đăng xuất")
+                    .setMessage("Bạn có chắc muốn đăng xuất?")
+                    .setPositiveButton("Đăng xuất", (dialog, which) -> logout())
+                    .setNegativeButton("Hủy", null)
+                    .show();
         });
 
-        // Xóa tài khoản
-        btnXoaTaiKhoan.setOnClickListener(v -> {
-            showConfirmDialog(
-                    "Xóa tài khoản",
-                    "CẢNH BÁO: Hành động này sẽ xóa vĩnh viễn tài khoản của bạn và không thể khôi phục. Bạn có chắc chắn muốn tiếp tục?",
-                    () -> {
-                        deleteAccount();
+        btnXoaTaiKhoan.setOnClickListener(v -> showDeleteAccountDialog());
+    }
+
+    private void toggleEditMode(boolean editMode) {
+        isEditMode = editMode;
+        
+        // Hiển thị/ẩn nút Sửa/Lưu
+        btnEdit.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        btnSave.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        // Hiển thị/ẩn TextView và EditText
+        tvHoTen.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        edtHoTen.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        tvEmailSoDienThoai.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        edtEmailSoDienThoai.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        tvNgaySinh.setVisibility(editMode ? View.GONE : View.VISIBLE);
+        layoutNgaySinhEdit.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        
+        if (editMode) {
+            // Copy dữ liệu từ TextView sang EditText
+            String hoTen = tvHoTen.getText().toString();
+            edtHoTen.setText(hoTen.equals("--") ? "" : hoTen);
+            
+            String emailSdt = tvEmailSoDienThoai.getText().toString();
+            edtEmailSoDienThoai.setText(emailSdt.equals("--") ? "" : emailSdt);
+            
+            String ngaySinh = tvNgaySinh.getText().toString();
+            if (!ngaySinh.equals("--")) {
+                selectedDate = ngaySinh;
+                tvNgaySinhEdit.setText(ngaySinh);
+                tvNgaySinhEdit.setTextColor(getResources().getColor(android.R.color.black));
+            } else {
+                tvNgaySinhEdit.setText("Chọn ngày");
+                tvNgaySinhEdit.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
+        }
+    }
+
+    private void loadUserData() {
+        new Thread(() -> {
+            NguoiDungRepository.NguoiDung nd = NguoiDungRepository.getNguoiDung(userId);
+            runOnUiThread(() -> {
+                if (nd != null) {
+                    // Tên hiển thị dưới avatar
+                    tvUserName.setText(nd.hoTen != null && !nd.hoTen.isEmpty() ? nd.hoTen : "Chưa cập nhật");
+
+                    // Thông tin cá nhân từ database
+                    tvTenDangNhap.setText(nd.tenDangNhap != null ? nd.tenDangNhap : "--");
+                    tvHoTen.setText(nd.hoTen != null && !nd.hoTen.isEmpty() ? nd.hoTen : "--");
+                    tvEmailSoDienThoai.setText(nd.emailSoDienThoai != null && !nd.emailSoDienThoai.isEmpty() ? nd.emailSoDienThoai : "--");
+                    tvNgaySinh.setText(nd.ngaySinh != null && !nd.ngaySinh.isEmpty() ? nd.ngaySinh : "--");
+
+                    // Lưu ngày sinh để edit
+                    if (nd.ngaySinh != null && !nd.ngaySinh.isEmpty()) {
+                        selectedDate = nd.ngaySinh;
                     }
-            );
-        });
+                } else {
+                    tvUserName.setText("Lỗi kết nối");
+                    Toast.makeText(this, "Không thể tải thông tin người dùng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
+    }
+
+    private void saveUserData() {
+        String hoTen = edtHoTen.getText().toString().trim();
+        String emailSoDienThoai = edtEmailSoDienThoai.getText().toString().trim();
+
+        if (hoTen.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập họ tên", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new Thread(() -> {
+            boolean success = NguoiDungRepository.updateNguoiDung(userId, hoTen, emailSoDienThoai, selectedDate);
+            runOnUiThread(() -> {
+                if (success) {
+                    Toast.makeText(this, "Đã lưu thông tin", Toast.LENGTH_SHORT).show();
+                    toggleEditMode(false);
+                    loadUserData();
+                } else {
+                    Toast.makeText(this, "Lỗi khi lưu thông tin", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
     }
 
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        
+        if (!selectedDate.isEmpty()) {
+            try {
+                String[] parts = selectedDate.split("/");
+                if (parts.length == 3) {
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+                    calendar.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+                    calendar.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+                }
+            } catch (Exception ignored) {}
+        }
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    String date = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear);
-                    edtBirthDate.setText(date);
+        DatePickerDialog datePicker = new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> {
+                    selectedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year);
+                    tvNgaySinhEdit.setText(selectedDate);
+                    tvNgaySinhEdit.setTextColor(getResources().getColor(android.R.color.black));
                 },
-                year, month, day
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         );
-        datePickerDialog.show();
+        datePicker.show();
     }
 
     private void showChangePasswordDialog() {
-        // TODO: Implement change password dialog with old password, new password, confirm password fields
-        Toast.makeText(this, "Chức năng đổi mật khẩu", Toast.LENGTH_SHORT).show();
-    }
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_doi_mat_khau, null);
+        EditText edtMatKhauCu = dialogView.findViewById(R.id.edtMatKhauCu);
+        EditText edtMatKhauMoi = dialogView.findViewById(R.id.edtMatKhauMoi);
+        EditText edtXacNhanMatKhau = dialogView.findViewById(R.id.edtXacNhanMatKhau);
 
-    private void showConfirmDialog(String title, String message, Runnable onConfirm) {
         new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("Xác nhận", (dialog, which) -> {
-                    onConfirm.run();
+                .setTitle("Đổi mật khẩu")
+                .setView(dialogView)
+                .setPositiveButton("Đổi", (dialog, which) -> {
+                    String matKhauCu = edtMatKhauCu.getText().toString();
+                    String matKhauMoi = edtMatKhauMoi.getText().toString();
+                    String xacNhan = edtXacNhanMatKhau.getText().toString();
+
+                    if (matKhauCu.isEmpty() || matKhauMoi.isEmpty() || xacNhan.isEmpty()) {
+                        Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!matKhauMoi.equals(xacNhan)) {
+                        Toast.makeText(this, "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (matKhauMoi.length() < 6) {
+                        Toast.makeText(this, "Mật khẩu mới phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    new Thread(() -> {
+                        boolean success = NguoiDungRepository.doiMatKhau(userId, matKhauCu, matKhauMoi);
+                        runOnUiThread(() -> {
+                            if (success) {
+                                Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }).start();
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
 
-    private void loadUserData() {
-        // TODO: Load user data from SharedPreferences or database
-        // edtName.setText(userData.getName());
-        // edtEmail.setText(userData.getEmail());
-        // edtBirthDate.setText(userData.getBirthDate());
+    private void logout() {
+        getSharedPreferences("user_prefs", MODE_PRIVATE).edit().clear().apply();
+        Intent intent = new Intent(this, dangnhap.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
-    private void saveUserData() {
-        String name = edtName.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
-        String birthDate = edtBirthDate.getText().toString().trim();
+    private void showDeleteAccountDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa tài khoản")
+                .setMessage("CẢNH BÁO: Hành động này sẽ xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn!")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Xác nhận")
+                            .setMessage("Bạn thực sự muốn xóa tài khoản?")
+                            .setPositiveButton("Có, xóa ngay", (d, w) -> deleteAccount())
+                            .setNegativeButton("Không", null)
+                            .show();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
 
-        if (name.isEmpty() || email.isEmpty()) {
-            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // TODO: Save to SharedPreferences or database
-        // SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
-        // SharedPreferences.Editor editor = prefs.edit();
-        // editor.putString("name", name);
-        // editor.putString("email", email);
-        // editor.putString("birth_date", birthDate);
-        // editor.apply();
-
-        Toast.makeText(this, "Đã lưu thông tin", Toast.LENGTH_SHORT).show();
+    private void deleteAccount() {
+        new Thread(() -> {
+            boolean success = NguoiDungRepository.xoaTaiKhoan(userId);
+            runOnUiThread(() -> {
+                if (success) {
+                    Toast.makeText(this, "Tài khoản đã được xóa", Toast.LENGTH_SHORT).show();
+                    logout();
+                } else {
+                    Toast.makeText(this, "Lỗi khi xóa tài khoản", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
     }
 
     private void clearCache() {
-        // TODO: Implement cache clearing logic
         try {
             deleteDir(getCacheDir());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void clearAppData() {
-        // TODO: Implement app data clearing logic
-        // Clear all SharedPreferences, database, files, etc.
-    }
-
-    private void deleteAccount() {
-        // TODO: Implement account deletion logic
-        // 1. Delete user data from server
-        // 2. Clear local data
-        // 3. Logout and redirect to login screen
-        Toast.makeText(this, "Tài khoản đã được xóa", Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     private boolean deleteDir(java.io.File dir) {
@@ -188,9 +327,7 @@ public class TaiKhoanActivity extends AppCompatActivity {
             if (children != null) {
                 for (String child : children) {
                     boolean success = deleteDir(new java.io.File(dir, child));
-                    if (!success) {
-                        return false;
-                    }
+                    if (!success) return false;
                 }
             }
             return dir.delete();

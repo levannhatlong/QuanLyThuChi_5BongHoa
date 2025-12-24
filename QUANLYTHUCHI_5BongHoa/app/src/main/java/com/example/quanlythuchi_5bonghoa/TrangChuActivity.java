@@ -81,6 +81,14 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification = findViewById(R.id.iv_notification);
         ivSettings = findViewById(R.id.iv_settings);
         ivGhichu = findViewById(R.id.iv_ghichu);
+        ivLogout = findViewById(R.id.iv_logout);
+    }
+
+    private void setupRecyclerView() {
+        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
+        danhSachGiaoDich = new ArrayList<>();
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
     }
 
     private void setupRecyclerView() {

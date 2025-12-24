@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#E8F5F5">
+    android:background="#F5F5F5">
 
     <!-- Header -->
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mau_chu_dao"
@@ -18,7 +18,7 @@
             android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_back_white_24dp"
-            android:contentDescription="Back" />
+            android:contentDescription="Quay lại" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,56 +28,104 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnMarkAllRead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="Đọc tất cả"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:padding="4dp" />
     </RelativeLayout>
 
     <!-- Tab Layout -->
     <LinearLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/header"
         android:orientation="horizontal"
-        android:background="@color/mau_chu_dao">
+        android:padding="12dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
 
         <TextView
             android:id="@+id/tabTatCa"
             android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
             android:text="Tất cả"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="12dp"
-            android:background="@drawable/tab_indicator" />
-
-        <TextView
-            android:id="@+id/tabDaDoc"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Đã đọc"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="12dp"
-            android:background="@drawable/tab_indicator" />
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_tab_selected" />
 
         <TextView
             android:id="@+id/tabChuaDoc"
             android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Chưa đọc"
-            android:textColor="@color/white"
-            android:textSize="14sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:gravity="center"
-            android:padding="12dp"
-            android:background="@drawable/tab_indicator" />
+            android:text="Chưa đọc"
+            android:textSize="13sp"
+            android:textColor="@color/mau_chu_dao"
+            android:background="@drawable/bg_tab_unselected" />
+
+        <TextView
+            android:id="@+id/tabDaDoc"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="Đã đọc"
+            android:textSize="13sp"
+            android:textColor="@color/mau_chu_dao"
+            android:background="@drawable/bg_tab_unselected" />
     </LinearLayout>
 
+    <!-- Thông báo trống -->
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_notification"
+            android:alpha="0.5" />
+
+        <TextView
+            android:id="@+id/tvEmptyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Không có thông báo"
+            android:textSize="16sp"
+            android:textColor="#999999" />
+    </LinearLayout>
+
+    <!-- Danh sách thông báo -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewThongBao"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp" />
+        android:layout_below="@id/tabLayout"
+        android:padding="12dp"
+        android:clipToPadding="false" />
 
-</LinearLayout>
+</RelativeLayout>

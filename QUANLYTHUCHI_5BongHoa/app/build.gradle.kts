@@ -30,10 +30,21 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/NOTICE.md",
+                "META-INF/LICENSE.md",
+                "META-INF/NOTICE.txt",
+                "META-INF/LICENSE.txt"
+            )
+        }
+    }
 }
 
 dependencies {
-    // AndroidX core
+
     implementation(libs.appcompat)
     implementation(libs.material)  // Đã có, nhưng đảm bảo version mới
     implementation(libs.activity)
@@ -44,17 +55,11 @@ dependencies {
 
     // Chart (bạn đã có MPAndroidChart)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // JTDS cho kết nối SQL Server (đã có)
+    
+    // JTDS driver để kết nối SQL Server
     implementation("net.sourceforge.jtds:jtds:1.3.1")
-
-    // Nếu bạn dùng Room (khuyến nghị thay SQLite thủ công)
-    // implementation("androidx.room:room-runtime:2.6.1")
-    // annotationProcessor("androidx.room:room-compiler:2.6.1")
-    // implementation("androidx.room:room-ktx:2.6.1")  // Nếu dùng Kotlin
-
-    // Test
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    
+    // JavaMail để gửi email OTP
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 }
