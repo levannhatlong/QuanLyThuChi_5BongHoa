@@ -74,15 +74,24 @@ public class ViTienActivity extends AppCompatActivity {
 
     private void displayData() {
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-
+        
         if (isBalanceVisible) {
+            // Hiển thị số liệu thực
             tvSoDu.setText(formatter.format(soDu) + " VND");
+            tvThuNhap.setText("+" + formatter.format(tongThuNhap) + " VND");
+            tvChiTieu.setText("-" + formatter.format(tongChiTieu) + " VND");
         } else {
-            tvSoDu.setText("*** *** *** VND");
+            // Ẩn số liệu
+            tvSoDu.setText("*** VND");
+            tvThuNhap.setText("+*** VND");
+            tvChiTieu.setText("-*** VND");
         }
-
-        tvThuNhap.setText("+" + formatter.format(tongThuNhap) + " VND");
-        tvChiTieu.setText("-" + formatter.format(tongChiTieu) + " VND");
+        
+        // Cập nhật icon toggle
+        if (ivToggleBalance != null) {
+            ivToggleBalance.setImageResource(isBalanceVisible ? 
+                R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+        }
     }
 
     private void setupRecyclerView() {

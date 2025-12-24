@@ -79,12 +79,15 @@
         app:cardElevation="2dp"
         app:cardBackgroundColor="#FFFFFF">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="12dp">
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="@color/white">
+
 
             <ImageView
                 android:layout_width="24dp"
@@ -92,10 +95,63 @@
                 android:src="@android:drawable/ic_menu_search"
                 app:tint="#999999" />
 
-            <EditText
-                android:id="@+id/edtSearch"
-                android:layout_width="0dp"
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#FFEBEE">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_arrow_down"
+                        app:tint="@color/mau_do" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvExpenseCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7"
+                        android:textColor="@color/mau_chu_toi"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chi tiêu"
+                        android:textColor="@color/mau_chu_phu"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
                 android:hint="Tìm kiếm danh mục..."
@@ -134,9 +190,21 @@
             android:textColor="#999999" />
     </LinearLayout>
 
-    <!-- Danh sách danh mục -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerDanhMuc"
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thu nhập"
+                        android:textColor="@color/mau_chu_phu"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- Content Container -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/searchCard"
@@ -145,7 +213,7 @@
         android:paddingTop="8dp"
         android:clipToPadding="false" />
 
-    <!-- FAB Thêm danh mục mới -->
+    <!-- Modern FAB -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabThemDanhMuc"
         android:layout_width="wrap_content"

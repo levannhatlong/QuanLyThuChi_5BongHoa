@@ -40,6 +40,7 @@
         <activity android:name=".CaiDatActivity" />
         <activity android:name=".NgonNguActivity" />
         <activity android:name=".QuanLyDanhMucActivity" />
+        <activity android:name=".ThemSuaDanhMucActivity" />
         <activity android:name=".QuenMatKhauActivity" />
         <activity android:name=".NhapOTPActivity" />
         <activity android:name=".DatLaiMatKhauActivity" />
