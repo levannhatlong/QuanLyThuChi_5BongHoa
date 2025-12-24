@@ -23,7 +23,11 @@
             android:layout_height="50dp"
             app:cardCornerRadius="25dp"
             app:cardElevation="0dp"
+<<<<<<< HEAD
             app:cardBackgroundColor="#E3F2FD">
+=======
+            app:cardBackgroundColor="#F5F5F5">
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
 
             <ImageView
                 android:id="@+id/ivIconDanhMuc"
@@ -32,6 +36,11 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_food"
                 app:tint="#1976D2" />
+<<<<<<< HEAD
+=======
+                android:src="@drawable/ic_thuc_pham"
+                android:scaleType="fitCenter" />
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Thông tin danh mục -->
@@ -69,8 +78,12 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:padding="8dp"
+<<<<<<< HEAD
             android:src="@android:drawable/ic_menu_edit"
             app:tint="#1976D2"
+=======
+            android:src="@drawable/ic_edit"
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Sửa" />
 
@@ -83,9 +96,18 @@
             android:layout_marginStart="4dp"
             android:src="@android:drawable/ic_menu_delete"
             app:tint="#E53935"
+<<<<<<< HEAD
+=======
+            android:src="@drawable/bieu_tuong_huy"
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Xóa" />
 
     </LinearLayout>
 
+<<<<<<< HEAD
 </com.google.android.material.card.MaterialCardView>
+=======
+</com.google.android.material.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f

@@ -73,6 +73,7 @@ public class ViTienActivity extends AppCompatActivity {
         recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
         fabHome = findViewById(R.id.fab_home);
 <<<<<<< HEAD
+<<<<<<< HEAD
         fabAdd = findViewById(R.id.fab_add);
         tvXemThem = findViewById(R.id.tv_xem_them);
         tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
@@ -96,6 +97,8 @@ public class ViTienActivity extends AppCompatActivity {
 
     
 =======
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
         fabAdd = findViewById(R.id.fab_add);
         tvXemThem = findViewById(R.id.tv_xem_them);
         tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);

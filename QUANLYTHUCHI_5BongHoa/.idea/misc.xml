@@ -1,6 +1,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK">
@@ -10,6 +11,8 @@
     <option name="id" value="Android" />
 =======
 >>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK" />
   <component name="VisualizationToolProject">
     <option name="state">
@@ -18,8 +21,11 @@
       </ProjectState>
     </option>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> HoThiMyHa
 >>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
   </component>
 </project>
