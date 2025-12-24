@@ -15,7 +15,6 @@ public class GhiChuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghi_chu);
-
         ListView listView = findViewById(R.id.listViewNotes);
 
         // === DỮ LIỆU GIẢ (5 ghi chú đẹp) ===
