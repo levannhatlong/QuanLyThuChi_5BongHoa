@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#E8F4F8"
+    android:background="#F4F7FB"
     tools:context=".ThongKeActivity">
 
     <!-- TOOLBAR -->
@@ -14,29 +14,32 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/mau_chu_dao">
+        android:background="@color/mau_chu_dao"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back_white_24dp"
-                app:tint="@color/white"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_back_white_24dp"
+                app:tint="@android:color/white"
+                android:contentDescription="Back"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="THỐNG KÊ"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_centerInParent="true"/>
+                android:textStyle="bold"/>
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -57,131 +60,192 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardCornerRadius="18dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="14dp">
 
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/toggle_button_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:singleSelection="true"
-                    app:checkedButton="@+id/btn_thang">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_ngay"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Ngày"
-                        app:backgroundTint="@color/toggle_button_background_tint"
-                        android:textColor="@color/toggle_button_text_color"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_thang"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Tháng"
-                        app:backgroundTint="@color/toggle_button_background_tint"
-                        android:textColor="@color/toggle_button_text_color"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_nam"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Năm"
-                        app:backgroundTint="@color/toggle_button_background_tint"
-                        android:textColor="@color/toggle_button_text_color"/>
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- BIỂU ĐỒ TRÒN -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bộ lọc thời gian"
+                        android:textStyle="bold"
+                        android:textColor="#111827"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggle_button_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:checkedButton="@+id/btn_thang"
+                        app:selectionRequired="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_ngay"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:text="Ngày"
+                            android:textAllCaps="false"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:cornerRadius="14dp"
+                            app:backgroundTint="@color/toggle_button_background_tint"
+                            android:textColor="@color/toggle_button_text_color"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_thang"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:text="Tháng"
+                            android:textAllCaps="false"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:cornerRadius="14dp"
+                            app:backgroundTint="@color/toggle_button_background_tint"
+                            android:textColor="@color/toggle_button_text_color"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_nam"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:text="Năm"
+                            android:textAllCaps="false"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:cornerRadius="14dp"
+                            app:backgroundTint="@color/toggle_button_background_tint"
+                            android:textColor="@color/toggle_button_text_color"/>
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- BIỂU ĐỒ + TỔNG -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng quan thu chi"
+                        android:textStyle="bold"
+                        android:textColor="#111827"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"/>
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/piechart"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_height="240dp"
+                        android:layout_marginBottom="12dp"/>
 
+                    <!-- 3 dòng tổng: trình bày như chip -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp">
+                        android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/tvTongThu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#43A047"
+                            android:text="TỔNG THU: 0 VND"
+                            android:textColor="#16A34A"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:background="#EAFBF0"
+                            android:layout_marginBottom="8dp"/>
+
                         <TextView
                             android:id="@+id/tvTongChi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#E53935"
+                            android:text="TỔNG CHI: 0 VND"
+                            android:textColor="#DC2626"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginTop="8dp" />
+                            android:padding="10dp"
+                            android:background="#FDECEC"
+                            android:layout_marginBottom="8dp"/>
+
                         <TextView
                             android:id="@+id/tvConLai"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/mau_chu_toi"
+                            android:text="CÒN LẠI: 0 VND"
+                            android:textColor="#111827"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginTop="8dp" />
+                            android:padding="10dp"
+                            android:background="#EEF2FF"/>
                     </LinearLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
-            <!-- GIAO DỊCH -->
+            <!-- DANH SÁCH GIAO DỊCH -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="6dp"
+                app:cardUseCompatPadding="true"
                 app:cardBackgroundColor="@android:color/white">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="14dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Giao dịch trong thời gian này"
                         android:textStyle="bold"
-                        android:textColor="@color/mau_chu_toi"
-                        android:textSize="18sp"
-                        android:layout_marginBottom="@dimen/spacing_medium"/>
+                        android:textColor="#111827"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="10dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_giao_dich"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_giao_dich"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Spacer -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
