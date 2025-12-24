@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:orientation="vertical"
+    android:background="#F5F7FA">
 
     <!-- Header -->
     <RelativeLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mau_chu_dao"
@@ -28,6 +28,60 @@
             android:text="QUẢN LÝ DANH MỤC"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+    </RelativeLayout>
+
+    <!-- Tab Layout Chi tiêu / Thu nhập -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tabChiTieu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Chi tiêu"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="12dp"
+                android:background="@drawable/bg_tab_active" />
+
+            <TextView
+                android:id="@+id/tabThuNhap"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thu nhập"
+                android:textColor="#666666"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:padding="12dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Search Bar -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white">
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -79,9 +133,12 @@
         app:cardElevation="2dp"
         app:cardBackgroundColor="#FFFFFF">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp">
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             app:cardCornerRadius="16dp"
@@ -139,18 +196,21 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:cardBackgroundColor="@color/white">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_search"
+                app:tint="#90A4AE" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:hint="Tìm kiếm danh mục..."
+                android:textColorHint="#90A4AE"
+                android:textColor="#263238"
 
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
@@ -161,6 +221,7 @@
                 android:background="@null"
                 android:inputType="text" />
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
     </androidx.cardview.widget.CardView>
 
     <!-- Empty View -->
@@ -203,9 +264,13 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-    <!-- Content Container -->
-    <LinearLayout
+    <!-- Danh sách danh mục -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerDanhMuc"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
         android:layout_height="match_parent"
         android:layout_below="@id/searchCard"
         android:layout_marginBottom="80dp"
@@ -213,11 +278,19 @@
         android:paddingTop="8dp"
         android:clipToPadding="false" />
 
-    <!-- Modern FAB -->
+    <!-- FAB Thêm danh mục mới -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabThemDanhMuc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="Thêm mới"
+        android:textColor="@android:color/white"
+        app:icon="@drawable/ic_plus"
+        app:iconTint="@android:color/white"
+        app:backgroundTint="@color/mau_chu_dao"
+        app:elevation="6dp" />
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"

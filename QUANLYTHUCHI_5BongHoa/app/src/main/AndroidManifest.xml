@@ -40,13 +40,12 @@
         <activity android:name=".CaiDatActivity" />
         <activity android:name=".NgonNguActivity" />
         <activity android:name=".QuanLyDanhMucActivity" />
-        <activity android:name=".ThemSuaDanhMucActivity" />
         <activity android:name=".QuenMatKhauActivity" />
         <activity android:name=".NhapOTPActivity" />
         <activity android:name=".DatLaiMatKhauActivity" />
         <activity android:name=".GhiChuActivity" />
         <activity android:name=".TaiKhoanActivity" />
-        <activity android:name=".ThemGhiChuActivity" />
+        <activity android:name=".ThemGhiChuActivity"/>
         <activity android:name=".ThongBaoActivity" />
         <activity android:name=".CaiDatCanhBao" />
         <activity android:name=".LienKetNganHangActivity" />

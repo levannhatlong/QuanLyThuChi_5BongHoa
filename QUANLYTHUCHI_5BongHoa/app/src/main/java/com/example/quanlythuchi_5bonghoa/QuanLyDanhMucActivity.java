@@ -66,8 +66,21 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
         recyclerDanhMuc = findViewById(R.id.recyclerDanhMuc);
         fabThemDanhMuc = findViewById(R.id.fabThemDanhMuc);
 
-        emptyView = findViewById(R.id.emptyView);
+    private void loadDanhMuc() {
+        danhSachGoc = new ArrayList<>();
+        // Danh mục chi tiêu mẫu
+        danhSachGoc.add(new DanhMuc(1, "Ăn uống", "Chi phí ăn uống hàng ngày", R.drawable.ic_food, "#E53935", true));
+        danhSachGoc.add(new DanhMuc(2, "Di chuyển", "Chi phí đi lại, xăng xe", R.drawable.ic_travel, "#FB8C00", true));
+        danhSachGoc.add(new DanhMuc(3, "Mua sắm", "Chi phí mua sắm", R.drawable.ic_wallet, "#8E24AA", true));
+        danhSachGoc.add(new DanhMuc(4, "Giải trí", "Chi phí giải trí", R.drawable.ic_chart, "#1976D2", true));
+        danhSachGoc.add(new DanhMuc(5, "Hóa đơn", "Điện, nước, internet", R.drawable.ic_settings, "#43A047", true));
+        // Danh mục thu nhập mẫu
+        danhSachGoc.add(new DanhMuc(6, "Tiền lương", "Lương hàng tháng", R.drawable.ic_salary, "#43A047", false));
+        danhSachGoc.add(new DanhMuc(7, "Tiền thưởng", "Thưởng, bonus", R.drawable.ic_salary, "#1976D2", false));
+        danhSachGoc.add(new DanhMuc(8, "Đầu tư", "Lợi nhuận đầu tư", R.drawable.ic_chart, "#FB8C00", false));
 
+        filterByType();
+    }
 
         recyclerDanhMuc.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DanhMucAdapter(this, danhMucList, new DanhMucAdapter.OnItemClickListener() {
@@ -174,6 +187,7 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
                 recyclerDanhMuc.setVisibility(View.VISIBLE);
             }
         }
+        adapter.updateData(filtered);
     }
 
     private void showDialogThemSua(DanhMuc danhMuc) {

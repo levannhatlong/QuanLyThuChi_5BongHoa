@@ -36,7 +36,7 @@ public class TrangChuActivity extends AppCompatActivity {
     private LineChart lineChart;
     private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
-    private ImageView ivNotification, ivSettings, ivGhichu, ivLogout;
+    private ImageView ivNotification, ivSettings, ivGhichu;
 
     private GiaoDichAdapter giaoDichAdapter;
     private List<GiaoDich> danhSachGiaoDich;
@@ -91,6 +91,13 @@ public class TrangChuActivity extends AppCompatActivity {
         recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
     }
 
+    private void setupRecyclerView() {
+        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
+        danhSachGiaoDich = new ArrayList<>();
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
+    }
+
     private void setupClickListeners() {
         btnViTien.setOnClickListener(v -> startActivity(new Intent(this, ViTienActivity.class)));
         btnThemGiaoDich.setOnClickListener(v -> startActivity(new Intent(this, ThemGiaoDichActivity.class)));
@@ -98,32 +105,9 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
         ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
         ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
-        ivLogout.setOnClickListener(v -> showLogoutDialog());
         
         // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
-        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, DanhSachGiaoDichActivity.class)));
-    }
-
-    private void showLogoutDialog() {
-        new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Đăng xuất")
-                .setMessage("Bạn có chắc chắn muốn đăng xuất?")
-                .setPositiveButton("Đăng xuất", (dialog, which) -> {
-                    // Xóa thông tin đăng nhập
-                    SharedPreferences prefs1 = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                    prefs1.edit().clear().apply();
-                    
-                    SharedPreferences prefs2 = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                    prefs2.edit().clear().apply();
-                    
-                    // Chuyển về màn hình đăng nhập
-                    Intent intent = new Intent(this, dangnhap.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
+        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
     }
 
     private void loadDataFromDatabase() {
@@ -155,7 +139,7 @@ public class TrangChuActivity extends AppCompatActivity {
                 // 2. Get all transactions to calculate totals and populate list
                 String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
                                     "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
-                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
+                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
                 PreparedStatement transStmt = connection.prepareStatement(transQuery);
                 transStmt.setInt(1, currentUserId);
                 ResultSet transRs = transStmt.executeQuery();

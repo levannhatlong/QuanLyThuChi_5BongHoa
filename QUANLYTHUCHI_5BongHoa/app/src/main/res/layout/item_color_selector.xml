@@ -3,22 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardColorSelector"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="25dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/mau_chu_dao"
-    app:strokeWidth="0dp">
-
-    <!-- Check icon for selected color -->
-    <ImageView
-        android:id="@+id/ivColorCheck"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center"
-        android:src="@android:drawable/ic_menu_save"
-        android:visibility="gone"
-        app:tint="@color/white" />
-
-</com.google.android.material.card.MaterialCardView>
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_marginEnd="12dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp" />

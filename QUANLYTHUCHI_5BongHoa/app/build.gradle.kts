@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.quanlythuchi_5bonghoa"
-    compileSdk = 36
+    compileSdk = 36  // Hoặc 34/35 nếu máy bạn chưa tải SDK 36
 
     defaultConfig {
         applicationId = "com.example.quanlythuchi_5bonghoa"
@@ -25,6 +25,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -45,12 +46,14 @@ android {
 dependencies {
 
     implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.material)  // Đã có, nhưng đảm bảo version mới
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+
+    // Material Components (đã có libs.material, nhưng thêm explicit nếu cần)
+    implementation("com.google.android.material:material:1.12.0")
+
+    // Chart (bạn đã có MPAndroidChart)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     
     // JTDS driver để kết nối SQL Server
