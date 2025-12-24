@@ -72,10 +72,46 @@ public class ViTienActivity extends AppCompatActivity {
         ivToggleBalance = findViewById(R.id.iv_toggle_balance);
         recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
         fabHome = findViewById(R.id.fab_home);
+<<<<<<< HEAD
         fabAdd = findViewById(R.id.fab_add);
         tvXemThem = findViewById(R.id.tv_xem_them);
         tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
         tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
+=======
+    }
+
+    private void calculateBalance() {
+        soDu = tongThuNhap - tongChiTieu;
+
+        // Tính phần trăm cho progress bar
+        long tongGiaoDich = tongThuNhap + tongChiTieu;
+        if (tongGiaoDich > 0) {
+            int percentThuNhap = (int) ((tongThuNhap * 100) / tongGiaoDich);
+            progressBalance.setProgress(percentThuNhap);
+        }
+    }
+
+    private void displayData() {
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        
+        if (isBalanceVisible) {
+            // Hiển thị số liệu thực
+            tvSoDu.setText(formatter.format(soDu) + " VND");
+            tvThuNhap.setText("+" + formatter.format(tongThuNhap) + " VND");
+            tvChiTieu.setText("-" + formatter.format(tongChiTieu) + " VND");
+        } else {
+            // Ẩn số liệu
+            tvSoDu.setText("*** VND");
+            tvThuNhap.setText("+*** VND");
+            tvChiTieu.setText("-*** VND");
+        }
+        
+        // Cập nhật icon toggle
+        if (ivToggleBalance != null) {
+            ivToggleBalance.setImageResource(isBalanceVisible ? 
+                R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+        }
+>>>>>>> 14c5efaad470f27fcdd9ba9c1434661ca646e719
     }
 
     private void setupRecyclerView() {
