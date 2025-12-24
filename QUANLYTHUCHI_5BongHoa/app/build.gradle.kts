@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    // Plugin KSP đã được xóa vì không còn sử dụng Room
 }
 
 android {
@@ -31,13 +29,20 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/NOTICE.md",
+                "META-INF/LICENSE.md",
+                "META-INF/NOTICE.txt",
+                "META-INF/LICENSE.txt"
+            )
+        }
     }
 }
 
 dependencies {
-    // Các thư viện Room đã được xóa bỏ
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -47,7 +52,11 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // Thêm thư viện JTDS để kết nối SQL Server
+    
+    // JTDS driver để kết nối SQL Server
     implementation("net.sourceforge.jtds:jtds:1.3.1")
+    
+    // JavaMail để gửi email OTP
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 }

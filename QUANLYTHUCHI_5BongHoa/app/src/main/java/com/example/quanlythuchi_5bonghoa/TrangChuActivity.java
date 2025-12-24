@@ -1,11 +1,13 @@
 package com.example.quanlythuchi_5bonghoa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,33 +20,59 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TrangChuActivity extends AppCompatActivity {
 
-    private TextView tvTienChi, tvTienThu;
+    private TextView tvGreeting, tvTienChi, tvTienThu, tvSoDu, tvChiTiet;
     private LineChart lineChart;
     private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
-    private ImageView ivNotification, ivSettings, ivGhichu;
+    private ImageView ivNotification, ivSettings, ivGhichu, ivLogout;
+
     private GiaoDichAdapter giaoDichAdapter;
     private List<GiaoDich> danhSachGiaoDich;
+    private int currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trang_chu);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        currentUserId = sharedPreferences.getInt("user_id", -1);
+
+        if (currentUserId == -1) {
+            Toast.makeText(this, "Lỗi: không tìm thấy người dùng.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         initViews();
-        setupLineChart();
         setupRecyclerView();
         setupClickListeners();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDataFromDatabase();
+    }
+
     private void initViews() {
+        tvGreeting = findViewById(R.id.tv_greeting);
         tvTienChi = findViewById(R.id.tv_tien_chi);
         tvTienThu = findViewById(R.id.tv_tien_thu);
+        tvSoDu = findViewById(R.id.tv_so_du);
+        tvChiTiet = findViewById(R.id.tv_chi_tiet);
         lineChart = findViewById(R.id.line_chart);
         btnViTien = findViewById(R.id.btn_vi_tien);
         btnThemGiaoDich = findViewById(R.id.btn_them_giao_dich);
@@ -53,33 +81,154 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification = findViewById(R.id.iv_notification);
         ivSettings = findViewById(R.id.iv_settings);
         ivGhichu = findViewById(R.id.iv_ghichu);
+        ivLogout = findViewById(R.id.iv_logout);
     }
 
-    private void setupLineChart() {
-        // Dữ liệu mẫu cho Thu
-        ArrayList<Entry> incomeEntries = new ArrayList<>();
-        incomeEntries.add(new Entry(0, 10));
-        incomeEntries.add(new Entry(1, 12));
-        incomeEntries.add(new Entry(2, 8));
-        incomeEntries.add(new Entry(3, 15));
-        incomeEntries.add(new Entry(4, 11));
+    private void setupRecyclerView() {
+        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
+        danhSachGiaoDich = new ArrayList<>();
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
+    }
 
+    private void setupClickListeners() {
+        btnViTien.setOnClickListener(v -> startActivity(new Intent(this, ViTienActivity.class)));
+        btnThemGiaoDich.setOnClickListener(v -> startActivity(new Intent(this, ThemGiaoDichActivity.class)));
+        btnThongKe.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
+        ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
+        ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
+        ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
+        ivLogout.setOnClickListener(v -> showLogoutDialog());
+        
+        // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
+        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, DanhSachGiaoDichActivity.class)));
+    }
+
+    private void showLogoutDialog() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Đăng xuất")
+                .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                    // Xóa thông tin đăng nhập
+                    SharedPreferences prefs1 = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                    prefs1.edit().clear().apply();
+                    
+                    SharedPreferences prefs2 = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    prefs2.edit().clear().apply();
+                    
+                    // Chuyển về màn hình đăng nhập
+                    Intent intent = new Intent(this, dangnhap.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void loadDataFromDatabase() {
+        new Thread(() -> {
+            Connection connection = DatabaseConnector.getConnection();
+            if (connection == null) {
+                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Không thể kết nối database", Toast.LENGTH_SHORT).show());
+                return;
+            }
+
+            String userName = "";
+            double totalIncome = 0;
+            double totalExpense = 0;
+            List<GiaoDich> transactions = new ArrayList<>();
+            ArrayList<Entry> incomeEntries = new ArrayList<>();
+            ArrayList<Entry> expenseEntries = new ArrayList<>();
+
+            try {
+                // 1. Get user's name
+                PreparedStatement userStmt = connection.prepareStatement("SELECT HoTen FROM NguoiDung WHERE MaNguoiDung = ?");
+                userStmt.setInt(1, currentUserId);
+                ResultSet userRs = userStmt.executeQuery();
+                if (userRs.next()) {
+                    userName = userRs.getString("HoTen");
+                }
+                userRs.close();
+                userStmt.close();
+
+                // 2. Get all transactions to calculate totals and populate list
+                String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
+                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
+                PreparedStatement transStmt = connection.prepareStatement(transQuery);
+                transStmt.setInt(1, currentUserId);
+                ResultSet transRs = transStmt.executeQuery();
+
+                int incomeIndex = 0;
+                int expenseIndex = 0;
+                while (transRs.next()) {
+                    String tenGiaoDich = transRs.getString("TenGiaoDich");
+                    double soTien = transRs.getDouble("SoTien");
+                    Date ngayGiaoDich = transRs.getTimestamp("NgayGiaoDich");
+                    String tenDanhMuc = transRs.getString("TenDanhMuc");
+                    String loaiDanhMuc = transRs.getString("LoaiDanhMuc");
+                    String bieuTuong = transRs.getString("BieuTuong");
+
+                    if (transactions.size() < 5) { // Limit to 5 recent transactions for the list
+                       transactions.add(new GiaoDich(tenGiaoDich, soTien, ngayGiaoDich, tenDanhMuc, loaiDanhMuc, bieuTuong));
+                    }
+
+                    if ("Thu nhập".equals(loaiDanhMuc)) {
+                        totalIncome += soTien;
+                        incomeEntries.add(new Entry(incomeIndex++, (float) soTien));
+                    } else {
+                        totalExpense += soTien;
+                        expenseEntries.add(new Entry(expenseIndex++, (float) soTien));
+                    }
+                }
+                transRs.close();
+                transStmt.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(TrangChuActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
+            } finally {
+                try {
+                    if (connection != null) connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String finalUserName = userName;
+            double finalTotalIncome = totalIncome;
+            double finalTotalExpense = totalExpense;
+
+            runOnUiThread(() -> {
+                updateUI(finalUserName, finalTotalIncome, finalTotalExpense, transactions);
+                setupLineChart(incomeEntries, expenseEntries);
+            });
+        }).start();
+    }
+
+    private void updateUI(String userName, double income, double expense, List<GiaoDich> transactions) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+        tvGreeting.setText(userName != null && !userName.isEmpty() ? userName : "Người dùng");
+        tvTienThu.setText(formatter.format(income));
+        tvTienChi.setText(formatter.format(expense));
+        tvSoDu.setText(formatter.format(income - expense));
+
+        danhSachGiaoDich.clear();
+        danhSachGiaoDich.addAll(transactions);
+        giaoDichAdapter.notifyDataSetChanged();
+    }
+
+    private void setupLineChart(ArrayList<Entry> incomeEntries, ArrayList<Entry> expenseEntries) {
         LineDataSet incomeDataSet = new LineDataSet(incomeEntries, "Thu");
-        incomeDataSet.setColor(Color.parseColor("#43A047")); // Màu xanh lá
+        incomeDataSet.setColor(Color.parseColor("#43A047"));
         incomeDataSet.setLineWidth(2f);
         incomeDataSet.setCircleColor(Color.parseColor("#43A047"));
         incomeDataSet.setDrawValues(false);
 
-        // Dữ liệu mẫu cho Chi
-        ArrayList<Entry> expenseEntries = new ArrayList<>();
-        expenseEntries.add(new Entry(0, 5));
-        expenseEntries.add(new Entry(1, 7));
-        expenseEntries.add(new Entry(2, 6));
-        expenseEntries.add(new Entry(3, 9));
-        expenseEntries.add(new Entry(4, 4));
-
         LineDataSet expenseDataSet = new LineDataSet(expenseEntries, "Chi");
-        expenseDataSet.setColor(Color.parseColor("#E53935")); // Màu đỏ
+        expenseDataSet.setColor(Color.parseColor("#E53935"));
         expenseDataSet.setLineWidth(2f);
         expenseDataSet.setCircleColor(Color.parseColor("#E53935"));
         expenseDataSet.setDrawValues(false);
@@ -94,80 +243,13 @@ public class TrangChuActivity extends AppCompatActivity {
         lineChart.getDescription().setEnabled(false);
         lineChart.getLegend().setEnabled(true);
 
-        // Tùy chỉnh trục X
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
 
-        // Tùy chỉnh trục Y
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisRight().setEnabled(false);
 
         lineChart.invalidate(); // refresh
-    }
-
-    private void setupRecyclerView() {
-        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
-        danhSachGiaoDich = new ArrayList<>();
-        // Thêm dữ liệu mẫu
-        danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
-        danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
-        danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
-        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
-        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
-    }
-
-    private void setupClickListeners() {
-        btnViTien.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ViTienActivity.class);
-            startActivity(intent);
-        });
-
-        btnThemGiaoDich.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ThemGiaoDichActivity.class);
-            startActivity(intent);
-        });
-
-        btnThongKe.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ThongKeActivity.class);
-            startActivity(intent);
-        });
-
-        ivNotification.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
-            startActivity(intent);
-        });
-
-        ivGhichu.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, GhiChuActivity.class);
-            startActivity(intent);
-        });
-
-        ivSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(TrangChuActivity.this, CaiDatActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-    }
-
-    private void loadData() {
-        // Dữ liệu sẽ được tải từ database ở đây
-        // Tạm thời tính toán từ dữ liệu mẫu
-        double tongThu = 0;
-        double tongChi = 0;
-        for (GiaoDich gd : danhSachGiaoDich) {
-            if (gd.isTienVao()) {
-                tongThu += gd.getSoTien();
-            } else {
-                tongChi += gd.getSoTien();
-            }
-        }
-        tvTienThu.setText(String.format("%,.0f VND", tongThu));
-        tvTienChi.setText(String.format("%,.0f VND", tongChi));
     }
 }
