@@ -13,8 +13,8 @@ public class GiaoDich {
     public double SoTien;
 
     // Có thể dùng 1 trong 2, tuỳ nơi bạn lấy dữ liệu
-    public String NgayGiaoDich;      // dạng chuỗi
-    public Date NgayGiaoDichDate;    // dạng Date
+    public String NgayGiaoDich;      // dạng chuỗi (vd: "2025-12-23")
+    public Date NgayGiaoDichDate;    // dạng Date (Timestamp từ DB)
 
     public String GhiChu;
     public String AnhHoaDon;
@@ -46,7 +46,11 @@ public class GiaoDich {
         this.TenDanhMuc = tenDanhMuc;
         this.LoaiDanhMuc = loaiDanhMuc;
         this.BieuTuong = bieuTuong;
-        this.TienVao = loaiDanhMuc != null && loaiDanhMuc.trim().equalsIgnoreCase("Thu nhập");
+        this.TienVao = isLoaiThuNhap(loaiDanhMuc);
+    }
+
+    private boolean isLoaiThuNhap(String loaiDanhMuc) {
+        return loaiDanhMuc != null && loaiDanhMuc.trim().equalsIgnoreCase("Thu nhập");
     }
 
     // Getters (đúng chuẩn JavaBean)
@@ -59,6 +63,10 @@ public class GiaoDich {
     }
 
     public boolean isTienVao() {
+        // nếu có LoaiDanhMuc thì ưu tiên theo LoaiDanhMuc (tránh sai lệch)
+        if (LoaiDanhMuc != null && !LoaiDanhMuc.trim().isEmpty()) {
+            return isLoaiThuNhap(LoaiDanhMuc);
+        }
         return TienVao;
     }
 
@@ -76,5 +84,9 @@ public class GiaoDich {
 
     public Date getNgayGiaoDichDate() {
         return NgayGiaoDichDate;
+    }
+
+    public String getNgayGiaoDich() {
+        return NgayGiaoDich;
     }
 }
