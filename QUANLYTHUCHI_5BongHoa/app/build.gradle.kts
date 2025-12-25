@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    // Plugin KSP đã được xóa vì không còn sử dụng Room
 }
 
 android {
     namespace = "com.example.quanlythuchi_5bonghoa"
-    compileSdk = 36
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.quanlythuchi_5bonghoa"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34  // Nếu bạn đã tải SDK 35/36 thì có thể nâng lên
         versionCode = 1
         versionName = "1.0"
 
@@ -27,11 +26,17 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+    // Nếu bạn dùng Kotlin 1.9+ hoặc cao hơn, thêm phần này để tương thích tốt hơn
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
     kotlinOptions {
         jvmTarget = "11"
 =======
@@ -47,18 +52,31 @@ android {
         }
 >>>>>>> 9dad7ec6e3d884d03c02d023d6c9c8c25d7be764
     }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/NOTICE.md",
+                "META-INF/LICENSE.md",
+                "META-INF/NOTICE.txt",
+                "META-INF/LICENSE.txt"
+            )
+        }
+    }
 }
 
 dependencies {
-    // Các thư viện Room đã được xóa bỏ
-
+    // Core AndroidX libraries
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+<<<<<<< HEAD
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 
@@ -75,3 +93,16 @@ dependencies {
     implementation("com.sun.mail:android-activation:1.6.7")
 }
 >>>>>>> 9dad7ec6e3d884d03c02d023d6c9c8c25d7be764
+=======
+
+    // Chart library
+    implementation(libs.mpandroidchart)
+
+    // JTDS driver for SQL Server
+    implementation(libs.jtds)
+
+    // JavaMail for sending email OTP (Android compatible)
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
+}
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3

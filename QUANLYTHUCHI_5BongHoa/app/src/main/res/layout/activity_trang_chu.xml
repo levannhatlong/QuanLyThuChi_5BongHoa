@@ -59,12 +59,30 @@
 
             <ImageView
                 android:id="@+id/iv_ghichu"
+<<<<<<< HEAD
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/iv_settings"
                 android:layout_marginEnd="14dp"
                 android:padding="4dp"
+=======
+<<<<<<< HEAD
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/iv_settings"
+                android:layout_marginEnd="16dp"
+                android:padding="2dp"
+=======
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/iv_settings"
+                android:layout_marginEnd="14dp"
+                android:padding="4dp"
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
                 android:src="@drawable/ic_ghichu"
                 app:tint="@android:color/white" />
 
@@ -72,12 +90,27 @@
                 android:id="@+id/iv_settings"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                android:layout_alignParentEnd="true"
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/iv_logout"
                 android:layout_marginEnd="14dp"
                 android:padding="2dp"
                 android:src="@drawable/ic_settings"
                 app:tint="@android:color/white" />
+<<<<<<< HEAD
+=======
+=======
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/iv_logout"
+                android:layout_marginEnd="14dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_settings"
+                app:tint="@android:color/white" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
             <ImageView
                 android:id="@+id/iv_logout"
@@ -89,6 +122,10 @@
                 android:src="@drawable/ic_logout"
                 app:tint="@android:color/white"
                 android:contentDescription="Đăng xuất" />
+<<<<<<< HEAD
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
         </RelativeLayout>
 
     </LinearLayout>

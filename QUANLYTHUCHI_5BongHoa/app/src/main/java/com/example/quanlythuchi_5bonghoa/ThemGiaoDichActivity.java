@@ -84,9 +84,47 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
         ivCalendar = findViewById(R.id.iv_calendar);
     }
 
+<<<<<<< HEAD
     private void setupListeners() {
         // Back button
         ivBack.setOnClickListener(v -> finish());
+=======
+<<<<<<< HEAD
+        // Spinner setup
+        setupCategoryMenu();
+
+        // Date picker setup
+        DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        };
+
+        ivCalendarPicker.setOnClickListener(v ->
+                new DatePickerDialog(ThemGiaoDichActivity.this, date,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show()
+        );
+
+        // Button click listeners
+        fabSave.setOnClickListener(v -> {
+            if (validateInput()) {
+                // In a real app, you would save the data here.
+                Toast.makeText(ThemGiaoDichActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ThemGiaoDichActivity.this, ThongKeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ivCancel.setOnClickListener(v -> finish());
+=======
+    private void setupListeners() {
+        // Back button
+        ivBack.setOnClickListener(v -> finish());
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         // Reset button
         ivReset.setOnClickListener(v -> resetForm());

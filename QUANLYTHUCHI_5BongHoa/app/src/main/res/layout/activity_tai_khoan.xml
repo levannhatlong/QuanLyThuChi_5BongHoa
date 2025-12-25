@@ -9,26 +9,41 @@
     <!-- Header -->
     <RelativeLayout
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="103dp"
         android:background="@color/mau_chu_dao"
         android:paddingStart="16dp"
         android:paddingTop="40dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp">
+=======
+        android:layout_height="wrap_content"
+        android:background="@color/mau_chu_dao"
+        android:padding="16dp">
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
+<<<<<<< HEAD
             android:contentDescription="Quay lại"
             android:src="@drawable/ic_arrow_back_white_24dp" />
+=======
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:contentDescription="Quay lại" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+<<<<<<< HEAD
             android:text="HỒ SƠ TÀI KHOẢN"
+=======
+            android:text="TÀI KHOẢN CỦA TÔI"
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -39,10 +54,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+<<<<<<< HEAD
             android:padding="4dp"
             android:text="Sửa"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
+=======
+            android:text="Sửa"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="4dp" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         <TextView
             android:id="@+id/btnSave"
@@ -50,10 +72,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+<<<<<<< HEAD
             android:padding="4dp"
             android:text="Lưu"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
+=======
+            android:text="Lưu"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="4dp"
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -216,7 +245,11 @@
                             android:textColor="#666666" />
 
                         <TextView
+<<<<<<< HEAD
                             android:id="@+id/tvEmail"
+=======
+                            android:id="@+id/tvEmailSoDienThoai"
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
@@ -225,7 +258,11 @@
                             android:textColor="#333333" />
 
                         <EditText
+<<<<<<< HEAD
                             android:id="@+id/edtEmail"
+=======
+                            android:id="@+id/edtEmailSoDienThoai"
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
@@ -266,6 +303,7 @@
                             android:textSize="15sp"
                             android:textColor="#333333" />
 
+<<<<<<< HEAD
                         <EditText
                             android:id="@+id/edtNgaySinh"
                             android:layout_width="0dp"
@@ -277,11 +315,42 @@
                             android:textColor="#333333"
                             android:inputType="date"
                             android:visibility="gone" />
+=======
+                        <LinearLayout
+                            android:id="@+id/layoutNgaySinhEdit"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_edit_text"
+                            android:padding="10dp"
+                            android:gravity="center_vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tvNgaySinhEdit"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Chọn ngày"
+                                android:textColor="#999999"
+                                android:textSize="15sp" />
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/ic_calendar" />
+                        </LinearLayout>
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+<<<<<<< HEAD
             <!-- Cài đặt bảo mật -->
+=======
+            <!-- Bảo mật -->
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -289,6 +358,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="3dp"
                 app:cardBackgroundColor="#FFFFFF">
+<<<<<<< HEAD
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -383,3 +453,110 @@
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
+=======
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bảo mật"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/mau_chu_dao"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutDoiMatKhau"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_settings"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Đổi mật khẩu"
+                            android:textSize="15sp"
+                            android:textColor="#333333" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_arrow_down"
+                            android:rotation="-90" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EEEEEE"
+                        android:layout_marginStart="52dp" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutXoaCache"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_export"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Xóa bộ nhớ cache"
+                            android:textSize="15sp"
+                            android:textColor="#333333" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Đăng xuất -->
+            <TextView
+                android:id="@+id/btnDangXuat"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="Đăng xuất"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_tab_selected"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Xóa tài khoản -->
+            <TextView
+                android:id="@+id/btnXoaTaiKhoan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Xóa tài khoản vĩnh viễn"
+                android:textColor="#E53935"
+                android:textSize="14sp"
+                android:padding="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3

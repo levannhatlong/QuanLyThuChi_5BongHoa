@@ -11,7 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import androidx.activity.OnBackPressedCallback;
+=======
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -208,4 +211,16 @@ public class NgonNguActivity extends AppCompatActivity {
             recreate();
         }
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void onBackPressed() {
+        if (!selectedLanguage.equals(originalLanguage)) {
+            // Show confirmation if there are unsaved changes
+            Toast.makeText(this, R.string.unsaved_changes, Toast.LENGTH_SHORT).show();
+        }
+        super.onBackPressed();
+    }
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 }

@@ -5,9 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
+<<<<<<< HEAD
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="#FFFFFF">
+=======
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@android:color/white">
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +22,7 @@
         android:padding="16dp"
         android:gravity="center_vertical">
 
+<<<<<<< HEAD
         <!-- Icon Container -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardIcon"
@@ -33,8 +40,36 @@
                 android:src="@drawable/ic_thuc_pham"
                 android:scaleType="fitCenter" />
         </androidx.cardview.widget.CardView>
+=======
+        <!-- Icon danh mục với background tròn -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="0dp"
+<<<<<<< HEAD
+            app:cardBackgroundColor="#E3F2FD">
+=======
+            app:cardBackgroundColor="#F5F5F5">
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
 
-        <!-- Category Information -->
+            <ImageView
+                android:id="@+id/ivIconDanhMuc"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_food"
+                app:tint="#1976D2" />
+<<<<<<< HEAD
+=======
+                android:src="@drawable/ic_thuc_pham"
+                android:scaleType="fitCenter" />
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+        </com.google.android.material.card.MaterialCardView>
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
+
+        <!-- Thông tin danh mục -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +82,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ăn uống"
+<<<<<<< HEAD
                 android:textColor="#333333"
+=======
+                android:textColor="#263238"
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -57,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="Chi phí ăn uống hàng ngày"
+<<<<<<< HEAD
                 android:textColor="#666666"
                 android:textSize="13sp"
                 android:maxLines="2"
@@ -64,24 +104,66 @@
         </LinearLayout>
 
         <!-- Action Buttons -->
+=======
+                android:textColor="#90A4AE"
+                android:textSize="13sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <!-- Nút chỉnh sửa -->
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
         <ImageView
             android:id="@+id/btnEdit"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:padding="8dp"
+<<<<<<< HEAD
             android:src="@drawable/ic_edit"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Sửa" />
 
+=======
+<<<<<<< HEAD
+            android:src="@android:drawable/ic_menu_edit"
+            app:tint="#1976D2"
+=======
+            android:src="@drawable/ic_edit"
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Sửa" />
+
+        <!-- Nút xóa -->
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
         <ImageView
             android:id="@+id/btnDelete"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:padding="8dp"
             android:layout_marginStart="4dp"
+<<<<<<< HEAD
             android:src="@drawable/bieu_tuong_huy"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Xóa" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
+=======
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="#E53935"
+<<<<<<< HEAD
+=======
+            android:src="@drawable/bieu_tuong_huy"
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Xóa" />
+
+    </LinearLayout>
+
+<<<<<<< HEAD
+</com.google.android.material.card.MaterialCardView>
+=======
+</com.google.android.material.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3

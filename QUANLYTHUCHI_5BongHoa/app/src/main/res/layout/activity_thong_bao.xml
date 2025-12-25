@@ -21,7 +21,10 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_back_white_24dp"
+<<<<<<< HEAD
             android:paddingTop="11dp"
+=======
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
             android:contentDescription="Quay lại" />
 
         <TextView
@@ -31,8 +34,12 @@
             android:text="THÔNG BÁO"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
+<<<<<<< HEAD
             android:textStyle="bold"
             android:layout_marginTop="20dp"/>
+=======
+            android:textStyle="bold" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         <TextView
             android:id="@+id/btnMarkAllRead"

@@ -11,6 +11,7 @@
     <!-- HEADER -->
     <LinearLayout
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="103dp"
         android:background="@color/mau_chu_dao"
         android:gravity="center_vertical"
@@ -19,6 +20,13 @@
         android:paddingTop="40dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp">
+=======
+        android:layout_height="wrap_content"
+        android:background="@color/mau_chu_dao"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         <ImageView
             android:id="@+id/iv_back"

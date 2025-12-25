@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="144dp"
         android:background="@color/mau_chu_dao"
+<<<<<<< HEAD
         android:elevation="4dp"
         android:paddingHorizontal="16dp"
         android:paddingTop="42dp"
@@ -24,13 +25,33 @@
             android:contentDescription="@string/back"
             android:paddingTop="10dp"
             android:src="@drawable/ic_arrow_back_white_24dp" />
+=======
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="18dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+<<<<<<< HEAD
             android:gravity="center"
             android:orientation="vertical">
+=======
+            android:orientation="vertical"
+            android:gravity="center">
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,11 +62,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_marginTop="4dp"
                 android:text="@string/language_title"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+=======
+                android:text="@string/language_title"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
         </LinearLayout>
     </RelativeLayout>
 

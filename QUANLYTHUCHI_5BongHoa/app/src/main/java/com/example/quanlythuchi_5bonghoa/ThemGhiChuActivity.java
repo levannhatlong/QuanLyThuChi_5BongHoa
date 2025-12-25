@@ -65,6 +65,7 @@ public class ThemGhiChuActivity extends AppCompatActivity {
 
         if (content.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập nội dung ghi chú", Toast.LENGTH_SHORT).show();
+            etContent.requestFocus();
             return;
         }
 

@@ -43,6 +43,20 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         holder.tvTenDanhMuc.setText(dm.getTenDanhMuc());
         holder.tvMoTa.setText(dm.getMoTa() != null ? dm.getMoTa() : "");
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        // Set màu cho icon background
+        try {
+            int color = Color.parseColor(danhMuc.getMauSac());
+            holder.cardIcon.setCardBackgroundColor(adjustAlpha(color, 0.2f));
+            holder.ivIconDanhMuc.setColorFilter(color);
+        } catch (Exception e) {
+            holder.cardIcon.setCardBackgroundColor(Color.parseColor("#E3F2FD"));
+            holder.ivIconDanhMuc.setColorFilter(Color.parseColor("#1976D2"));
+        }
+=======
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
         // Set icon - giữ nguyên màu gốc PNG
         int iconRes = getIconResource(dm.getBieuTuong());
         holder.ivIconDanhMuc.setImageResource(iconRes);
@@ -56,6 +70,10 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         // Hiển thị nút sửa và xóa cho tất cả danh mục
         holder.btnDelete.setVisibility(View.VISIBLE);
         holder.btnEdit.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
         holder.btnEdit.setOnClickListener(v -> {
             if (listener != null) listener.onEditClick(dm, holder.getAdapterPosition());
@@ -110,7 +128,11 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         }
     }
 
+<<<<<<< HEAD
     static class ViewHolder extends RecyclerView.ViewHolder {
+=======
+    public static class DanhMucViewHolder extends RecyclerView.ViewHolder {
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
         MaterialCardView cardIcon;
         ImageView ivIconDanhMuc, btnEdit, btnDelete;
         TextView tvTenDanhMuc, tvMoTa;

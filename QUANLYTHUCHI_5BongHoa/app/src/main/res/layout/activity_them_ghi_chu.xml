@@ -12,8 +12,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Header giống hệt trang cảnh báo -->
+        <!-- Header -->
         <RelativeLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:background="@color/mau_chu_dao"
@@ -27,8 +28,13 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
+<<<<<<< HEAD
                 android:contentDescription="Quay lai"
                 android:src="@drawable/ic_arrow_back_white_24dp" />
+=======
+                android:src="@drawable/ic_arrow_back_white_24dp"
+                android:contentDescription="Quay lại" />
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 
             <TextView
                 android:id="@+id/tvHeader"
@@ -41,40 +47,58 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
-        <!-- Ô nhập tiêu đề -->
-        <EditText
-            android:id="@+id/etTitle"
+        <!-- Tiêu đề -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/o_nhap_gia_tri"
-            android:hint="Tiêu đề"
-            android:padding="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:inputType="textCapWords"
-            android:imeOptions="actionNext" />
+            app:hintTextColor="@color/mau_xam"
+            app:boxStrokeColor="@color/mau_chu_dao"
+            app:boxBackgroundColor="@android:color/white">
 
-        <!-- Ô nhập nội dung -->
-        <EditText
-            android:id="@+id/etContent"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiêu đề"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:inputType="textCapWords"
+                android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Nội dung -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilContent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/o_nhap_gia_tri"
-            android:gravity="top|start"
-            android:hint="Nhập nôi dung ghi chú"
-            android:inputType="textMultiLine|textCapSentences"
-            android:imeOptions="actionDone"
-            android:padding="16dp"
-            android:overScrollMode="always"
-            android:scrollbars="vertical" />
+            app:hintTextColor="@color/mau_xam"
+            app:boxStrokeColor="@color/mau_chu_dao"
+            app:boxBackgroundColor="@android:color/white">
 
-        <!-- 2 nút Lưu / Hủy -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Nhập nội dung ghi chú"
+                android:gravity="top"
+                android:inputType="textMultiLine|textCapSentences"
+                android:imeOptions="actionDone"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:scrollbars="vertical"
+                android:overScrollMode="always" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Nút Lưu & Hủy -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,8 +118,7 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless" />
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/btnCancel"
@@ -110,9 +133,7 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless" />
+                android:focusable="true" />
         </LinearLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
