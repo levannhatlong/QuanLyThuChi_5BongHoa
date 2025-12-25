@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8F5F5">
+    android:background="#F5F5F5">
 
     <!-- Header -->
     <RelativeLayout
@@ -10,14 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mau_chu_dao"
-        android:padding="16dp">
+        android:paddingTop="40dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_back_white_24dp"
+            android:paddingTop="10dp"
             android:contentDescription="Quay lại" />
 
         <TextView
@@ -30,18 +35,82 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- Danh sách ghi chú (dùng ListView cho đơn giản và đẹp) -->
-    <ListView
-        android:id="@+id/listViewNotes"
+    <!-- Tab chuyển đổi Ghi chú / Lịch sử -->
+    <LinearLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/tabActive"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:gravity="center"
+            android:text="Ghi chú"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_tab_selected" />
+
+        <TextView
+            android:id="@+id/tabHistory"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:gravity="center"
+            android:text="Đã xóa"
+            android:textSize="14sp"
+            android:textColor="@color/mau_chu_dao"
+            android:background="@drawable/bg_tab_unselected" />
+    </LinearLayout>
+
+    <!-- Thông báo trống -->
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_ghichu"
+            android:alpha="0.5" />
+
+        <TextView
+            android:id="@+id/tvEmptyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Chưa có ghi chú nào"
+            android:textSize="16sp"
+            android:textColor="#999999" />
+    </LinearLayout>
+
+    <!-- Danh sách ghi chú -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewNotes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header"
-        android:padding="16dp"
-        android:clipToPadding="false"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="12dp" />
+        android:layout_below="@id/tabLayout"
+        android:layout_marginBottom="80dp"
+        android:padding="12dp"
+        android:clipToPadding="false" />
 
-    <!-- Nút + nổi góc dưới phải -->
+    <!-- Nút thêm ghi chú -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddNote"
         android:layout_width="wrap_content"
@@ -50,7 +119,8 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="24dp"
         android:src="@drawable/ic_plus"
-        android:backgroundTint="@color/mau_chu_dao"
+        app:backgroundTint="@color/mau_chu_dao"
+        app:tint="#FFFFFF"
         android:contentDescription="Thêm ghi chú" />
 
 </RelativeLayout>

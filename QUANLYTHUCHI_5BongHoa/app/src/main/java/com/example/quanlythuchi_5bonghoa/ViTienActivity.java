@@ -74,13 +74,51 @@ public class ViTienActivity extends AppCompatActivity {
         recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
 
         fabHome = findViewById(R.id.fab_home);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
+>>>>>>> 21f642b447fe83afa3f79fcbc14a938f6b06beaa
         fabAdd = findViewById(R.id.fab_add);
 
         tvXemThem = findViewById(R.id.tv_xem_them);
         tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
         tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
+<<<<<<< HEAD
+=======
     }
 
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
+    }
+
+
+
+<<<<<<< HEAD
+    private void displayData() {
+        // This method is called from updateUI, so we don't need to implement it separately
+        // The display logic is handled in updateUI method
+=======
+    
+=======
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+        fabAdd = findViewById(R.id.fab_add);
+        tvXemThem = findViewById(R.id.tv_xem_them);
+        tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
+        tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
+    }
+>>>>>>> HoThiMyHa
+
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
+>>>>>>> 21f642b447fe83afa3f79fcbc14a938f6b06beaa
     private void setupRecyclerView() {
         recyclerViewRecentTransactions.setLayoutManager(new LinearLayoutManager(this));
         recentTransactionList = new ArrayList<>();
@@ -107,6 +145,7 @@ public class ViTienActivity extends AppCompatActivity {
     }
 
     private void loadDataFromDatabase() {
+<<<<<<< HEAD
         new Thread(() -> {
             Connection connection = DatabaseConnector.getConnection();
             if (connection == null) {
@@ -185,18 +224,47 @@ public class ViTienActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(ViTienActivity.this, "Lỗi khi tải dữ liệu.", Toast.LENGTH_SHORT).show());
             } finally {
                 try { connection.close(); } catch (SQLException ignored) {}
+=======
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        
+        // Lấy giao dịch của người dùng
+        dbHelper.getGiaoDich(currentUserId, "", new DatabaseHelper.DataCallback<List<GiaoDich>>() {
+            @Override
+            public void onSuccess(List<GiaoDich> transactions) {
+                runOnUiThread(() -> {
+                    double totalIncome = 0;
+                    double totalExpense = 0;
+                    List<GiaoDich> recentTransactions = new ArrayList<>();
+                    
+                    // Tính tổng và lấy 3 giao dịch gần nhất
+                    for (int i = 0; i < transactions.size(); i++) {
+                        GiaoDich gd = transactions.get(i);
+                        if ("Thu nhập".equals(gd.getLoaiDanhMuc())) {
+                            totalIncome += gd.getSoTien();
+                        } else {
+                            totalExpense += gd.getSoTien();
+                        }
+                        
+                        if (i < 3) {
+                            recentTransactions.add(gd);
+                        }
+                    }
+                    
+                    updateUI(totalIncome, totalExpense, recentTransactions);
+                    updateBankInfo("Ngân hàng ABC", "1234567890"); // Mock data
+                });
+>>>>>>> 21f642b447fe83afa3f79fcbc14a938f6b06beaa
             }
 
-            double finalTotalIncome = totalIncome;
-            double finalTotalExpense = totalExpense;
-            String finalTenNganHang = tenNganHang;
-            String finalSoTaiKhoan = soTaiKhoan;
-
-            runOnUiThread(() -> {
-                updateUI(finalTotalIncome, finalTotalExpense, transactions);
-                updateBankInfo(finalTenNganHang, finalSoTaiKhoan);
-            });
-        }).start();
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(ViTienActivity.this, error, Toast.LENGTH_SHORT).show();
+                    updateUI(0, 0, new ArrayList<>());
+                    updateBankInfo("Chưa liên kết", "Nhấn để thêm tài khoản");
+                });
+            }
+        });
     }
 
     private void updateUI(double income, double expense, List<GiaoDich> transactions) {

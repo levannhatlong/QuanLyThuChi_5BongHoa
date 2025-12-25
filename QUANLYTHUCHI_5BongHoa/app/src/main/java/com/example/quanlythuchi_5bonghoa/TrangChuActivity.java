@@ -36,7 +36,7 @@ public class TrangChuActivity extends AppCompatActivity {
     private LineChart lineChart;
     private LinearLayout btnViTien, btnThemGiaoDich, btnThongKe;
     private RecyclerView recyclerViewGiaoDich;
-    private ImageView ivNotification, ivSettings, ivGhichu;
+    private ImageView ivNotification, ivSettings, ivGhichu, ivLogout;
 
     private GiaoDichAdapter giaoDichAdapter;
     private List<GiaoDich> danhSachGiaoDich;
@@ -85,6 +85,7 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification = findViewById(R.id.iv_notification);
         ivSettings = findViewById(R.id.iv_settings);
         ivGhichu = findViewById(R.id.iv_ghichu);
+        ivLogout = findViewById(R.id.iv_logout);
     }
 
     private void setupRecyclerView() {
@@ -94,6 +95,16 @@ public class TrangChuActivity extends AppCompatActivity {
         recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
     }
 
+<<<<<<< HEAD
+=======
+    private void setupRecyclerView() {
+        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
+        danhSachGiaoDich = new ArrayList<>();
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
+    }
+
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
     private void setupClickListeners() {
         btnViTien.setOnClickListener(v -> startActivity(new Intent(this, ViTienActivity.class)));
         btnThemGiaoDich.setOnClickListener(v -> startActivity(new Intent(this, ThemGiaoDichActivity.class)));
@@ -102,9 +113,38 @@ public class TrangChuActivity extends AppCompatActivity {
         ivNotification.setOnClickListener(v -> startActivity(new Intent(this, ThongBaoActivity.class)));
         ivGhichu.setOnClickListener(v -> startActivity(new Intent(this, GhiChuActivity.class)));
         ivSettings.setOnClickListener(v -> startActivity(new Intent(this, CaiDatActivity.class)));
+<<<<<<< HEAD
 
         // "Xem tất cả" -> qua Thống kê (hoặc màn danh sách giao dịch nếu bạn có)
         tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, ThongKeActivity.class)));
+=======
+        ivLogout.setOnClickListener(v -> showLogoutDialog());
+        
+        // Click "Xem tất cả" để xem danh sách giao dịch đầy đủ
+        tvChiTiet.setOnClickListener(v -> startActivity(new Intent(this, DanhSachGiaoDichActivity.class)));
+    }
+
+    private void showLogoutDialog() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Đăng xuất")
+                .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                    // Xóa thông tin đăng nhập
+                    SharedPreferences prefs1 = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                    prefs1.edit().clear().apply();
+                    
+                    SharedPreferences prefs2 = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    prefs2.edit().clear().apply();
+                    
+                    // Chuyển về màn hình đăng nhập
+                    Intent intent = new Intent(this, dangnhap.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+>>>>>>> 21f642b447fe83afa3f79fcbc14a938f6b06beaa
     }
 
     private void loadDataFromDatabase() {
@@ -135,12 +175,19 @@ public class TrangChuActivity extends AppCompatActivity {
                 userRs.close();
                 userStmt.close();
 
+<<<<<<< HEAD
                 // 2) Lấy giao dịch + join danh mục để biết Thu/Chi
                 String transQuery =
                         "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
                                 "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
                                 "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
 
+=======
+                // 2. Get all transactions to calculate totals and populate list
+                String transQuery = "SELECT g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
+                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
+                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC, g.MaGiaoDich DESC";
+>>>>>>> 21f642b447fe83afa3f79fcbc14a938f6b06beaa
                 PreparedStatement transStmt = connection.prepareStatement(transQuery);
                 transStmt.setInt(1, currentUserId);
                 ResultSet transRs = transStmt.executeQuery();
@@ -238,4 +285,84 @@ public class TrangChuActivity extends AppCompatActivity {
 
         lineChart.invalidate();
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    private void setupRecyclerView() {
+        recyclerViewGiaoDich.setLayoutManager(new LinearLayoutManager(this));
+        danhSachGiaoDich = new ArrayList<>();
+        // Thêm dữ liệu mẫu
+        danhSachGiaoDich.add(new GiaoDich("Ăn uống", 200000, false));
+        danhSachGiaoDich.add(new GiaoDich("Lương", 30000000, true));
+        danhSachGiaoDich.add(new GiaoDich("Mua sắm", 500000, false));
+        giaoDichAdapter = new GiaoDichAdapter(this, danhSachGiaoDich);
+        recyclerViewGiaoDich.setAdapter(giaoDichAdapter);
+    }
+
+    private void setupClickListeners() {
+        btnViTien.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ViTienActivity.class);
+            startActivity(intent);
+        });
+
+        btnThemGiaoDich.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThemGiaoDichActivity.class);
+            startActivity(intent);
+        });
+
+        btnThongKe.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThongKeActivity.class);
+            startActivity(intent);
+        });
+
+        ivNotification.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
+            startActivity(intent);
+        });
+
+        ivGhichu.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, GhiChuActivity.class);
+            startActivity(intent);
+        });
+
+        ivSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, CaiDatActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    private void loadData() {
+        // Dữ liệu sẽ được tải từ database ở đây
+        // Tạm thời tính toán từ dữ liệu mẫu
+        double tongThu = 0;
+        double tongChi = 0;
+        for (GiaoDich gd : danhSachGiaoDich) {
+            if (gd.isTienVao()) {
+                tongThu += gd.getSoTien();
+            } else {
+                tongChi += gd.getSoTien();
+            }
+        }
+        tvTienThu.setText(String.format("%,.0f VND", tongThu));
+        tvTienChi.setText(String.format("%,.0f VND", tongChi));
+    }
+=======
+>>>>>>> HoThiMyHa
+>>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
+>>>>>>> 21f642b447fe83afa3f79fcbc14a938f6b06beaa
 }

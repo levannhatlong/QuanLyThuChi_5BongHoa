@@ -1,25 +1,44 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
 =======
+<<<<<<< HEAD
+=======
 >>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK" />
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
+<<<<<<< HEAD
+        <option name="scale" value="0.1679840087890625" />
+      </ProjectState>
+    </option>
+>>>>>>> a0ce8161d352ffe6589a014822fb5db602910066
+=======
         <option name="scale" value="0.19237365722656252" />
       </ProjectState>
     </option>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> HoThiMyHa
 >>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
+=======
+>>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
   </component>
 </project>

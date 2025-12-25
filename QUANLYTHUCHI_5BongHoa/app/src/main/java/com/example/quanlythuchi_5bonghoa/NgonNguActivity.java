@@ -1,16 +1,22 @@
 package com.example.quanlythuchi_5bonghoa;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+<<<<<<< HEAD
+import androidx.activity.OnBackPressedCallback;
+=======
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import java.util.Locale;
 
@@ -18,10 +24,12 @@ public class NgonNguActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private TextView btnSave, btnDiscard;
+    private TextView tvCurrentLanguage;
+    private TextView tvCurrentFlag;
 
-    // Các item mới
     private LinearLayout itemVietnamese, itemEnglish;
-    private View checkVietnamese, checkEnglish;  // dùng View hoặc ImageView đều được
+    private CardView cardVietnamese, cardEnglish;
+    private View checkVietnamese, checkEnglish;
 
     private SharedPreferences sharedPreferences;
     private String selectedLanguage = "vi";
@@ -30,16 +38,26 @@ public class NgonNguActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Áp dụng ngôn ngữ đã lưu trước khi setContentView
         applySavedLanguage();
         setContentView(R.layout.activity_ngon_ngu);
 
         sharedPreferences = getSharedPreferences("AppSettings", MODE_PRIVATE);
 
+        // Handle back press using OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (!selectedLanguage.equals(originalLanguage)) {
+                    // Show confirmation if there are unsaved changes
+                    Toast.makeText(NgonNguActivity.this, R.string.unsaved_changes, Toast.LENGTH_SHORT).show();
+                }
+                finish();
+            }
+        });
+
         initViews();
         loadSavedLanguage();
-        setupEventListeners();
+        setupListeners();
     }
 
     private void applySavedLanguage() {
@@ -57,8 +75,6 @@ public class NgonNguActivity extends AppCompatActivity {
         config.setLocale(locale);
 
         resources.updateConfiguration(config, resources.getDisplayMetrics());
-
-        // Cập nhật cả context để Activity hiện tại cũng thay đổi ngay
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
     }
@@ -67,9 +83,13 @@ public class NgonNguActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
         btnDiscard = findViewById(R.id.btnDiscard);
+        tvCurrentLanguage = findViewById(R.id.tvCurrentLanguage);
+        tvCurrentFlag = findViewById(R.id.tvCurrentFlag);
 
         itemVietnamese = findViewById(R.id.itemVietnamese);
         itemEnglish = findViewById(R.id.itemEnglish);
+        cardVietnamese = findViewById(R.id.cardVietnamese);
+        cardEnglish = findViewById(R.id.cardEnglish);
         checkVietnamese = findViewById(R.id.checkVietnamese);
         checkEnglish = findViewById(R.id.checkEnglish);
     }
@@ -78,64 +98,129 @@ public class NgonNguActivity extends AppCompatActivity {
         String savedLanguage = sharedPreferences.getString("language", "vi");
         originalLanguage = savedLanguage;
         selectedLanguage = savedLanguage;
+
+        updateCurrentLanguageDisplay();
         updateSelection();
+    }
+
+    private void updateCurrentLanguageDisplay() {
+        if ("vi".equals(selectedLanguage)) {
+            tvCurrentLanguage.setText(R.string.vietnamese);
+            tvCurrentFlag.setText("🇻🇳");
+        } else {
+            tvCurrentLanguage.setText(R.string.english);
+            tvCurrentFlag.setText("🇺🇸");
+        }
     }
 
     private void updateSelection() {
         if ("vi".equals(selectedLanguage)) {
+            // Vietnamese selected
             itemVietnamese.setSelected(true);
             itemEnglish.setSelected(false);
             checkVietnamese.setVisibility(View.VISIBLE);
             checkEnglish.setVisibility(View.GONE);
+
+            // Update card elevation for visual feedback
+            cardVietnamese.setCardElevation(8f);
+            cardEnglish.setCardElevation(2f);
         } else {
+            // English selected
             itemVietnamese.setSelected(false);
             itemEnglish.setSelected(true);
             checkVietnamese.setVisibility(View.GONE);
             checkEnglish.setVisibility(View.VISIBLE);
+
+            // Update card elevation for visual feedback
+            cardVietnamese.setCardElevation(2f);
+            cardEnglish.setCardElevation(8f);
         }
     }
 
-    private void setupEventListeners() {
+    private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
+
+        // Click on Vietnamese card
+        cardVietnamese.setOnClickListener(v -> {
+            selectedLanguage = "vi";
+            updateCurrentLanguageDisplay();
+            updateSelection();
+        });
 
         itemVietnamese.setOnClickListener(v -> {
             selectedLanguage = "vi";
+            updateCurrentLanguageDisplay();
+            updateSelection();
+        });
+
+        // Click on English card
+        cardEnglish.setOnClickListener(v -> {
+            selectedLanguage = "en";
+            updateCurrentLanguageDisplay();
             updateSelection();
         });
 
         itemEnglish.setOnClickListener(v -> {
             selectedLanguage = "en";
+            updateCurrentLanguageDisplay();
             updateSelection();
         });
 
+        // Cancel button
         btnDiscard.setOnClickListener(v -> {
             selectedLanguage = originalLanguage;
+            updateCurrentLanguageDisplay();
             updateSelection();
-            Toast.makeText(this, "Đã hủy thay đổi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.changes_cancelled, Toast.LENGTH_SHORT).show();
+            finish();
         });
 
+        // Save button
         btnSave.setOnClickListener(v -> saveLanguageSettings());
     }
 
-    // HÀM QUAN TRỌNG ĐÂY NÈ!
     private void saveLanguageSettings() {
-        // Lưu vào SharedPreferences
+        // Save to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("language", selectedLanguage);
         editor.apply();
 
-        // Áp dụng ngôn ngữ mới ngay lập tức
-        setAppLanguage(selectedLanguage);
+        String languageName = selectedLanguage.equals("vi") ? getString(R.string.vietnamese) : getString(R.string.english);
+        Toast.makeText(this, getString(R.string.saved) + ": " + languageName, Toast.LENGTH_SHORT).show();
 
-        String languageName = selectedLanguage.equals("vi") ? "Tiếng Việt" : "English";
-        Toast.makeText(this, "Đã lưu: " + languageName, Toast.LENGTH_SHORT).show();
-
-        // Nếu đổi ngôn ngữ thật thì thông báo cần khởi động lại
         if (!selectedLanguage.equals(originalLanguage)) {
-            Toast.makeText(this, "Vui lòng khởi động lại ứng dụng để áp dụng hoàn toàn", Toast.LENGTH_LONG).show();
-            recreate(); // Cập nhật giao diện Activity hiện tại ngay
+            // Apply new language
+            setAppLanguage(selectedLanguage);
+
+            Toast.makeText(this, R.string.restarting_app, Toast.LENGTH_SHORT).show();
+
+            // Restart app to apply language change
+            restartApp();
         } else {
             finish();
         }
     }
+
+    private void restartApp() {
+        Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            recreate();
+        }
+    }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void onBackPressed() {
+        if (!selectedLanguage.equals(originalLanguage)) {
+            // Show confirmation if there are unsaved changes
+            Toast.makeText(this, R.string.unsaved_changes, Toast.LENGTH_SHORT).show();
+        }
+        super.onBackPressed();
+    }
+>>>>>>> 47c1b5a0d0124fda7137816422bd72d5efbb41c3
 }
