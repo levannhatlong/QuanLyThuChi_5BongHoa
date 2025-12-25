@@ -43,31 +43,16 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         holder.tvTenDanhMuc.setText(dm.getTenDanhMuc());
         holder.tvMoTa.setText(dm.getMoTa() != null ? dm.getMoTa() : "");
 
-<<<<<<< HEAD
-        // Set màu cho icon background
-        try {
-            int color = Color.parseColor(danhMuc.getMauSac());
-            holder.cardIcon.setCardBackgroundColor(adjustAlpha(color, 0.2f));
-            holder.ivIconDanhMuc.setColorFilter(color);
-        } catch (Exception e) {
-            holder.cardIcon.setCardBackgroundColor(Color.parseColor("#E3F2FD"));
-            holder.ivIconDanhMuc.setColorFilter(Color.parseColor("#1976D2"));
-        }
-=======
-        // Set icon - giữ nguyên màu gốc PNG
         int iconRes = getIconResource(dm.getBieuTuong());
         holder.ivIconDanhMuc.setImageResource(iconRes);
-        holder.ivIconDanhMuc.setColorFilter(null); // Xóa hoàn toàn color filter
-        holder.ivIconDanhMuc.setImageTintList(null); // Xóa tint
+        holder.ivIconDanhMuc.setColorFilter(null);
+        holder.ivIconDanhMuc.setImageTintList(null);
 
-        // Background nhẹ theo loại
         int bgColor = dm.isChiTieu() ? Color.parseColor("#FFF3E0") : Color.parseColor("#E8F5E9");
         holder.cardIcon.setCardBackgroundColor(bgColor);
 
-        // Hiển thị nút sửa và xóa cho tất cả danh mục
         holder.btnDelete.setVisibility(View.VISIBLE);
         holder.btnEdit.setVisibility(View.VISIBLE);
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
 
         holder.btnEdit.setOnClickListener(v -> {
             if (listener != null) listener.onEditClick(dm, holder.getAdapterPosition());
@@ -122,7 +107,7 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         }
     }
 
-    public static class DanhMucViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView cardIcon;
         ImageView ivIconDanhMuc, btnEdit, btnDelete;
         TextView tvTenDanhMuc, tvMoTa;

@@ -72,41 +72,12 @@ public class ViTienActivity extends AppCompatActivity {
         ivToggleBalance = findViewById(R.id.iv_toggle_balance);
         recyclerViewRecentTransactions = findViewById(R.id.recycler_view_recent_transactions);
         fabHome = findViewById(R.id.fab_home);
-<<<<<<< HEAD
-<<<<<<< HEAD
         fabAdd = findViewById(R.id.fab_add);
         tvXemThem = findViewById(R.id.tv_xem_them);
         tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
         tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
     }
 
-=======
-<<<<<<< HEAD
-    }
-
-    private void calculateBalance() {
-        soDu = tongThuNhap - tongChiTieu;
-
-        // Tính phần trăm cho progress bar
-        long tongGiaoDich = tongThuNhap + tongChiTieu;
-        if (tongGiaoDich > 0) {
-            int percentThuNhap = (int) ((tongThuNhap * 100) / tongGiaoDich);
-            progressBalance.setProgress(percentThuNhap);
-        }
-    }
-
-    
-=======
-=======
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
-        fabAdd = findViewById(R.id.fab_add);
-        tvXemThem = findViewById(R.id.tv_xem_them);
-        tvTenNganHang = findViewById(R.id.tv_ten_ngan_hang);
-        tvSoTaiKhoan = findViewById(R.id.tv_so_tai_khoan);
-    }
->>>>>>> HoThiMyHa
-
->>>>>>> 1ee33c8ca1ac369a9ddd4b55a3b94b5f81ef69a4
     private void setupRecyclerView() {
         recyclerViewRecentTransactions.setLayoutManager(new LinearLayoutManager(this));
         recentTransactionList = new ArrayList<>();
@@ -122,7 +93,6 @@ public class ViTienActivity extends AppCompatActivity {
             finish();
         });
 
-        // FAB thêm giao dịch nhanh
         fabAdd.setOnClickListener(v -> {
             Intent intent = new Intent(ViTienActivity.this, ThemGiaoDichActivity.class);
             startActivity(intent);
@@ -130,11 +100,10 @@ public class ViTienActivity extends AppCompatActivity {
 
         ivToggleBalance.setOnClickListener(v -> {
             isBalanceVisible = !isBalanceVisible;
-            loadDataFromDatabase(); // Reload to apply visibility change
+            loadDataFromDatabase();
         });
 
         tvXemThem.setOnClickListener(v -> {
-            // Navigate to the full statistics screen
             Intent intent = new Intent(ViTienActivity.this, ThongKeActivity.class);
             startActivity(intent);
         });
@@ -155,7 +124,6 @@ public class ViTienActivity extends AppCompatActivity {
             String soTaiKhoan = "";
 
             try {
-                // 1. Calculate total income and expense
                 String summaryQuery = "SELECT d.LoaiDanhMuc, SUM(g.SoTien) as TongSoTien " +
                                     "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
                                     "WHERE g.MaNguoiDung = ? " +
@@ -176,7 +144,6 @@ public class ViTienActivity extends AppCompatActivity {
                 summaryRs.close();
                 summaryStmt.close();
 
-                // 2. Fetch recent transactions (top 3)
                 String recentQuery = "SELECT TOP 3 g.TenGiaoDich, g.SoTien, g.NgayGiaoDich, d.TenDanhMuc, d.LoaiDanhMuc, d.BieuTuong " +
                                    "FROM GiaoDich g JOIN DanhMuc d ON g.MaDanhMuc = d.MaDanhMuc " +
                                    "WHERE g.MaNguoiDung = ? ORDER BY g.NgayGiaoDich DESC";
@@ -196,7 +163,6 @@ public class ViTienActivity extends AppCompatActivity {
                 recentRs.close();
                 recentStmt.close();
 
-                // 3. Fetch bank account info
                 String bankQuery = "SELECT TOP 1 TenNganHang, SoTaiKhoan FROM LienKetNganHang WHERE MaNguoiDung = ?";
                 PreparedStatement bankStmt = connection.prepareStatement(bankQuery);
                 bankStmt.setInt(1, currentUserId);
@@ -253,7 +219,6 @@ public class ViTienActivity extends AppCompatActivity {
             progressBalance.setProgress(0);
         }
 
-        // Update RecyclerView
         recentTransactionList.clear();
         recentTransactionList.addAll(transactions);
         giaoDichAdapter.notifyDataSetChanged();
@@ -262,7 +227,6 @@ public class ViTienActivity extends AppCompatActivity {
     private void updateBankInfo(String tenNganHang, String soTaiKhoan) {
         if (tenNganHang != null && !tenNganHang.isEmpty()) {
             tvTenNganHang.setText(tenNganHang);
-            // Ẩn 4 số cuối tài khoản
             if (soTaiKhoan != null && soTaiKhoan.length() > 4) {
                 String masked = "**** **** " + soTaiKhoan.substring(soTaiKhoan.length() - 4);
                 tvSoTaiKhoan.setText(masked);

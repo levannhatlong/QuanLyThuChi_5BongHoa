@@ -153,18 +153,15 @@ public class QuenMatKhauActivity extends AppCompatActivity {
                     Toast.makeText(QuenMatKhauActivity.this,
                             "Đã gửi mã OTP đến " + userEmail, Toast.LENGTH_LONG).show();
 
-                    // Chuyển sang step 2
                     layoutStep1.setVisibility(View.GONE);
                     layoutStep2.setVisibility(View.VISIBLE);
 
-                    // Ẩn email, chỉ hiện phần đầu
                     String maskedEmail = maskEmail(userEmail);
                     tvEmailDaGui.setText("📧 Mã OTP đã gửi đến: " + maskedEmail);
 
                     btnGuiOTP.setEnabled(true);
                     btnGuiOTP.setText("📧 Gửi mã OTP");
 
-                    // Bắt đầu đếm ngược 5 phút
                     startCountdown();
                 });
             }

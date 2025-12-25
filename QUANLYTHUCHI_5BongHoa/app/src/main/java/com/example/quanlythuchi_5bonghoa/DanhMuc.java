@@ -2,9 +2,9 @@ package com.example.quanlythuchi_5bonghoa;
 
 public class DanhMuc {
     private int maDanhMuc;
-    private Integer maNguoiDung; // null = danh mục mặc định
+    private Integer maNguoiDung;
     private String tenDanhMuc;
-    private String loaiDanhMuc; // "Chi tiêu" hoặc "Thu nhập"
+    private String loaiDanhMuc;
     private String moTa;
     private String bieuTuong;
 

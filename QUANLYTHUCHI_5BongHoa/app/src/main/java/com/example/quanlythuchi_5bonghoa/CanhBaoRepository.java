@@ -46,7 +46,6 @@ public class CanhBaoRepository {
         try {
             Connection conn = DatabaseConnector.getConnection();
             if (conn != null) {
-                // Kiểm tra đã có cảnh báo chưa
                 String checkSql = "SELECT MaCanhBao FROM CanhBaoChiTieu WHERE MaNguoiDung = ?";
                 PreparedStatement checkStmt = conn.prepareStatement(checkSql);
                 checkStmt.setInt(1, userId);
@@ -69,7 +68,7 @@ public class CanhBaoRepository {
                 stmt.setString(1, chuKy);
                 stmt.setDouble(2, hanMuc);
                 if (ngayBatDau != null && !ngayBatDau.isEmpty()) {
-                    // Chuyển đổi từ dd/MM/yyyy sang yyyy-MM-dd
+
                     String[] parts = ngayBatDau.split("/");
                     if (parts.length == 3) {
                         String sqlDate = parts[2] + "-" + parts[1] + "-" + parts[0];

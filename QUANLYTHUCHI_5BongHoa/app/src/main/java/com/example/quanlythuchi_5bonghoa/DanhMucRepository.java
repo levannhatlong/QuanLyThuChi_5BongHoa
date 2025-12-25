@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DanhMucRepository {
 
-    // Lấy danh mục theo loại (Chi tiêu / Thu nhập)
+    // Lấy danh mục theo loại
     public static List<DanhMuc> getDanhMucByLoai(int userId, String loai) {
         List<DanhMuc> list = new ArrayList<>();
         try {
@@ -120,7 +120,7 @@ public class DanhMucRepository {
         return false;
     }
 
-    // Xóa danh mục (cho phép xóa tất cả danh mục)
+    // Xóa danh mục
     public static boolean deleteDanhMuc(int maDanhMuc) {
         try {
             Connection conn = DatabaseConnector.getConnection();

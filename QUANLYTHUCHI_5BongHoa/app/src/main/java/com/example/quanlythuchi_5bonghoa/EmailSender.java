@@ -10,12 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
-    
-    // ============ CẤU HÌNH EMAIL GỬI OTP ============
-    // Đây là email DÙNG ĐỂ GỬI OTP (không phải email nhận)
-    // Bước 1: Đăng nhập Gmail này, vào Google Account > Security > Bật 2-Step Verification
-    // Bước 2: Vào App passwords > Tạo password cho "Mail" > Copy 16 ký tự
-    // Bước 3: Paste 16 ký tự vào SENDER_PASSWORD (không có dấu cách)
     private static final String SENDER_EMAIL = "myhaho29@gmail.com";
     private static final String SENDER_PASSWORD = "upxdbfssppzkftbp"; // Thay bằng App Password 16 ký tự
     

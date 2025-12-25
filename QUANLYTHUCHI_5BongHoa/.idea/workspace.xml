@@ -5,6 +5,36 @@
       <config />
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_circle_red.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_current_language.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_income_bar.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_menu_item.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_spinner.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/bieu_tuong_huy.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_cai_dat.xml">
         <config>
           <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
@@ -90,6 +120,11 @@
           <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_xuat_du_lieu.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/dangky.xml">
         <config>
           <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
@@ -126,6 +161,11 @@
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_giao_dich.xml">
+        <config>
+          <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_icon_selector.xml">
         <config>
           <theme>@style/Theme.QUANLYTHUCHI_5BongHoa</theme>
         </config>
@@ -179,7 +219,7 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "NhatLong",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "D:/UTE/HK125/7.1.2_LTTD03/CK/QUANLYTHUCHI_5BongHoa/QUANLYTHUCHI_5BongHoa/app/src/main/java",
     "last_opened_file_path": "D:/Documents/SourceTree_AndroidDEV/QuanLyThuChi_5BongHoa/QUANLYTHUCHI_5BongHoa/build.gradle.kts"
@@ -245,12 +285,12 @@
       <map>
         <entry key="com.example.quanlythuchi_5bonghoa">
           <value>
-            <CheckInfo lastCheckTimestamp="1766462054438" />
+            <CheckInfo lastCheckTimestamp="1766642110427" />
           </value>
         </entry>
         <entry key="com.example.quanlythuchi_5bonghoa.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1766462054437" />
+            <CheckInfo lastCheckTimestamp="1766642110424" />
           </value>
         </entry>
       </map>

@@ -99,23 +99,21 @@ public class NgonNguActivity extends AppCompatActivity {
 
     private void updateSelection() {
         if ("vi".equals(selectedLanguage)) {
-            // Vietnamese selected
+
             itemVietnamese.setSelected(true);
             itemEnglish.setSelected(false);
             checkVietnamese.setVisibility(View.VISIBLE);
             checkEnglish.setVisibility(View.GONE);
 
-            // Update card elevation for visual feedback
             cardVietnamese.setCardElevation(8f);
             cardEnglish.setCardElevation(2f);
         } else {
-            // English selected
+
             itemVietnamese.setSelected(false);
             itemEnglish.setSelected(true);
             checkVietnamese.setVisibility(View.GONE);
             checkEnglish.setVisibility(View.VISIBLE);
 
-            // Update card elevation for visual feedback
             cardVietnamese.setCardElevation(2f);
             cardEnglish.setCardElevation(8f);
         }
@@ -124,7 +122,6 @@ public class NgonNguActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        // Click on Vietnamese card
         cardVietnamese.setOnClickListener(v -> {
             selectedLanguage = "vi";
             updateCurrentLanguageDisplay();
@@ -137,7 +134,6 @@ public class NgonNguActivity extends AppCompatActivity {
             updateSelection();
         });
 
-        // Click on English card
         cardEnglish.setOnClickListener(v -> {
             selectedLanguage = "en";
             updateCurrentLanguageDisplay();
@@ -150,7 +146,6 @@ public class NgonNguActivity extends AppCompatActivity {
             updateSelection();
         });
 
-        // Cancel button
         btnDiscard.setOnClickListener(v -> {
             selectedLanguage = originalLanguage;
             updateCurrentLanguageDisplay();
@@ -159,12 +154,10 @@ public class NgonNguActivity extends AppCompatActivity {
             finish();
         });
 
-        // Save button
         btnSave.setOnClickListener(v -> saveLanguageSettings());
     }
 
     private void saveLanguageSettings() {
-        // Save to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("language", selectedLanguage);
         editor.apply();
@@ -173,12 +166,10 @@ public class NgonNguActivity extends AppCompatActivity {
         Toast.makeText(this, getString(R.string.saved) + ": " + languageName, Toast.LENGTH_SHORT).show();
 
         if (!selectedLanguage.equals(originalLanguage)) {
-            // Apply new language
             setAppLanguage(selectedLanguage);
 
             Toast.makeText(this, R.string.restarting_app, Toast.LENGTH_SHORT).show();
 
-            // Restart app to apply language change
             restartApp();
         } else {
             finish();
@@ -199,7 +190,6 @@ public class NgonNguActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!selectedLanguage.equals(originalLanguage)) {
-            // Show confirmation if there are unsaved changes
             Toast.makeText(this, R.string.unsaved_changes, Toast.LENGTH_SHORT).show();
         }
         super.onBackPressed();

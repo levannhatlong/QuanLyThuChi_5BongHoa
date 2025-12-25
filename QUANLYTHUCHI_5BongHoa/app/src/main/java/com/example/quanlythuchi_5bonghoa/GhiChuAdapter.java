@@ -44,12 +44,10 @@ public class GhiChuAdapter extends RecyclerView.Adapter<GhiChuAdapter.ViewHolder
         holder.tvTitle.setText(ghiChu.getTieuDe() != null && !ghiChu.getTieuDe().isEmpty() 
                 ? ghiChu.getTieuDe() : "Không có tiêu đề");
         holder.tvContent.setText(ghiChu.getNoiDung() != null ? ghiChu.getNoiDung() : "");
-        
-        // Hiển thị ngày cập nhật nếu có, không thì ngày tạo
+
         String displayDate = ghiChu.getNgayCapNhat() != null ? ghiChu.getNgayCapNhat() : ghiChu.getNgayTao();
         holder.tvDate.setText(displayDate != null ? displayDate : "");
 
-        // Hiển thị nút theo chế độ
         if (isHistoryMode) {
             holder.btnEdit.setVisibility(View.GONE);
             holder.btnDelete.setVisibility(View.GONE);

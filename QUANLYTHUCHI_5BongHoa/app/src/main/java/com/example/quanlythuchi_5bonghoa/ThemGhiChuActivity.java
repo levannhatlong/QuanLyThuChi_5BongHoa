@@ -12,14 +12,13 @@ public class ThemGhiChuActivity extends AppCompatActivity {
     private EditText etTitle, etContent;
     private TextView tvHeader;
     private int userId;
-    private int maGhiChu = -1; // -1 = thêm mới, > 0 = sửa
+    private int maGhiChu = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_them_ghi_chu);
 
-        // Lấy user ID
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         userId = prefs.getInt("user_id", -1);
 
@@ -43,7 +42,6 @@ public class ThemGhiChuActivity extends AppCompatActivity {
     }
 
     private void loadEditData() {
-        // Kiểm tra xem có đang sửa ghi chú không
         maGhiChu = getIntent().getIntExtra("ma_ghi_chu", -1);
         
         if (maGhiChu > 0) {
@@ -65,11 +63,9 @@ public class ThemGhiChuActivity extends AppCompatActivity {
 
         if (content.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập nội dung ghi chú", Toast.LENGTH_SHORT).show();
-            etContent.requestFocus();
             return;
         }
 
-        // Nếu tiêu đề trống → tự sinh tiêu đề từ 20 ký tự đầu nội dung
         if (title.isEmpty()) {
             title = content.length() > 20 ? content.substring(0, 20) + "..." : content;
         }

@@ -21,10 +21,4 @@
         <item>Theo tháng</item>
         <item>Theo năm</item>
     </string-array>
-    <string name="quay_lai">Quay lại</string>
-    <string name="them_ghi_chu">Thêm ghi chú</string>
-    <string name="Tieu_de">Tiêu đề</string>
-    <string name="nhap_noi_dung_ghi_chu">Nhập nội dung ghi chú</string>
-    <string name="luu">Lưu</string>
-    <string name="huy">Hủy</string>
 </resources>

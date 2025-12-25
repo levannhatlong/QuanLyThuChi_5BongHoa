@@ -22,11 +22,9 @@ public class TaiKhoanActivity extends AppCompatActivity {
     private ImageView btnBack, imgProfile;
     private TextView btnEdit, btnSave;
     private TextView tvUserName;
-    
-    // TextView hiển thị (chế độ xem)
+
     private TextView tvTenDangNhap, tvHoTen, tvEmailSoDienThoai, tvNgaySinh;
-    
-    // EditText chỉnh sửa (chế độ sửa)
+
     private EditText edtHoTen, edtEmailSoDienThoai;
     private LinearLayout layoutNgaySinhEdit;
     private TextView tvNgaySinhEdit;
@@ -57,14 +55,12 @@ public class TaiKhoanActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         imgProfile = findViewById(R.id.imgProfile);
         tvUserName = findViewById(R.id.tvUserName);
-        
-        // TextView hiển thị
+
         tvTenDangNhap = findViewById(R.id.tvTenDangNhap);
         tvHoTen = findViewById(R.id.tvHoTen);
         tvEmailSoDienThoai = findViewById(R.id.tvEmailSoDienThoai);
         tvNgaySinh = findViewById(R.id.tvNgaySinh);
-        
-        // EditText chỉnh sửa
+
         edtHoTen = findViewById(R.id.edtHoTen);
         edtEmailSoDienThoai = findViewById(R.id.edtEmailSoDienThoai);
         layoutNgaySinhEdit = findViewById(R.id.layoutNgaySinhEdit);
@@ -122,12 +118,10 @@ public class TaiKhoanActivity extends AppCompatActivity {
 
     private void toggleEditMode(boolean editMode) {
         isEditMode = editMode;
-        
-        // Hiển thị/ẩn nút Sửa/Lưu
+
         btnEdit.setVisibility(editMode ? View.GONE : View.VISIBLE);
         btnSave.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        
-        // Hiển thị/ẩn TextView và EditText
+
         tvHoTen.setVisibility(editMode ? View.GONE : View.VISIBLE);
         edtHoTen.setVisibility(editMode ? View.VISIBLE : View.GONE);
         
@@ -138,7 +132,6 @@ public class TaiKhoanActivity extends AppCompatActivity {
         layoutNgaySinhEdit.setVisibility(editMode ? View.VISIBLE : View.GONE);
         
         if (editMode) {
-            // Copy dữ liệu từ TextView sang EditText
             String hoTen = tvHoTen.getText().toString();
             edtHoTen.setText(hoTen.equals("--") ? "" : hoTen);
             
@@ -162,16 +155,13 @@ public class TaiKhoanActivity extends AppCompatActivity {
             NguoiDungRepository.NguoiDung nd = NguoiDungRepository.getNguoiDung(userId);
             runOnUiThread(() -> {
                 if (nd != null) {
-                    // Tên hiển thị dưới avatar
                     tvUserName.setText(nd.hoTen != null && !nd.hoTen.isEmpty() ? nd.hoTen : "Chưa cập nhật");
 
-                    // Thông tin cá nhân từ database
                     tvTenDangNhap.setText(nd.tenDangNhap != null ? nd.tenDangNhap : "--");
                     tvHoTen.setText(nd.hoTen != null && !nd.hoTen.isEmpty() ? nd.hoTen : "--");
                     tvEmailSoDienThoai.setText(nd.emailSoDienThoai != null && !nd.emailSoDienThoai.isEmpty() ? nd.emailSoDienThoai : "--");
                     tvNgaySinh.setText(nd.ngaySinh != null && !nd.ngaySinh.isEmpty() ? nd.ngaySinh : "--");
 
-                    // Lưu ngày sinh để edit
                     if (nd.ngaySinh != null && !nd.ngaySinh.isEmpty()) {
                         selectedDate = nd.ngaySinh;
                     }

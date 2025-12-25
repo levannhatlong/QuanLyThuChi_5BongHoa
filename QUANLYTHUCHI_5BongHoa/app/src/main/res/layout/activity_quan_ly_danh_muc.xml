@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F7FA">
+    android:background="#F5F5F5">
 
     <!-- Header -->
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mau_chu_dao"
@@ -19,11 +19,7 @@
             android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_back_white_24dp"
-<<<<<<< HEAD
-            android:contentDescription="Back" />
-=======
             android:contentDescription="Quay lại" />
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,63 +28,6 @@
             android:text="QUẢN LÝ DANH MỤC"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05" />
-    </RelativeLayout>
-
-    <!-- Tab Layout Chi tiêu / Thu nhập -->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@android:color/white">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
-
-            <TextView
-                android:id="@+id/tabChiTieu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Chi tiêu"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:padding="12dp"
-                android:background="@drawable/bg_tab_active" />
-
-            <TextView
-                android:id="@+id/tabThuNhap"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Thu nhập"
-                android:textColor="#666666"
-                android:textSize="15sp"
-                android:gravity="center"
-                android:padding="12dp" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- Search Bar -->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="@android:color/white">
-<<<<<<< HEAD
-
-=======
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -140,109 +79,23 @@
         app:cardElevation="2dp"
         app:cardBackgroundColor="#FFFFFF">
 
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="12dp">
-<<<<<<< HEAD
 
-=======
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:cardBackgroundColor="@color/white">
-
-
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_search"
-<<<<<<< HEAD
-                app:tint="#90A4AE" />
-
-            <EditText
-                android:id="@+id/edtSearch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:hint="Tìm kiếm danh mục..."
-                android:textColorHint="#90A4AE"
-                android:textColor="#263238"
-                android:textSize="14sp"
-                android:background="@null"
-                android:inputType="text" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-=======
                 app:tint="#999999" />
 
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:cardBackgroundColor="#FFEBEE">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_arrow_down"
-                        app:tint="@color/mau_do" />
-                </com.google.android.material.card.MaterialCardView>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvExpenseCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7"
-                        android:textColor="@color/mau_chu_toi"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chi tiêu"
-                        android:textColor="@color/mau_chu_phu"
-                        android:textSize="12sp"
-                        android:fontFamily="sans-serif" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="#90A4AE" />
-
             <EditText
                 android:id="@+id/edtSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:hint="Tìm kiếm danh mục..."
-                android:textColorHint="#90A4AE"
-                android:textColor="#263238"
-
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
                 android:hint="Tìm kiếm danh mục..."
@@ -252,7 +105,6 @@
                 android:background="@null"
                 android:inputType="text" />
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
     </androidx.cardview.widget.CardView>
 
     <!-- Empty View -->
@@ -282,35 +134,15 @@
             android:textColor="#999999" />
     </LinearLayout>
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thu nhập"
-                        android:textColor="@color/mau_chu_phu"
-                        android:textSize="12sp"
-                        android:fontFamily="sans-serif" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
-
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
     <!-- Danh sách danh mục -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerDanhMuc"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="16dp"
-<<<<<<< HEAD
-=======
         android:layout_height="match_parent"
         android:layout_below="@id/searchCard"
         android:layout_marginBottom="80dp"
         android:paddingHorizontal="12dp"
         android:paddingTop="8dp"
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
         android:clipToPadding="false" />
 
     <!-- FAB Thêm danh mục mới -->
@@ -318,16 +150,6 @@
         android:id="@+id/fabThemDanhMuc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="Thêm mới"
-        android:textColor="@android:color/white"
-        app:icon="@drawable/ic_plus"
-        app:iconTint="@android:color/white"
-        app:backgroundTint="@color/mau_chu_dao"
-        app:elevation="6dp" />
-<<<<<<< HEAD
-=======
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
@@ -336,6 +158,5 @@
         app:icon="@drawable/ic_plus"
         app:iconTint="#FFFFFF"
         app:backgroundTint="@color/mau_chu_dao" />
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
 
 </RelativeLayout>

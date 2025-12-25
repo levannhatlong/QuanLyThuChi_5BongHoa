@@ -9,7 +9,6 @@ import java.util.List;
 
 public class GiaoDichRepository {
 
-    // Lấy tổng thu và tổng chi của người dùng
     public double[] layTongThuChi(int maND) {
         double thu = 0, chi = 0;
         try (Connection conn = DatabaseConnector.getConnection()) {
@@ -29,7 +28,6 @@ public class GiaoDichRepository {
         return new double[]{thu, chi};
     }
 
-    // Lấy danh sách giao dịch gần đây với đầy đủ thông tin
     public List<GiaoDich> layGiaoDichGanDay(int maND) {
         List<GiaoDich> list = new ArrayList<>();
         try (Connection conn = DatabaseConnector.getConnection()) {

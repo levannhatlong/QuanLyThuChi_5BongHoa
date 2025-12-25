@@ -29,30 +29,6 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-<<<<<<< HEAD
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/btnDiscard"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_close"
-                android:layout_marginEnd="16dp"/>
-
-            <ImageView
-                android:id="@+id/btnSave"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_save"/>
-        </LinearLayout>
-=======
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
     </RelativeLayout>
 
     <ScrollView

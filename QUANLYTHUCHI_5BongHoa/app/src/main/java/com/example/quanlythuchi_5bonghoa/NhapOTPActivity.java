@@ -20,7 +20,6 @@ public class NhapOTPActivity extends Activity {
         edtOTP = findViewById(R.id.edtOTP);
         btnXacNhanOTP = findViewById(R.id.btnXacNhanOTP);
 
-        // Không kiểm tra OTP thật — chỉ chuyển trang
         btnXacNhanOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

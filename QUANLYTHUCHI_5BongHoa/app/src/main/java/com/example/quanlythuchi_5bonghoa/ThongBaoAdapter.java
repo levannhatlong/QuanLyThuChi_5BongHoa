@@ -41,7 +41,6 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHo
         holder.tvNoiDung.setText(tb.getNoiDung() != null ? tb.getNoiDung() : "");
         holder.tvThoiGian.setText(tb.getNgayTao() != null ? tb.getNgayTao() : "");
 
-        // Hiển thị chấm chưa đọc và style
         if (tb.isDaDoc()) {
             holder.viewUnread.setVisibility(View.GONE);
             holder.tvTieuDe.setTypeface(null, Typeface.NORMAL);
@@ -52,7 +51,6 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHo
             holder.tvNoiDung.setTextColor(0xFF666666);
         }
 
-        // Icon theo loại thông báo
         if (tb.getLoaiThongBao() != null) {
             switch (tb.getLoaiThongBao()) {
                 case "canh_bao":
@@ -66,7 +64,6 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHo
             }
         }
 
-        // Click để đánh dấu đã đọc
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onClick(tb);
         });

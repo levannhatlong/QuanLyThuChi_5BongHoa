@@ -42,8 +42,7 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
 
     private Calendar myCalendar = Calendar.getInstance();
     private int currentUserId;
-    
-    // Map để lưu tên danh mục và mã danh mục
+
     private Map<String, Integer> danhMucMap = new HashMap<>();
     private List<String> danhMucChiTieu = new ArrayList<>();
     private List<String> danhMucThuNhap = new ArrayList<>();
@@ -84,51 +83,17 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
         ivCalendar = findViewById(R.id.iv_calendar);
     }
 
-<<<<<<< HEAD
-        // Spinner setup
-        setupCategoryMenu();
-
-        // Date picker setup
-        DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, month);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        };
-
-        ivCalendarPicker.setOnClickListener(v ->
-                new DatePickerDialog(ThemGiaoDichActivity.this, date,
-                        myCalendar.get(Calendar.YEAR),
-                        myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show()
-        );
-
-        // Button click listeners
-        fabSave.setOnClickListener(v -> {
-            if (validateInput()) {
-                // In a real app, you would save the data here.
-                Toast.makeText(ThemGiaoDichActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ThemGiaoDichActivity.this, ThongKeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ivCancel.setOnClickListener(v -> finish());
-=======
     private void setupListeners() {
         // Back button
         ivBack.setOnClickListener(v -> finish());
->>>>>>> d5871c4dd5d140e60271c9ed846f1800707f2d2f
 
         // Reset button
         ivReset.setOnClickListener(v -> resetForm());
 
-        // Radio group change - cập nhật danh mục theo loại
         radioGroupLoai.setOnCheckedChangeListener((group, checkedId) -> {
             updateDanhMucDropdown();
         });
 
-        // Date picker - click vào icon lịch hoặc ô nhập
         ivCalendar.setOnClickListener(v -> showDatePicker());
         editNgayGiaoDich.setOnClickListener(v -> showDatePicker());
 
@@ -171,7 +136,6 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
             }
 
             try {
-                // Lấy danh mục chung (MaNguoiDung = NULL) và danh mục riêng của user
                 String query = "SELECT MaDanhMuc, TenDanhMuc, LoaiDanhMuc FROM DanhMuc " +
                               "WHERE MaNguoiDung IS NULL OR MaNguoiDung = ?";
                 PreparedStatement stmt = connection.prepareStatement(query);
@@ -274,7 +238,6 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
             return;
         }
 
-        // Disable button để tránh click nhiều lần
         btnSave.setEnabled(false);
         btnSave.setText("Đang lưu...");
 
@@ -290,7 +253,6 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
             }
 
             try {
-                // Format ngày từ dd/MM/yyyy sang yyyy-MM-dd cho SQL
                 SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String ngayGiaoDichStr = outputFormat.format(inputFormat.parse(editNgayGiaoDich.getText().toString()));
@@ -308,7 +270,6 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
                 int rowsInserted = stmt.executeUpdate();
                 stmt.close();
 
-                // Kiểm tra cảnh báo chi tiêu nếu là giao dịch chi tiêu
                 if (rowsInserted > 0 && radioChiTieu.isChecked()) {
                     checkAndCreateWarningNotification(connection);
                 }
@@ -316,7 +277,7 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (rowsInserted > 0) {
                         Toast.makeText(this, "Thêm giao dịch thành công!", Toast.LENGTH_SHORT).show();
-                        // Quay về trang trước
+
                         finish();
                     } else {
                         Toast.makeText(this, "Lỗi khi thêm giao dịch", Toast.LENGTH_SHORT).show();
@@ -344,7 +305,6 @@ public class ThemGiaoDichActivity extends AppCompatActivity {
 
     private void checkAndCreateWarningNotification(Connection existingConn) {
         try {
-            // Lấy cảnh báo của user
             CanhBao canhBao = CanhBaoRepository.getCanhBao(currentUserId);
             
             if (canhBao != null && canhBao.isTrangThai() && canhBao.getHanMuc() > 0) {

@@ -7,18 +7,16 @@ import java.sql.ResultSet;
 
 public class NguoiDungRepository {
 
-    // Model class cho NguoiDung
     public static class NguoiDung {
         public int maNguoiDung;
         public String tenDangNhap;
         public String hoTen;
-        public String emailSoDienThoai; // Cột gộp Email/SĐT
+        public String emailSoDienThoai;
         public String ngaySinh;
         public String anhDaiDien;
         public String ngayTao;
     }
 
-    // Lấy thông tin người dùng
     public static NguoiDung getNguoiDung(int userId) {
         try {
             Connection conn = DatabaseConnector.getConnection();
@@ -54,7 +52,6 @@ public class NguoiDungRepository {
         return null;
     }
 
-    // Cập nhật thông tin người dùng
     public static boolean updateNguoiDung(int userId, String hoTen, String emailSoDienThoai, String ngaySinh) {
         try {
             Connection conn = DatabaseConnector.getConnection();
@@ -63,8 +60,7 @@ public class NguoiDungRepository {
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, hoTen);
                 stmt.setString(2, emailSoDienThoai);
-                
-                // Chuyển đổi ngày từ dd/MM/yyyy sang yyyy-MM-dd
+
                 if (ngaySinh != null && !ngaySinh.isEmpty()) {
                     String[] parts = ngaySinh.split("/");
                     if (parts.length == 3) {
@@ -108,7 +104,7 @@ public class NguoiDungRepository {
                     rs.close();
                     checkStmt.close();
                     conn.close();
-                    return false; // Mật khẩu cũ không đúng
+                    return false;
                 }
                 rs.close();
                 checkStmt.close();
@@ -134,7 +130,6 @@ public class NguoiDungRepository {
         try {
             Connection conn = DatabaseConnector.getConnection();
             if (conn != null) {
-                // Xóa các dữ liệu liên quan trước
                 String[] deleteSqls = {
                     "DELETE FROM GiaoDich WHERE MaNguoiDung = ?",
                     "DELETE FROM GhiChu WHERE MaNguoiDung = ?",

@@ -143,7 +143,6 @@ public class XuatDuLieuActivity extends AppCompatActivity {
                     stmt.close();
                     conn.close();
 
-                    // Ghi file - sử dụng MediaStore cho Android 10+
                     String filePath;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         ContentValues values = new ContentValues();

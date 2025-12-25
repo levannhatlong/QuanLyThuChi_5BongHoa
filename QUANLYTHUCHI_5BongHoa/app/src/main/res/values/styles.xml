@@ -1,47 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!-- Các style mới cho chức năng Thêm Ghi Chú -->
-
-    <!-- Theme chính của app (nếu chưa có, thêm vào đây để hỗ trợ MaterialComponents) -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/mau_chu_dao</item>
-        <item name="colorPrimaryVariant">@color/mau_chu_dao_toi</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorAccent">@color/mau_chu_dao</item>
-        <item name="android:textColorPrimary">@color/mau_chu_toi</item>
-        <item name="android:textColorSecondary">@color/mau_xam</item>
-        <item name="textInputStyle">@style/TextInputLayout.Outlined</item>
-        <item name="materialButtonStyle">@style/ActionButton</item>
-    </style>
-
-    <!-- Style cho TextInputLayout (OutlinedBox) -->
-    <style name="TextInputLayout.Outlined">
-        <item name="boxStrokeColor">?attr/colorPrimary</item>
-        <item name="boxBackgroundColor">@android:color/white</item>
-        <item name="hintTextColor">@color/mau_xam</item>
-        <item name="android:textColorHint">@color/mau_xam</item>
-        <item name="android:textColor">@color/mau_chu_toi</item>
-    </style>
-
-    <!-- Style cho nút hành động (Lưu, Hủy) -->
-    <style name="ActionButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">56dp</item>
-        <item name="android:paddingHorizontal" tools:targetApi="26">32dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/button_hanh_dong</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <!-- Style cho nút Hủy (màu đỏ) -->
-    <style name="ActionButton.Cancel">
-        <item name="android:background">@drawable/button_hanh_dong</item>
-        <item name="android:backgroundTint">@color/mau_do</item>
-        <item name="android:backgroundTintMode">src_atop</item>
-    </style>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Style cho các mục menu trong trang Cài đặt -->
     <style name="MenuItemContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -64,21 +23,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_size_large</item>
         <item name="android:textColor">@color/mau_chu_toi</item>
-    </style>
-
-    <!-- Thêm style mới cho TextInputLayout (OutlinedBox) -->
-    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/mau_chu_dao</item> <!-- viền khi focus -->
-        <item name="boxBackgroundColor">@android:color/white</item>
-        <item name="hintTextColor">@color/mau_xam</item> <!-- hint màu -->
-        <item name="android:textColorHint">@color/mau_xam</item>
-        <item name="android:textColor">@color/mau_chu_toi</item>
-    </style>
-
-    <!-- Style cho TextInputEditText (nếu cần tùy chỉnh thêm) -->
-    <style name="TextInputEditText">
-        <item name="android:textColor">@color/mau_chu_toi</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
 </resources>
