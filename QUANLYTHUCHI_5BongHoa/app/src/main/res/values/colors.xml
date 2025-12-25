@@ -11,40 +11,4 @@
     <color name="mau_nen_sang">#E8F4F8</color>
     <color name="mau_chu_toi">#212121</color>
     <color name="mau_chu_phu">#757575</color>
-
-    <!-- Modern Color Palette -->
-    <color name="primary_blue">#2563EB</color>
-    <color name="primary_blue_light">#EFF6FF</color>
-    <color name="secondary_purple">#7C3AED</color>
-    <color name="secondary_purple_light">#F3F4F6</color>
-    <color name="accent_green">#10B981</color>
-    <color name="accent_green_light">#ECFDF5</color>
-    <color name="accent_orange">#F59E0B</color>
-    <color name="accent_orange_light">#FFFBEB</color>
-    <color name="accent_red">#EF4444</color>
-    <color name="accent_red_light">#FEF2F2</color>
-    <color name="accent_pink">#EC4899</color>
-    <color name="accent_pink_light">#FDF2F8</color>
-    
-    <!-- Neutral Colors -->
-    <color name="gray_50">#F9FAFB</color>
-    <color name="gray_100">#F3F4F6</color>
-    <color name="gray_200">#E5E7EB</color>
-    <color name="gray_300">#D1D5DB</color>
-    <color name="gray_400">#9CA3AF</color>
-    <color name="gray_500">#6B7280</color>
-    <color name="gray_600">#4B5563</color>
-    <color name="gray_700">#374151</color>
-    <color name="gray_800">#1F2937</color>
-    <color name="gray_900">#111827</color>
-    
-    <!-- Background Colors -->
-    <color name="background_primary">#FFFFFF</color>
-    <color name="background_secondary">#F8FAFC</color>
-    <color name="surface_elevated">#FFFFFF</color>
-    
-    <!-- Text Colors -->
-    <color name="text_primary">#1F2937</color>
-    <color name="text_secondary">#6B7280</color>
-    <color name="text_tertiary">#9CA3AF</color>
 </resources>

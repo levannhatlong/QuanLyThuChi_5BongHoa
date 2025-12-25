@@ -158,6 +158,10 @@
       </list>
     </option>
   </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="D:\KyHoc125\AndroidDEV\Key AAB\keyaabappthuchi" />
+    <option name="KEY_ALIAS" value="5BongHoa_QLThuChi" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -173,6 +177,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Android App.app.executor": "Run",
+    "BundleExportedModule": "QUANLYTHUCHI_5BongHoa.app",
+    "ExportBundle.BundlePathForQUANLYTHUCHI_5BongHoa.app": "D:\\Documents\\SourceTree_AndroidDEV\\QuanLyThuChi_5BongHoa\\QUANLYTHUCHI_5BongHoa\\app",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -183,6 +189,11 @@
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "D:/UTE/HK125/7.1.2_LTTD03/CK/QUANLYTHUCHI_5BongHoa/QUANLYTHUCHI_5BongHoa/app/src/main/java",
     "last_opened_file_path": "D:/Documents/SourceTree_AndroidDEV/QuanLyThuChi_5BongHoa/QUANLYTHUCHI_5BongHoa/build.gradle.kts"
+  },
+  "keyToStringList": {
+    "ExportApk.BuildVariants": [
+      "release"
+    ]
   }
 }]]></component>
   <component name="RunManager">

@@ -112,18 +112,15 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView cardIcon;
-
         ImageView ivIconDanhMuc, btnEdit, btnDelete;
-        TextView tvTenDanhMuc, tvMoTa, tvTypeBadge;
+        TextView tvTenDanhMuc, tvMoTa;
 
         ViewHolder(View itemView) {
             super(itemView);
             cardIcon = itemView.findViewById(R.id.cardIcon);
-            cardTypeBadge = itemView.findViewById(R.id.cardTypeBadge);
             ivIconDanhMuc = itemView.findViewById(R.id.ivIconDanhMuc);
             tvTenDanhMuc = itemView.findViewById(R.id.tvTenDanhMuc);
             tvMoTa = itemView.findViewById(R.id.tvMoTa);
-            tvTypeBadge = itemView.findViewById(R.id.tvTypeBadge);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }

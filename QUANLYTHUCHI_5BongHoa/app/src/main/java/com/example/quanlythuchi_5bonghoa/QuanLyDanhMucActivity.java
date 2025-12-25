@@ -1,8 +1,6 @@
 package com.example.quanlythuchi_5bonghoa;
 
-
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,7 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import java.util.ArrayList;
@@ -38,24 +35,19 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
     private List<DanhMuc> danhMucList = new ArrayList<>();
     private int userId;
     private boolean isChiTieu = true;
-
     private String selectedIcon = "food.png";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quan_ly_danh_muc);
 
-
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         userId = prefs.getInt("user_id", -1);
 
         initViews();
         setupListeners();
-
         loadDanhMuc();
-
     }
 
     private void initViews() {
@@ -65,17 +57,13 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
         edtSearch = findViewById(R.id.edtSearch);
         recyclerDanhMuc = findViewById(R.id.recyclerDanhMuc);
         fabThemDanhMuc = findViewById(R.id.fabThemDanhMuc);
-
         emptyView = findViewById(R.id.emptyView);
-
 
         recyclerDanhMuc.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DanhMucAdapter(this, danhMucList, new DanhMucAdapter.OnItemClickListener() {
             @Override
             public void onEditClick(DanhMuc danhMuc, int position) {
-
                 showDialogThemSua(danhMuc);
-
             }
 
             @Override
@@ -101,9 +89,7 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
             loadDanhMuc();
         });
 
-
         fabThemDanhMuc.setOnClickListener(v -> showDialogThemSua(null));
-
 
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -162,7 +148,6 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
             });
         }).start();
     }
-
 
     private void updateEmptyView() {
         if (emptyView != null) {
@@ -313,11 +298,8 @@ public class QuanLyDanhMucActivity extends AppCompatActivity {
                             }
                         });
                     }).start();
-
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
-
 }
-

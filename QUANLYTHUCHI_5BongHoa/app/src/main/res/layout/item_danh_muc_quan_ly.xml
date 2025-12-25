@@ -5,23 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="16dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="20dp"
+        android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- Modern Icon Container with Gradient -->
+        <!-- Icon danh mục với background tròn -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardIcon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            app:cardCornerRadius="32dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="25dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="#F5F5F5">
 
@@ -34,7 +34,7 @@
                 android:scaleType="fitCenter" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Category Information -->
+        <!-- Thông tin danh mục -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -42,45 +42,14 @@
             android:layout_marginStart="16dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvTenDanhMuc"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tvTenDanhMuc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Ăn uống"
-                    android:textColor="@color/mau_chu_toi"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
-
-                <!-- Category Type Badge -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTypeBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    app:cardBackgroundColor="#FFEBEE">
-
-                    <TextView
-                        android:id="@+id/tvTypeBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chi tiêu"
-                        android:textColor="@color/mau_do"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp" />
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+                android:text="Ăn uống"
+                android:textColor="#263238"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvMoTa"
@@ -88,48 +57,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Chi phí ăn uống hàng ngày"
-                android:textColor="@color/mau_chu_phu"
+                android:textColor="#90A4AE"
                 android:textSize="13sp"
-                android:fontFamily="sans-serif"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:ellipsize="end" />
-
-            <!-- Usage Stats -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:src="@drawable/ic_chart"
-                    app:tint="#9CA3AF" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Đã sử dụng 15 lần"
-                    android:textColor="#9CA3AF"
-                    android:textSize="11sp"
-                    android:fontFamily="sans-serif" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tháng này"
-                    android:textColor="#9CA3AF"
-                    android:textSize="11sp"
-                    android:fontFamily="sans-serif" />
-            </LinearLayout>
         </LinearLayout>
 
         <!-- Nút chỉnh sửa -->
@@ -153,25 +84,6 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Xóa" />
 
-            <!-- Delete Button -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                app:cardCornerRadius="22dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFEBEE">
-
-                <ImageView
-                    android:id="@+id/btnDelete"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_menu_delete"
-                    app:tint="@color/mau_do"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Xóa" />
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
