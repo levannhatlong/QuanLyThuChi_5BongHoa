@@ -239,10 +239,9 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginStart="8dp"
-                            android:background="@drawable/bg_tab_selected"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_calendar"
-                            app:tint="@color/mau_chu_dao" />
+                            android:background="@drawable/bg_edittext_rounded"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_calendar" />
                     </LinearLayout>
 
                     <!-- Ghi chú -->
